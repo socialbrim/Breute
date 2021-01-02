@@ -198,7 +198,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       width: width * 0.45,
                       padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.colorBackground,
                         border: Border.all(
                           color: Colors.grey,
                           width: 2,
@@ -278,7 +278,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       width: width * 0.45,
                       padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: theme.colorBackground,
                         border: Border.all(
                           color: Colors.grey,
                           width: 2,
