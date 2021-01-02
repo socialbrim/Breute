@@ -11,6 +11,7 @@ import 'package:parentpreneur/models/UserModel.dart';
 
 import 'package:provider/provider.dart';
 
+import '../Screens/ScheduleMeal.dart';
 import '../main.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -188,7 +189,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ScheduleMeal(),
+                        ),
+                      );
                     },
                     child: Row(
                       children: [

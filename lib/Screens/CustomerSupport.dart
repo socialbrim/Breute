@@ -1,0 +1,178 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import 'ChatScreen.dart';
+
+// ignore: must_be_immutable
+class CustomerSupport extends StatefulWidget {
+  @override
+  _CustomerSupportState createState() => _CustomerSupportState();
+}
+
+class _CustomerSupportState extends State<CustomerSupport> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Text(
+            'Support',
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              color: HexColor('091540'),
+            ),
+          ),
+        ),
+        body: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  child: Image.asset(
+                    'assets/Path.png',
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      child: Image.asset(
+                        'assets/#358_it_support_flatline.png',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: Text(
+                      'How can we help you?',
+                      style: GoogleFonts.poppins(
+                        color: HexColor('091540'),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Support(),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      elevation: 20,
+                      margin: EdgeInsets.symmetric(horizontal: 50),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(18.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                MdiIcons.messageTextOutline,
+                                color: HexColor('FA163F'),
+                                size: 54,
+                              ),
+                              Center(
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    'Chat with us',
+                                    style: GoogleFonts.poppins(
+                                      color: HexColor('091540'),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            "Support Timing",
+                            style: GoogleFonts.poppins(
+                              color: HexColor('091540'),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          child: Text(
+                            'Monday-Saturday',
+                            style: GoogleFonts.poppins(
+                              color: HexColor('091540'),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          child: Text(
+                            '10:00 AM - 6:00 PM',
+                            style: GoogleFonts.poppins(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Container(
+                          child: Text(
+                            '(Holidays during Festive season)',
+                            style: GoogleFonts.poppins(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

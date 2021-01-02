@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../main.dart';
+import 'HomeScreen.dart';
 
 class ScheduleMeal extends StatefulWidget {
   @override
@@ -70,6 +73,44 @@ class _ScheduleMealState extends State<ScheduleMeal> {
         _scheduleTimeofDinner = time;
       }
     });
+  }
+
+  void fetchPriv() async {
+    final data = await FirebaseDatabase.instance
+        .reference()
+        .child("CustomSchedule")
+        .child(FirebaseAuth.instance.currentUser.uid)
+        .once();
+    if (data.value != null) {
+      if (data.value['Morning'] != null) {
+        final splits = data.value['Morning']['Time'].split(":");
+        _scheduleTimeofBreakfast = TimeOfDay(
+          hour: int.parse(splits[0]),
+          minute: int.parse(splits[1]),
+        );
+      }
+      if (data.value['AfterNoon'] != null) {
+        final splits = data.value['AfterNoon']['Time'].split(":");
+        _scheduleTimeofBreakfast = TimeOfDay(
+          hour: int.parse(splits[0]),
+          minute: int.parse(splits[1]),
+        );
+      }
+      if (data.value['Eve'] != null) {
+        final splits = data.value['Eve']['Time'].split(":");
+        _scheduleTimeofBreakfast = TimeOfDay(
+          hour: int.parse(splits[0]),
+          minute: int.parse(splits[1]),
+        );
+      }
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    fetchPriv();
+    super.initState();
   }
 
   @override
@@ -298,7 +339,40 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                 height: height * 0.07,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  FirebaseDatabase.instance
+                      .reference()
+                      .child("CustomSchedule")
+                      .child(FirebaseAuth.instance.currentUser.uid)
+                      .update(
+                    {
+                      "Morning": _scheduleTimeofBreakfast == null
+                          ? null
+                          : {
+                              "Time":
+                                  "${_scheduleTimeofBreakfast.hour}:${_scheduleTimeofBreakfast.minute}"
+                            },
+                      "AfterNoon": _scheduleTimeofLunch == null
+                          ? null
+                          : {
+                              "Time":
+                                  "${_scheduleTimeofLunch.hour}:${_scheduleTimeofLunch.minute}"
+                            },
+                      "Eve": _scheduleTimeofDinner == null
+                          ? null
+                          : {
+                              "Time":
+                                  "${_scheduleTimeofDinner.hour}:${_scheduleTimeofDinner.minute}"
+                            },
+                    },
+                  );
+                  Fluttertoast.showToast(msg: "Your Schedules are fixed");
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ),
+                      (route) => route.isFirst);
+                },
                 child: Card(
                   shadowColor: theme.colorPrimary,
                   elevation: 14,

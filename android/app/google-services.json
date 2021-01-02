@@ -15,84 +15,10 @@
       },
       "oauth_client": [
         {
-          "client_id": "291219541445-c5migl5uvosf7ls0ttoo728nua98drd5.apps.googleusercontent.com",
+          "client_id": "291219541445-6bbbofmb9h52m6p26oog4uutiklijk3p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.parentpreneur",
-            "certificate_hash": "361f1e70beb3aaa644abc4113a0633037350a603"
-          }
-        },
-        {
-          "client_id": "291219541445-31n7ju98vg7mtdinnr94b8bj252b570k.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBQ3xvdgPvnKxHeU3qX8b6mi6aVWpN9uKA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "291219541445-31n7ju98vg7mtdinnr94b8bj252b570k.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:291219541445:android:a1c7b0faa6bfa2d2eccfac",
-        "android_client_info": {
-          "package_name": "com.example.parentpreneur_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "291219541445-uc6hmqgiv2li3t14p7aldlggk8nekho8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.parentpreneur_app",
-            "certificate_hash": "361f1e70beb3aaa644abc4113a0633037350a603"
-          }
-        },
-        {
-          "client_id": "291219541445-31n7ju98vg7mtdinnr94b8bj252b570k.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBQ3xvdgPvnKxHeU3qX8b6mi6aVWpN9uKA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "291219541445-31n7ju98vg7mtdinnr94b8bj252b570k.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:291219541445:android:57e732172fe468b6eccfac",
-        "android_client_info": {
-          "package_name": "com.example.parentpreneur_lifestyle_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "291219541445-mra6sck9kvkfelqmbeq91tf9ea1ssuu6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.parentpreneur_lifestyle_app",
             "certificate_hash": "a4cfa15d30e7fdb3490e0343587a378bfca6456f"
           }
         },
