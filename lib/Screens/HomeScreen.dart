@@ -163,8 +163,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // ignore: deprecated_member_use
     await flutterLocalNotificationsPlugin.schedule(
       2,
-      'Hey Wake Up!',
-      'Time For a Morning Break Fast',
+      'Hey!',
+      'Time For Lunch!',
       _nextInstanceOfNextAfterNoon(),
       const NotificationDetails(
         android: AndroidNotificationDetails(
@@ -197,8 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // ignore: deprecated_member_use
     await flutterLocalNotificationsPlugin.schedule(
       3,
-      'Hey Wake Up!',
-      'Time For a Morning Break Fast',
+      'Hey',
+      'Time For Dinner!',
       _nextInstanceOfNextEvening(),
       const NotificationDetails(
         android: AndroidNotificationDetails(

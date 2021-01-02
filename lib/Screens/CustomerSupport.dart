@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
+import '../main.dart';
 import 'ChatScreen.dart';
 
 // ignore: must_be_immutable
@@ -14,18 +14,14 @@ class CustomerSupport extends StatefulWidget {
 class _CustomerSupportState extends State<CustomerSupport> {
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.colorBackground,
         appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
           title: Text(
             'Support',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              color: HexColor('091540'),
-            ),
           ),
         ),
         body: Stack(
@@ -47,6 +43,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                 children: [
                   Center(
                     child: Container(
+                      height: height * 0.2,
                       child: Image.asset(
                         'assets/#358_it_support_flatline.png',
                       ),
@@ -58,11 +55,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   Center(
                     child: Text(
                       'How can we help you?',
-                      style: GoogleFonts.poppins(
-                        color: HexColor('091540'),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: theme.text18bold,
                     ),
                   ),
                   SizedBox(
@@ -94,11 +87,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                   padding: EdgeInsets.all(10),
                                   child: Text(
                                     'Chat with us',
-                                    style: GoogleFonts.poppins(
-                                      color: HexColor('091540'),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                    ),
                                   ),
                                 ),
                               ),
@@ -120,11 +108,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                         Container(
                           child: Text(
                             "Support Timing",
-                            style: GoogleFonts.poppins(
-                              color: HexColor('091540'),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
                           ),
                         ),
                         SizedBox(
@@ -133,11 +116,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                         Container(
                           child: Text(
                             'Monday-Saturday',
-                            style: GoogleFonts.poppins(
-                              color: HexColor('091540'),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
                           ),
                         ),
                         SizedBox(
@@ -146,10 +124,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                         Container(
                           child: Text(
                             '10:00 AM - 6:00 PM',
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
                           ),
                         ),
                         SizedBox(
@@ -158,10 +132,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                         Container(
                           child: Text(
                             '(Holidays during Festive season)',
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
                           ),
                         ),
                       ],
