@@ -1,4 +1,6 @@
 // ignore: must_be_immutable
+import 'dart:io';
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,6 +35,13 @@ class CreateMealCard extends StatefulWidget {
 }
 
 class _CreateMealCardState extends State<CreateMealCard> {
+  String name;
+  String vidLink;
+  String description;
+  String calories;
+  String recipe;
+  File _image;
+
   @override
   Widget build(BuildContext context) {
     return FlipCard(
@@ -119,6 +128,9 @@ class _CreateMealCardState extends State<CreateMealCard> {
                           } else
                             return null;
                         },
+                        onChanged: (val) {
+                          name = name;
+                        },
                         decoration: InputDecoration(
                           hintText: "Enter Meal Name",
                           hintStyle: TextStyle(
@@ -157,6 +169,9 @@ class _CreateMealCardState extends State<CreateMealCard> {
                           } else
                             return null;
                         },
+                        onChanged: (val) {
+                          vidLink = name;
+                        },
                         decoration: InputDecoration(
                           hintText: "Enter Video Link",
                           hintStyle: TextStyle(
@@ -176,9 +191,7 @@ class _CreateMealCardState extends State<CreateMealCard> {
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 12,
-                        // vertical: 5,
                       ),
-                      // height: height * 0.06,
                       width: widget.width * 0.78,
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -195,6 +208,9 @@ class _CreateMealCardState extends State<CreateMealCard> {
                             return "Enter in Field";
                           } else
                             return null;
+                        },
+                        onChanged: (val) {
+                          description = name;
                         },
                         decoration: InputDecoration(
                           hintText: "Enter Description",
@@ -234,6 +250,9 @@ class _CreateMealCardState extends State<CreateMealCard> {
                           } else
                             return null;
                         },
+                        onChanged: (val) {
+                          calories = name;
+                        },
                         decoration: InputDecoration(
                           hintText: "Enter Calories",
                           hintStyle: TextStyle(
@@ -272,6 +291,9 @@ class _CreateMealCardState extends State<CreateMealCard> {
                             return "Enter in Field";
                           } else
                             return null;
+                        },
+                        onChanged: (val) {
+                          recipe = name;
                         },
                         decoration: InputDecoration(
                           hintText: "Enter Recipe",

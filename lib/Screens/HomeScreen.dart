@@ -7,6 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/Screens/CustomerSupport.dart';
 import 'package:parentpreneur/auth/LoginScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       initializationSettings,
       onSelectNotification: selectNotification,
     );
-
+    flutterLocalNotificationsPlugin.cancelAll();
     fetchSchedule().then((value) {
       sendMorningsNotifications();
       sendLunchNotifications();
@@ -103,15 +104,13 @@ class _HomeScreenState extends State<HomeScreen> {
             : mySch.value['Eve']['Time'];
       }
     } else {
-      morningTime = data.value['Morning']['Time'] == null
+      morningTime = data.value['Morning'] == null
           ? "8:15"
           : data.value['Morning']['Time'];
-      afternoonTime = data.value['AfterNoon']['Time'] == null
+      afternoonTime = data.value['AfterNoon'] == null
           ? "14:0"
           : data.value['AfterNoon']['Time'];
-      eveTime = data.value['Eve']['Time'] == null
-          ? "19:0"
-          : data.value['Eve']['Time'];
+      eveTime = data.value['Eve'] == null ? "19:0" : data.value['Eve']['Time'];
     }
   }
 
@@ -319,7 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? MealScreen()
                       : barIndex == 2
                           ? ProfileScreen()
-                          : Support(),
+                          : CustomerSupport(),
             ),
     );
   }
