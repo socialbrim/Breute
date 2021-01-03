@@ -27,11 +27,7 @@ class _SupportState extends State<Support> {
   void stream() {
     final user = FirebaseAuth.instance.currentUser;
 
-    final ref = FirebaseDatabase.instance
-        .reference()
-        .child("ChatRoom")
-        .child(user.uid)
-        .onValue;
+    final ref = FirebaseDatabase.instance.reference().child("ChatRoom").onValue;
     ref.listen((event) {
       if (event.snapshot.value == null) {
         return;
@@ -47,6 +43,8 @@ class _SupportState extends State<Support> {
             dateTime: DateTime.parse(
               value['timeStamp'],
             ),
+            imageURL: value['DpURL'],
+            nameOfCustomer: value['Name'],
           ),
         );
       });
@@ -71,10 +69,7 @@ class _SupportState extends State<Support> {
   }
 
   sendMessage() async {
-    final ref = FirebaseDatabase.instance
-        .reference()
-        .child("ChatRoom")
-        .child(userInfo.id);
+    final ref = FirebaseDatabase.instance.reference().child("ChatRoom");
     final key = ref.push().key;
     ref.child(key).update({
       'message': messageController.text,
@@ -96,6 +91,8 @@ class _SupportState extends State<Support> {
                 itemBuilder: (context, index) => MessageTile(
                       message: list[index].message,
                       isSendByMe: list[index].uid == userInfo.id,
+                      imageURL: list[index].imageURL,
+                      name: list[index].nameOfCustomer,
                     )),
           )
         : Container();
@@ -178,8 +175,15 @@ class _SupportState extends State<Support> {
 class MessageTile extends StatelessWidget {
   final bool isSendByMe;
   final String message;
+  final String imageURL;
+  final String name;
 
-  MessageTile({this.isSendByMe, this.message});
+  MessageTile({
+    this.isSendByMe,
+    this.message,
+    this.imageURL,
+    this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -191,25 +195,38 @@ class MessageTile extends StatelessWidget {
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
-        child: Container(
-          decoration: BoxDecoration(
-            color: theme.colorCompanion2,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(50),
-                topRight: Radius.circular(50),
-                bottomLeft:
-                    isSendByMe ? Radius.circular(50) : Radius.circular(0),
-                bottomRight:
-                    isSendByMe ? Radius.circular(0) : Radius.circular(50)),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Text(message,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: Colors.white,
-                )),
-          ),
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: theme.colorCompanion2,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                    bottomLeft:
+                        isSendByMe ? Radius.circular(50) : Radius.circular(0),
+                    bottomRight:
+                        isSendByMe ? Radius.circular(0) : Radius.circular(50)),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: Text(message,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.white,
+                    )),
+              ),
+            ),
+            Positioned(
+              bottom: 2,
+              right: isSendByMe ? 2 : null,
+              left: !isSendByMe ? 2 : null,
+              child: CircleAvatar(
+                radius: 10,
+                backgroundImage: NetworkImage(imageURL),
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -58,6 +58,16 @@ class _TodaysMealState extends State<TodaysMeal> {
     fetchTodaysMeal();
     super.initState();
   }
+  //====vid widget
+  // AspectRatio(
+  //       aspectRatio: 16 / 9,
+  //       child: BetterPlayer.network(
+  //         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+  //         betterPlayerConfiguration: BetterPlayerConfiguration(
+  //           aspectRatio: 16 / 9,
+  //         ),
+  //       ),
+  //     ),
 
   @override
   Widget build(BuildContext context) {

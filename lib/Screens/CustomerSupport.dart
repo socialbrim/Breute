@@ -57,7 +57,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   ),
                   Center(
                     child: Text(
-                      'How can we help you?',
+                      'Community Chat',
                       style: GoogleFonts.poppins(
                         color: HexColor('091540'),
                         fontSize: 20,
@@ -93,7 +93,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   child: Text(
-                                    'Chat with us',
+                                    'Chat with All',
                                     style: GoogleFonts.poppins(
                                       color: HexColor('091540'),
                                       fontSize: 20,
@@ -111,62 +111,62 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   SizedBox(
                     height: 50,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 40),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Text(
-                            "Support Timing",
-                            style: GoogleFonts.poppins(
-                              color: HexColor('091540'),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          child: Text(
-                            'Monday-Saturday',
-                            style: GoogleFonts.poppins(
-                              color: HexColor('091540'),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          child: Text(
-                            '10:00 AM - 6:00 PM',
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Container(
-                          child: Text(
-                            '(Holidays during Festive season)',
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 40),
+                  //   child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.start,
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Container(
+                  //         child: Text(
+                  //           "Support Timing",
+                  //           style: GoogleFonts.poppins(
+                  //             color: HexColor('091540'),
+                  //             fontSize: 20,
+                  //             fontWeight: FontWeight.w600,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         height: 10,
+                  //       ),
+                  //       Container(
+                  //         child: Text(
+                  //           'Monday-Saturday',
+                  //           style: GoogleFonts.poppins(
+                  //             color: HexColor('091540'),
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w600,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         height: 5,
+                  //       ),
+                  //       Container(
+                  //         child: Text(
+                  //           '10:00 AM - 6:00 PM',
+                  //           style: GoogleFonts.poppins(
+                  //             color: Colors.grey,
+                  //             fontSize: 14,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         height: 2,
+                  //       ),
+                  //       Container(
+                  //         child: Text(
+                  //           '(Holidays during Festive season)',
+                  //           style: GoogleFonts.poppins(
+                  //             color: Colors.grey,
+                  //             fontSize: 14,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
             )

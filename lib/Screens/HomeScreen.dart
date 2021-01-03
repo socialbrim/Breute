@@ -14,7 +14,6 @@ import 'package:parentpreneur/models/UserModel.dart';
 import 'package:provider/provider.dart';
 import '../Screens/TodaysMeal.dart';
 import '../main.dart';
-import 'ChatScreen.dart';
 import 'MainHomeScreen.dart';
 import 'MealScreen.dart';
 import 'ProfileScreen.dart';
@@ -43,16 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    if (widget.isRedirectingFromLogin == null) {
-      widget.isRedirectingFromLogin = false;
-    }
-    if (widget.isRedirectingFromLogin) {
-      fetchUserInfo();
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    fetchUserInfo();
 
     //... notifications
 
@@ -229,23 +219,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> fetchUserInfo() async {
     final user = FirebaseAuth.instance.currentUser;
-    final data = await FirebaseDatabase.instance
+    FirebaseDatabase.instance
         .reference()
         .child("User Information")
         .child(user.uid)
-        .once();
-    final mapped = data.value as Map;
+        .onValue
+        .listen((event) {
+      final mapped = event.snapshot.value as Map;
 
-    if (mapped == null) {
-      //...
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (mapped['userName'] == null) {
+      if (mapped == null) {
+        //...
+        FirebaseAuth.instance.signOut();
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+        );
+        return;
+      }
       UserInformation userData = new UserInformation(
           email: mapped['emial'],
           id: mapped['uid'],
@@ -254,18 +246,9 @@ class _HomeScreenState extends State<HomeScreen> {
           phone: mapped['phone'],
           isPhone: mapped['isPhone']);
       Provider.of<UserProvider>(context, listen: false).setUser(userData);
-    } else {
-      UserInformation userData = new UserInformation(
-          email: mapped['emial'],
-          id: mapped['uid'],
-          imageUrl: mapped['imageURL'],
-          name: mapped['userName'],
-          phone: mapped['phone'],
-          isPhone: mapped['isPhone']);
-      Provider.of<UserProvider>(context, listen: false).setUser(userData);
-    }
-    setState(() {
-      _isLoading = false;
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 

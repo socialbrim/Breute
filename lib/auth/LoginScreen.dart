@@ -1,9 +1,16 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
 
+import '../Screens/HomeScreen.dart';
 import '../main.dart';
 import 'otpverificationscreen.dart';
 
@@ -18,6 +25,8 @@ class _LoginScreenState extends State<LoginScreen>
   var countrycode = "+91";
   final _formKey = GlobalKey<FormState>();
   AnimationController _controller;
+  bool _isGoogleLogging = false;
+  bool _isFacebookLoggin = false;
 
   @override
   void initState() {
@@ -30,6 +39,112 @@ class _LoginScreenState extends State<LoginScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+// {name: Devesh Garg, email: deveshgarg9829@gmail.com, picture: {data: {height: 126, is_silhouette: true, url: https://scontent.fjai2-1.fna.fbcdn.net/v/t1.30497-1/s200x200/84628273_176159830277856_972693363922829312_n.jpg?_nc_cat=1&ccb=2&_nc_sid=12b3be&_nc_ohc=OkCTBOF_dxEAX9oSKhO&_nc_ht=scontent.fjai2-1.fna&tp=7&oh=70e2f655256aa4b01d3ba60b54fcffc1&oe=6017B3E5, width: 200}}, id: 425013675527056}
+
+  Future<void> _loginWithFacebook() async {
+    try {
+      AccessToken accessToken = await FacebookAuth.instance.login();
+      print(accessToken.toJson());
+      FacebookAuthCredential _facebookcredentials =
+          FacebookAuthProvider.credential(accessToken.token);
+      final userData = await FacebookAuth.instance.getUserData();
+      print(userData);
+      try {
+        final user = await FirebaseAuth.instance
+            .signInWithCredential(_facebookcredentials);
+        if (user != null) {
+          await FirebaseDatabase.instance
+              .reference()
+              .child("User Information")
+              .child(FirebaseAuth.instance.currentUser.uid)
+              .update({
+            "userName": userData['name'],
+            "emial": userData['email'],
+            "imageURL": userData['picture']['data']['url'],
+          });
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                isRedirectingFromLogin: true,
+              ),
+            ),
+          );
+        }
+        print("==========================================================");
+        print(user.user.uid); // get the user data
+        print("==========================================================");
+      } catch (e) {
+        FirebaseAuthException error = e;
+        Fluttertoast.showToast(msg: error.message);
+      }
+    } on FacebookAuthException catch (e) {
+      switch (e.errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          print("You have a previous login operation in progress");
+          break;
+        case FacebookAuthErrorCode.CANCELLED:
+          print("login cancelled");
+          break;
+        case FacebookAuthErrorCode.FAILED:
+          print("login failed");
+          break;
+      }
+    }
+  }
+
+  void _signInWithGoogle() async {
+    final googleSignIn = GoogleSignIn();
+    final firebaseAuth = FirebaseAuth.instance;
+    // try {
+    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    setState(() {
+      _isGoogleLogging = true;
+    });
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+    final user = (await firebaseAuth.signInWithCredential(credential)).user;
+    await FirebaseDatabase.instance
+        .reference()
+        .child("User Information")
+        .child(FirebaseAuth.instance.currentUser.uid)
+        .update({
+      "userName": googleUser.displayName,
+      "emial": googleUser.email,
+      "imageURL": googleUser.photoUrl,
+    });
+
+    if (user != null) {
+      setState(() {
+        _isGoogleLogging = false;
+      });
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
+    } else {
+      setState(() {
+        _isGoogleLogging = false;
+      });
+      Fluttertoast.showToast(msg: "Something went wrong");
+    }
+    // } catch (e) {
+    //   setState(() {
+    //     _isGoogleLogging = false;
+    //   });
+    //   print("------------------------");
+    //   print(e);
+    //   print("------------------------");
+    //   Fluttertoast.showToast(msg: "Something went wrong");
+    // }
   }
 
   @override
@@ -186,6 +301,18 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                     ),
+                    RaisedButton(
+                      onPressed: () {
+                        _loginWithFacebook();
+                      },
+                      child: Text("Facebook"),
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        _signInWithGoogle();
+                      },
+                      child: Text("Google"),
+                    )
                   ],
                 ),
               ],
