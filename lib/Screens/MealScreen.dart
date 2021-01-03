@@ -50,11 +50,6 @@ class _MealScreenState extends State<MealScreen> {
                           height: height * 0.2,
                           width: width * 0.41,
                           decoration: BoxDecoration(
-                            // color: theme.colorPrimary,
-                            // border: Border.all(
-                            //   width: 1.5,
-                            //   color: theme.colorGrey,
-                            // ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
