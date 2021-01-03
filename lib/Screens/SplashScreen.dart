@@ -22,59 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
     getcurrentUser();
   }
 
-  Future<void> fetchUserInfo() async {
-    final user = FirebaseAuth.instance.currentUser;
-    final data = await FirebaseDatabase.instance
-        .reference()
-        .child("User Information")
-        .child(user.uid)
-        .once();
-    final mapped = data.value as Map;
-
-    if (mapped == null) {
-      //...
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).popUntil((route) => route.isFirst);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (mapped['userName'] == null) {
-      UserInformation userData = new UserInformation(
-          email: mapped['emial'],
-          id: mapped['uid'],
-          imageUrl: mapped['imageURL'],
-          name: mapped['userName'],
-          phone: mapped['phone'],
-          isPhone: mapped['isPhone']);
-      Provider.of<UserProvider>(context, listen: false).setUser(userData);
-    } else {
-      UserInformation userData = new UserInformation(
-          email: mapped['emial'],
-          id: mapped['uid'],
-          imageUrl: mapped['imageURL'],
-          name: mapped['userName'],
-          phone: mapped['phone'],
-          isPhone: mapped['isPhone']);
-      Provider.of<UserProvider>(context, listen: false).setUser(userData);
-    }
-  }
-
   Future<void> getcurrentUser() async {
     final user = FirebaseAuth.instance.currentUser;
-    // await fetchCurrentLocation();
-    if (user == null) {
-      UserInformation userData = new UserInformation(
-        email: null,
-        id: null,
-        imageUrl:
-            "https://www.pngitem.com/pimgs/m/24-248235_user-profile-avatar-login-account-fa-user-circle.png",
-        name: "Your Name",
-        phone: null,
-      );
-      Provider.of<UserProvider>(context, listen: false).setUser(userData);
 
+    if (user == null) {
       Future.delayed(Duration(seconds: 3)).then((value) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -86,7 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
       return;
     }
     if (user != null) {
-      await fetchUserInfo();
       Future.delayed(Duration(seconds: 3)).then((value) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -96,13 +46,6 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     }
   }
-  // Future<void> fetchCurrentLocation() async {
-  //   await Geolocator.checkPermission();
-  //   final position = await Geolocator.getCurrentPosition();
-  //   final currentLocation = LatLng(position.latitude, position.longitude);
-  //   Provider.of<MainProvider>(context, listen: false)
-  //       .setLocation(currentLocation);
-  // }
 
   @override
   Widget build(BuildContext context) {
