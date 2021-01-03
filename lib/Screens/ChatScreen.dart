@@ -107,7 +107,6 @@ class _SupportState extends State<Support> {
         appBar: AppBar(
           title: Text('Chat with us'),
         ),
-        drawer: DrawerWidget(),
         body: Column(
           children: [
             Expanded(
