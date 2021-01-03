@@ -8,7 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:lottie/lottie.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../Screens/HomeScreen.dart';
 import '../main.dart';
@@ -277,7 +279,6 @@ class _LoginScreenState extends State<LoginScreen>
                                 alignment: Alignment.center,
                                 child: Text(
                                   'Submit',
-                                  // textAlign: TextAlign.center,
                                   style: theme.text20boldWhite,
                                 ),
                               ),
@@ -295,24 +296,97 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                             ),
                             SizedBox(
-                              height: height * 0.06,
+                              height: height * 0.01,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _signInWithGoogle();
+                              },
+                              child: Card(
+                                color: HexColor('DD4B39'),
+                                elevation: 3,
+                                shadowColor: theme.colorCompanion,
+                                child: Container(
+                                  width: width * 0.6,
+                                  height: height * 0.06,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: height * 0.045,
+                                          child: Image.asset(
+                                            'assets/google.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.01,
+                                        ),
+                                        Text(
+                                          "Sign in with Google",
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _loginWithFacebook();
+                              },
+                              child: Card(
+                                elevation: 3,
+                                color: HexColor('3b5998'),
+                                shadowColor: theme.colorCompanion,
+                                child: Container(
+                                  width: width * 0.6,
+                                  height: height * 0.06,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: height * 0.035,
+                                          child: Image.asset(
+                                            'assets/fb.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.025,
+                                        ),
+                                        Text(
+                                          "Sign in with Facebook",
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.04,
                             ),
                           ],
                         ),
                       ),
                     ),
-                    RaisedButton(
-                      onPressed: () {
-                        _loginWithFacebook();
-                      },
-                      child: Text("Facebook"),
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        _signInWithGoogle();
-                      },
-                      child: Text("Google"),
-                    )
                   ],
                 ),
               ],

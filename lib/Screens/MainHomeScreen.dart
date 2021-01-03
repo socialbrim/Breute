@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -184,6 +186,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(
+                height: height * 0.03,
+              ),
               SizedBox(
                 height: height * 0.03,
               ),

@@ -41,6 +41,7 @@ dependencies:
   country_code_picker:
   curved_navigation_bar:
   images_picker:
+  carousel_slider: ^2.3.1 
   firebase_storage:
   slimy_card:
   flip_card: ^0.4.4

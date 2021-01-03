@@ -100,6 +100,9 @@ class _SupportState extends State<Support> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
         // bottomNavigationBar:
         // backgroundColor: Colors.blue[900],
@@ -121,7 +124,7 @@ class _SupportState extends State<Support> {
                     width: MediaQuery.of(context).size.width * .75,
                     child: Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: TextField(
                         style: theme.text16Primary,
                         controller: messageController,
@@ -186,6 +189,9 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Container(
       padding: EdgeInsets.only(
           left: isSendByMe ? MediaQuery.of(context).size.width * .2 : 24,
@@ -200,33 +206,150 @@ class MessageTile extends StatelessWidget {
               decoration: BoxDecoration(
                 color: theme.colorCompanion2,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
                     bottomLeft:
-                        isSendByMe ? Radius.circular(50) : Radius.circular(0),
+                        isSendByMe ? Radius.circular(15) : Radius.circular(0),
                     bottomRight:
-                        isSendByMe ? Radius.circular(0) : Radius.circular(50)),
+                        isSendByMe ? Radius.circular(0) : Radius.circular(15)),
               ),
               child: Padding(
-                padding: EdgeInsets.all(15),
-                child: Text(message,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: Colors.white,
-                    )),
+                padding:
+                    EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 12),
+                child: isSendByMe
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Tushar',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                width: width * 0.5,
+                                child: Text(
+                                  message,
+                                  textAlign: isSendByMe
+                                      ? TextAlign.right
+                                      : TextAlign.left,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: width * 0.03,
+                          ),
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundImage: imageURL == null
+                                ? AssetImage("assets/unnamed.png")
+                                : NetworkImage(imageURL),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundImage: imageURL == null
+                                ? AssetImage("assets/unnamed.png")
+                                : NetworkImage(imageURL),
+                          ),
+                          SizedBox(
+                            width: width * 0.03,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Harsh',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                width: width * 0.5,
+                                child: Text(
+                                  message,
+                                  textAlign: isSendByMe
+                                      ? TextAlign.right
+                                      : TextAlign.left,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // children: [
+                          //   isSendByMe
+                          //       ? Row(
+                          //           mainAxisAlignment: MainAxisAlignment.end,
+                          //           children: [
+                          //             Text(
+                          //               'Name',
+                          //             ),
+                          //             SizedBox(
+                          //               width: width * 0.02,
+                          //             ),
+                          //             CircleAvatar(
+                          //               radius: 10,
+                          //               backgroundImage: imageURL == null
+                          //                   ? AssetImage("assets/unnamed.png")
+                          //                   : NetworkImage(imageURL),
+                          //             ),
+                          //           ],
+                          //         )
+                          //       : Row(
+                          //           mainAxisAlignment: MainAxisAlignment.start,
+                          //           children: [
+                          //             CircleAvatar(
+                          //               radius: 10,
+                          //               backgroundImage: imageURL == null
+                          //                   ? AssetImage("assets/unnamed.png")
+                          //                   : NetworkImage(imageURL),
+                          //             ),
+                          //             SizedBox(
+                          //               width: width * 0.02,
+                          //             ),
+                          //             Text(
+                          //               'Name',
+                          //             ),
+                          //           ],
+                          //         ),
+                          //   Text(
+                          //     message,
+                          //     // textAlign: isSendByMe ? TextAlign.right : TextAlign.left,
+                          //     style: GoogleFonts.poppins(
+                          //       fontSize: 14,
+                          //       color: Colors.white,
+                          //     ),
+                          //   ),
+                          // ],
+                        ],
+                      ),
               ),
             ),
-            Positioned(
-              bottom: 2,
-              right: isSendByMe ? 2 : null,
-              left: !isSendByMe ? 2 : null,
-              child: CircleAvatar(
-                radius: 10,
-                backgroundImage: imageURL == null
-                    ? AssetImage("assets/unnamed.png")
-                    : NetworkImage(imageURL),
-              ),
-            )
+            // Positioned(
+            //   top: 2,
+            //   right: isSendByMe ? 2 : null,
+            //   left: !isSendByMe ? 2 : null,
+            // child: CircleAvatar(
+            //   radius: 10,
+            //   backgroundImage: imageURL == null
+            //       ? AssetImage("assets/unnamed.png")
+            //       : NetworkImage(imageURL),
+            // ),
+            // )
           ],
         ),
       ),

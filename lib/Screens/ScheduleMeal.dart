@@ -91,14 +91,14 @@ class _ScheduleMealState extends State<ScheduleMeal> {
       }
       if (data.value['AfterNoon'] != null) {
         final splits = data.value['AfterNoon']['Time'].split(":");
-        _scheduleTimeofBreakfast = TimeOfDay(
+        _scheduleTimeofLunch = TimeOfDay(
           hour: int.parse(splits[0]),
           minute: int.parse(splits[1]),
         );
       }
       if (data.value['Eve'] != null) {
         final splits = data.value['Eve']['Time'].split(":");
-        _scheduleTimeofBreakfast = TimeOfDay(
+        _scheduleTimeofDinner = TimeOfDay(
           hour: int.parse(splits[0]),
           minute: int.parse(splits[1]),
         );
