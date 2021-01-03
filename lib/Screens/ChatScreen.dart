@@ -222,7 +222,9 @@ class MessageTile extends StatelessWidget {
               left: !isSendByMe ? 2 : null,
               child: CircleAvatar(
                 radius: 10,
-                backgroundImage: NetworkImage(imageURL),
+                backgroundImage: imageURL == null
+                    ? AssetImage("assets/unnamed.png")
+                    : NetworkImage(imageURL),
               ),
             )
           ],
