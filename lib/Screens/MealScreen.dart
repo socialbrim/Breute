@@ -32,7 +32,7 @@ class _MealScreenState extends State<MealScreen> {
                 height: height * 0.01,
               ),
               Container(
-                height: height * 0.2,
+                height: height * 0.218,
                 width: double.infinity,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -40,7 +40,7 @@ class _MealScreenState extends State<MealScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 3, vertical: 8),
+                          horizontal: 3, vertical: 15),
                       child: Card(
                         elevation: 9,
                         shadowColor: theme.colorPrimary,
@@ -51,10 +51,10 @@ class _MealScreenState extends State<MealScreen> {
                           width: width * 0.41,
                           decoration: BoxDecoration(
                             // color: theme.colorPrimary,
-                            border: Border.all(
-                              width: 1.5,
-                              color: theme.colorGrey,
-                            ),
+                            // border: Border.all(
+                            //   width: 1.5,
+                            //   color: theme.colorGrey,
+                            // ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
@@ -110,32 +110,32 @@ class _MealScreenState extends State<MealScreen> {
                 ),
               ),
               SizedBox(
-                height: height * 0.04,
+                height: height * 0.02,
               ),
               Container(
                 height: height * 0.15,
                 width: double.infinity,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: width,
-                      child: Image.asset(
-                        'assets/workout.png',
-                        fit: BoxFit.cover,
+                child: InkWell(
+                  splashColor: theme.colorCompanion,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProTipForWorkOutScreen(),
                       ),
-                    ),
-                    Positioned(
-                      right: 5,
-                      bottom: 5,
-                      child: InkWell(
-                        splashColor: theme.colorCompanion,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ProTipForWorkOutScreen(),
-                            ),
-                          );
-                        },
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: width,
+                        child: Image.asset(
+                          'assets/workout.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        right: 5,
+                        bottom: 5,
                         child: Card(
                           shadowColor: theme.colorPrimary,
                           color: theme.colorPrimary,
@@ -153,8 +153,8 @@ class _MealScreenState extends State<MealScreen> {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -257,27 +257,27 @@ class _MealScreenState extends State<MealScreen> {
               Container(
                 height: height * 0.15,
                 width: double.infinity,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: width,
-                      child: Image.asset(
-                        'assets/recipemeal.png',
-                        fit: BoxFit.cover,
+                child: InkWell(
+                  splashColor: theme.colorCompanion,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CreateMealScreen(),
                       ),
-                    ),
-                    Positioned(
-                      left: 5,
-                      bottom: 5,
-                      child: InkWell(
-                        splashColor: theme.colorCompanion,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => CreateMealScreen(),
-                            ),
-                          );
-                        },
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: width,
+                        child: Image.asset(
+                          'assets/recipemeal.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        left: 5,
+                        bottom: 5,
                         child: Card(
                           shadowColor: theme.colorPrimary,
                           color: theme.colorPrimary,
@@ -295,8 +295,8 @@ class _MealScreenState extends State<MealScreen> {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
