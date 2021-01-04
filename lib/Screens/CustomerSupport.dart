@@ -54,10 +54,8 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   ),
                   Center(
                     child: Text(
-
                       'Community Chat',
                       style: theme.text18bold,
-
                     ),
                   ),
                   SizedBox(
@@ -88,14 +86,8 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                 child: Container(
                                   padding: EdgeInsets.all(10),
                                   child: Text(
-
                                     'Chat with All',
-                                    style: GoogleFonts.poppins(
-                                      color: HexColor('091540'),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-
+                                    style: theme.text16boldWhite,
                                   ),
                                 ),
                               ),
@@ -165,7 +157,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   //     ],
                   //   ),
                   // )
-
                 ],
               ),
             )

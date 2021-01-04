@@ -38,6 +38,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     super.initState();
     initPlatformState();
     fetchLastSevenDays();
+    print(totalsteps);
+    print(_status);
   }
 
   void fetchLastSevenDays() {

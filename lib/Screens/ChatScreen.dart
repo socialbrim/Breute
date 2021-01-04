@@ -178,7 +178,7 @@ class MessageTile extends StatelessWidget {
   final bool isSendByMe;
   final String message;
   final String imageURL;
-  final String name;
+  String name;
 
   MessageTile({
     this.isSendByMe,
@@ -218,13 +218,14 @@ class MessageTile extends StatelessWidget {
                     EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 12),
                 child: isSendByMe
                     ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                'Tushar',
+                                '$name',
                                 style: GoogleFonts.roboto(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -256,6 +257,7 @@ class MessageTile extends StatelessWidget {
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
                             radius: 20,
@@ -270,7 +272,7 @@ class MessageTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Harsh',
+                                name == null ? 'Anonymous' : "$name",
                                 style: GoogleFonts.roboto(
                                     fontWeight: FontWeight.bold),
                               ),
