@@ -14,8 +14,7 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
     var width = MediaQuery.of(context).size.width;
 
     return Container(
-      width: width * 0.7,
-      height: height * 0.3,
+      width: width * 0.8,
       decoration: BoxDecoration(
         border: Border.all(
           color: theme.colorBackground,

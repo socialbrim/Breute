@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:better_player/better_player.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -38,8 +41,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     super.initState();
     initPlatformState();
     fetchLastSevenDays();
-    print(totalsteps);
-    print(_status);
   }
 
   void fetchLastSevenDays() {
@@ -166,6 +167,28 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return formatted;
   }
 
+  // @override
+  // void dispose() {
+  //   _videoViewController.dispose();
+  //   super.dispose();
+  // }
+
+  // void playOrPauseVideo() {
+  //   String state = _videoViewController.playingState.toString();
+
+  //   if (state == "PlayingState.PLAYING") {
+  //     _videoViewController.pause();
+  //     setState(() {
+  //       isPlaying = false;
+  //     });
+  //   } else {
+  //     _videoViewController.play();
+  //     setState(() {
+  //       isPlaying = true;
+  //     });
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -188,11 +211,18 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: height * 0.03,
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: BetterPlayer.network(
+                  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                  betterPlayerConfiguration: BetterPlayerConfiguration(
+                    // autoPlay: true,
+                    aspectRatio: 16 / 9,
+                  ),
+                ),
               ),
               SizedBox(
-                height: height * 0.03,
+                height: height * 0.04,
               ),
               Container(
                 height: height * 0.25,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,8 @@ import 'Screens/SplashScreen.dart';
 AppThemeData theme = AppThemeData();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   await Firebase.initializeApp();
   theme.init();

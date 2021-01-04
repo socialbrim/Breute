@@ -87,7 +87,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                   padding: EdgeInsets.all(10),
                                   child: Text(
                                     'Chat with All',
-                                    style: theme.text16boldWhite,
+                                    style: theme.text16bold,
                                   ),
                                 ),
                               ),

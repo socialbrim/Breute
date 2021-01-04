@@ -42,366 +42,332 @@ class _CreateMealCardState extends State<CreateMealCard> {
   String calories;
   String recipe;
   File _image;
+  bool _showForm = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          color: theme.colorPrimary,
-          height: widget.height * 0.2,
-          width: widget.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                '${widget.category}',
-                style: GoogleFonts.inter(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+        InkWell(
+          onTap: () {
+            setState(() {
+              _showForm = !_showForm;
+            });
+          },
+          child: Container(
+            color: theme.colorPrimary,
+            height: widget.height * 0.2,
+            width: widget.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  '${widget.category}',
+                  style: GoogleFonts.inter(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              widget.icon,
-              Icon(
-                MdiIcons.arrowDown,
-                color: Colors.white,
-              )
-            ],
-          ),
-        ),
-        Card(
-          shadowColor: theme.colorPrimary,
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              20,
+                widget.icon,
+                Icon(
+                  _showForm ? MdiIcons.arrowUp : MdiIcons.arrowDown,
+                  color: Colors.white,
+                )
+              ],
             ),
           ),
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          child: Container(
+        ),
+        SizedBox(
+          height: widget.height * 0.02,
+        ),
+        if (_showForm)
+          Container(
             decoration: BoxDecoration(
-                color: theme.colorPrimary,
-                borderRadius: BorderRadius.circular(20)),
-            height: widget.breakfastback
-                ? widget.height * 0.85
-                : widget.height * 0.6,
-            width: widget.width,
+              color: theme.colorPrimary,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            width: widget.width * 0.9,
             child: Form(
               key: widget._breakfastformKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: widget.height * 0.03,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 35, vertical: 5),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          // vertical: 5,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: widget.height * 0.03,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        // vertical: 5,
+                      ),
+                      // height: height * 0.06,
+                      width: widget.width * 0.78,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorBackground,
                         ),
-                        // height: height * 0.06,
-                        width: widget.width * 0.78,
-                        decoration: BoxDecoration(
-                          border: Border.all(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.name,
+                        style: theme.text16boldWhite,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Enter in Field";
+                          } else
+                            return null;
+                        },
+                        onChanged: (val) {
+                          name = name;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Enter Meal Name",
+                          hintStyle: TextStyle(
                             color: theme.colorBackground,
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          border: InputBorder.none,
                         ),
-                        child: TextFormField(
-                          keyboardType: TextInputType.name,
-                          style: theme.text16boldWhite,
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return "Enter in Field";
-                            } else
-                              return null;
-                          },
-                          onChanged: (val) {
-                            name = name;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Enter Meal Name",
-                            hintStyle: TextStyle(
-                              color: theme.colorBackground,
-                            ),
-                            border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: widget.height * 0.01,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        // vertical: 5,
+                      ),
+                      // height: height * 0.06,
+                      width: widget.width * 0.78,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorBackground,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.name,
+                        style: theme.text16boldWhite,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Enter in Field";
+                          } else
+                            return null;
+                        },
+                        onChanged: (val) {
+                          vidLink = name;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Enter Video Link",
+                          hintStyle: TextStyle(
+                            color: theme.colorBackground,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: widget.height * 0.01,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+                      width: widget.width * 0.78,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorBackground,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        maxLines: 4,
+                        keyboardType: TextInputType.name,
+                        style: theme.text16boldWhite,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Enter in Field";
+                          } else
+                            return null;
+                        },
+                        onChanged: (val) {
+                          description = name;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Enter Description",
+                          hintStyle: TextStyle(
+                            color: theme.colorBackground,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: widget.height * 0.01,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        // vertical: 5,
+                      ),
+                      // height: height * 0.06,
+                      width: widget.width * 0.78,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorBackground,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.name,
+                        style: theme.text16boldWhite,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Enter in Field";
+                          } else
+                            return null;
+                        },
+                        onChanged: (val) {
+                          calories = name;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Enter Calories",
+                          hintStyle: TextStyle(
+                            color: theme.colorBackground,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: widget.height * 0.01,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        // vertical: 5,
+                      ),
+                      // height: height * 0.06,
+                      width: widget.width * 0.78,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorBackground,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        maxLines: 4,
+                        keyboardType: TextInputType.name,
+                        style: theme.text16boldWhite,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Enter in Field";
+                          } else
+                            return null;
+                        },
+                        onChanged: (val) {
+                          recipe = name;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Enter Recipe",
+                          hintStyle: TextStyle(
+                            color: theme.colorBackground,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: widget.height * 0.02,
+                  ),
+                  InkWell(
+                    splashColor: theme.colorCompanion,
+                    onTap: () {},
+                    child: Card(
+                      shadowColor: theme.colorPrimary,
+                      color: theme.colorBackground,
+                      elevation: 10,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        child: Text(
+                          'Add Image',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: theme.colorPrimary,
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: widget.height * 0.01,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 35, vertical: 5),
+                  ),
+                  SizedBox(
+                    height: widget.height * 0.02,
+                  ),
+                  NutritionalFacts(),
+                  SizedBox(
+                    height: widget.height * 0.02,
+                  ),
+                  InkWell(
+                    splashColor: theme.colorCompanion,
+                    onTap: () {
+                      if (!widget._breakfastformKey.currentState.validate()) {
+                        return;
+                      }
+                    },
+                    child: Card(
+                      shadowColor: theme.colorPrimary,
+                      color: theme.colorBackground,
+                      elevation: 10,
                       child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          // vertical: 5,
-                        ),
-                        // height: height * 0.06,
-                        width: widget.width * 0.78,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: theme.colorBackground,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          keyboardType: TextInputType.name,
-                          style: theme.text16boldWhite,
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return "Enter in Field";
-                            } else
-                              return null;
-                          },
-                          onChanged: (val) {
-                            vidLink = name;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Enter Video Link",
-                            hintStyle: TextStyle(
-                              color: theme.colorBackground,
+                        width: widget.width * 0.6,
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              'APPLY',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: theme.colorPrimary,
+                              ),
                             ),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: widget.height * 0.01,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 35, vertical: 5),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                        ),
-                        width: widget.width * 0.78,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: theme.colorBackground,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          maxLines: 4,
-                          keyboardType: TextInputType.name,
-                          style: theme.text16boldWhite,
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return "Enter in Field";
-                            } else
-                              return null;
-                          },
-                          onChanged: (val) {
-                            description = name;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Enter Description",
-                            hintStyle: TextStyle(
-                              color: theme.colorBackground,
-                            ),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: widget.height * 0.01,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 35, vertical: 5),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          // vertical: 5,
-                        ),
-                        // height: height * 0.06,
-                        width: widget.width * 0.78,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: theme.colorBackground,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          keyboardType: TextInputType.name,
-                          style: theme.text16boldWhite,
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return "Enter in Field";
-                            } else
-                              return null;
-                          },
-                          onChanged: (val) {
-                            calories = name;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Enter Calories",
-                            hintStyle: TextStyle(
-                              color: theme.colorBackground,
-                            ),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: widget.height * 0.01,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 35, vertical: 5),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          // vertical: 5,
-                        ),
-                        // height: height * 0.06,
-                        width: widget.width * 0.78,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: theme.colorBackground,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextFormField(
-                          maxLines: 4,
-                          keyboardType: TextInputType.name,
-                          style: theme.text16boldWhite,
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return "Enter in Field";
-                            } else
-                              return null;
-                          },
-                          onChanged: (val) {
-                            recipe = name;
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Enter Recipe",
-                            hintStyle: TextStyle(
-                              color: theme.colorBackground,
-                            ),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: widget.height * 0.02,
-                    ),
-                    InkWell(
-                      splashColor: theme.colorCompanion,
-                      onTap: () {},
-                      child: Card(
-                        shadowColor: theme.colorPrimary,
-                        color: theme.colorBackground,
-                        elevation: 10,
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            'Add Image',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
+                            Icon(
+                              MdiIcons.check,
                               color: theme.colorPrimary,
-                            ),
-                          ),
+                            )
+                          ],
                         ),
                       ),
                     ),
-                    NutritionalFacts(),
-                    SizedBox(
-                      height: widget.height * 0.02,
-                    ),
-                    InkWell(
-                      splashColor: theme.colorCompanion,
-                      onTap: () {
-                        if (!widget._breakfastformKey.currentState.validate()) {
-                          return;
-                        }
-                      },
-                      child: Card(
-                        shadowColor: theme.colorPrimary,
-                        color: theme.colorBackground,
-                        elevation: 10,
-                        child: Container(
-                          width: widget.width * 0.6,
-                          padding: EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                'APPLY',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: theme.colorPrimary,
-                                ),
-                              ),
-                              Icon(
-                                MdiIcons.check,
-                                color: theme.colorPrimary,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: widget.height * 0.01,
-                    ),
-                    InkWell(
-                      splashColor: theme.colorCompanion,
-                      onTap: () {
-                        widget.breakfastcardKey.currentState.toggleCard();
-                        setState(() {
-                          widget.breakfastback = false;
-                        });
-                      },
-                      child: Card(
-                        shadowColor: theme.colorPrimary,
-                        color: theme.colorBackground,
-                        elevation: 10,
-                        child: Container(
-                          width: widget.width * 0.6,
-                          padding: EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                'Go Back',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: theme.colorPrimary,
-                                ),
-                              ),
-                              Icon(
-                                MdiIcons.arrowLeft,
-                                color: theme.colorPrimary,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: widget.height * 0.04,
+                  ),
+                ],
               ),
             ),
           ),
-        ),
       ],
     );
   }
