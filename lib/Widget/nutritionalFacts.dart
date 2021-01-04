@@ -35,12 +35,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
           Row(
             children: [
               Container(
-                width: width * 0.07,
+                width: width * 0.1,
+                height: height * 0.05,
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
-                    hintText: "00",
+                    hintText: " 00",
                     hintStyle: TextStyle(
                       color: theme.colorBackground,
                     ),
@@ -63,12 +64,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.02,
               ),
               Container(
-                width: width * 0.07,
+                width: width * 0.12,
+                height: height * 0.05,
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
-                    hintText: "00",
+                    hintText: "0 cup",
                     hintStyle: TextStyle(
                       color: theme.colorBackground,
                     ),
@@ -76,16 +78,17 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 ),
               ),
               Text(
-                'cup (',
+                '   (',
                 style: theme.text16bold,
               ),
               Container(
-                width: width * 0.07,
+                width: width * 0.1,
+                height: height * 0.05,
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
-                    hintText: "00",
+                    hintText: " 0g",
                     hintStyle: TextStyle(
                       color: theme.colorBackground,
                     ),
@@ -93,8 +96,674 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 ),
               ),
               Text(
-                'g)',
+                ')',
                 style: theme.text16bold,
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+            thickness: 3,
+          ),
+          Text(
+            'Amount per Serving',
+            textAlign: TextAlign.start,
+            style: theme.text16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Calories',
+                style: theme.text16bold,
+              ),
+              Container(
+                width: width * 0.2,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 00 cal",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+            thickness: 3,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                '% Daily Value*',
+                style: theme.text16bold,
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Total Fat',
+                    style: theme.text16bold,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: width * 0.08),
+                  Text(
+                    'Saturated Fat',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: width * 0.08),
+                  Text(
+                    'Trans Fat',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Cholesterol',
+                    style: theme.text16bold,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Sodium',
+                    style: theme.text16bold,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Total Carbohydrate',
+                    style: theme.text16bold,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: width * 0.08),
+                  Text(
+                    'Dietary Fiber',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Total Sugars',
+                    style: theme.text16bold,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: width * 0.08),
+                  Text(
+                    'Added Sugars',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Protien',
+                    style: theme.text16bold,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+            thickness: 3,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Vitamin D',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Calcium',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Iron',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider(
+            color: theme.colorDefaultText,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Potassium',
+                    style: theme.text16,
+                  ),
+                  Container(
+                    width: width * 0.1,
+                    height: height * 0.05,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: theme.text16,
+                      decoration: InputDecoration(
+                        hintText: " 0g",
+                        hintStyle: TextStyle(
+                          color: theme.colorBackground,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: width * 0.1,
+                height: height * 0.05,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: theme.text16,
+                  decoration: InputDecoration(
+                    hintText: " 0 %",
+                    hintStyle: TextStyle(
+                      color: theme.colorBackground,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
