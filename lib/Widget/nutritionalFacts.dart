@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
-
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../main.dart';
 
 class NutritionalFacts extends StatefulWidget {
+  Function(Map) submit;
+
+  NutritionalFacts({
+    Key key,
+    this.submit,
+    @required GlobalKey<FormState> breakfastformKey,
+  })  : _breakfastformKey = breakfastformKey,
+        super(key: key);
+  final GlobalKey<FormState> _breakfastformKey;
+
   @override
   _NutritionalFactsState createState() => _NutritionalFactsState();
 }
 
 class _NutritionalFactsState extends State<NutritionalFacts> {
+  Map<String, String> _finishedMap = {};
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -38,6 +50,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Quantity")) {
+                      _finishedMap.remove("Quantity");
+                    }
+                    _finishedMap.putIfAbsent("Quantity", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -67,6 +85,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.12,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("CupSize")) {
+                      _finishedMap.remove("CupSize");
+                    }
+                    _finishedMap.putIfAbsent("CupSize", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -121,6 +145,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.2,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Calories")) {
+                      _finishedMap.remove("Calories");
+                    }
+                    _finishedMap.putIfAbsent("Calories", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -162,6 +192,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Total Fat in G")) {
+                          _finishedMap.remove("Total Fat in G");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Total Fat in G", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -178,6 +215,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Total Fat in %")) {
+                      _finishedMap.remove("Total Fat in %");
+                    }
+                    _finishedMap.putIfAbsent(
+                        "Total Fat in %", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -207,6 +251,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Saturated")) {
+                          _finishedMap.remove("Saturated");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Saturated", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -223,6 +274,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Saturated%")) {
+                      _finishedMap.remove("Saturated%");
+                    }
+                    _finishedMap.putIfAbsent(
+                        "Saturated%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -252,6 +310,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Trans")) {
+                          _finishedMap.remove("Trans");
+                        }
+                        _finishedMap.putIfAbsent("Trans", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -268,6 +332,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Trans%")) {
+                      _finishedMap.remove("Trans%");
+                    }
+                    _finishedMap.putIfAbsent("Trans%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -296,6 +366,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Cholesterol")) {
+                          _finishedMap.remove("Cholesterol");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Cholesterol", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -312,6 +389,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Cholesterol%")) {
+                      _finishedMap.remove("Cholesterol%");
+                    }
+                    _finishedMap.putIfAbsent(
+                        "Cholesterol%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -340,6 +424,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Sodium")) {
+                          _finishedMap.remove("Sodium");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Sodium", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -356,6 +447,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Sodium%")) {
+                      _finishedMap.remove("Sodium%");
+                    }
+                    _finishedMap.putIfAbsent("Sodium%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -384,6 +481,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Carbohydrate")) {
+                          _finishedMap.remove("Carbohydrate");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Carbohydrate", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -400,6 +504,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Carbohydrate%")) {
+                      _finishedMap.remove("Carbohydrate%");
+                    }
+                    _finishedMap.putIfAbsent(
+                        "Carbohydrate%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -429,6 +540,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Dietary")) {
+                          _finishedMap.remove("Dietary");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Dietary", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -445,6 +563,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Dietary%")) {
+                      _finishedMap.remove("Dietary%");
+                    }
+                    _finishedMap.putIfAbsent("Dietary%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -473,6 +597,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Sugars")) {
+                          _finishedMap.remove("Sugars");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Sugars", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -489,6 +620,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Sugars%")) {
+                      _finishedMap.remove("Sugars%");
+                    }
+                    _finishedMap.putIfAbsent("Sugars%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -518,6 +655,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("AddedSugars")) {
+                          _finishedMap.remove("AddedSugars");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "AddedSugars", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -534,6 +678,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("AddedSugars%")) {
+                      _finishedMap.remove("AddedSugars%");
+                    }
+                    _finishedMap.putIfAbsent(
+                        "AddedSugars%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -562,6 +713,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Protien")) {
+                          _finishedMap.remove("Protien");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Protien", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -578,6 +736,12 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey("Protien%")) {
+                      _finishedMap.remove("Protien%");
+                    }
+                    _finishedMap.putIfAbsent("Protien%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -607,6 +771,13 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey("Vitamin")) {
+                          _finishedMap.remove("Vitamin");
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Vitamin", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -623,6 +794,16 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey(
+                      "Vitamin%",
+                    )) {
+                      _finishedMap.remove(
+                        "Vitamin%",
+                      );
+                    }
+                    _finishedMap.putIfAbsent("Vitamin%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -651,6 +832,17 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey(
+                          "Calcium",
+                        )) {
+                          _finishedMap.remove(
+                            "Calcium",
+                          );
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Calcium", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -667,6 +859,16 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey(
+                      "Calcium%",
+                    )) {
+                      _finishedMap.remove(
+                        "Calcium%",
+                      );
+                    }
+                    _finishedMap.putIfAbsent("Calcium%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -695,6 +897,16 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey(
+                          "Iron",
+                        )) {
+                          _finishedMap.remove(
+                            "Iron",
+                          );
+                        }
+                        _finishedMap.putIfAbsent("Iron", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -711,6 +923,16 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey(
+                      "Iron%",
+                    )) {
+                      _finishedMap.remove(
+                        "Iron%",
+                      );
+                    }
+                    _finishedMap.putIfAbsent("Iron%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -739,6 +961,17 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      onChanged: (val) {
+                        if (_finishedMap.containsKey(
+                          "Potassium",
+                        )) {
+                          _finishedMap.remove(
+                            "Potassium",
+                          );
+                        }
+                        _finishedMap.putIfAbsent(
+                            "Potassium", () => val.toString());
+                      },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
                       decoration: InputDecoration(
@@ -755,6 +988,17 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 width: width * 0.1,
                 height: height * 0.05,
                 child: TextFormField(
+                  onChanged: (val) {
+                    if (_finishedMap.containsKey(
+                      "Potassium%",
+                    )) {
+                      _finishedMap.remove(
+                        "Potassium%",
+                      );
+                    }
+                    _finishedMap.putIfAbsent(
+                        "Potassium%", () => val.toString());
+                  },
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -770,6 +1014,42 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
           Divider(
             color: theme.colorDefaultText,
             thickness: 3,
+          ),
+          InkWell(
+            splashColor: theme.colorCompanion,
+            onTap: () {
+              if (!widget._breakfastformKey.currentState.validate()) {
+                return;
+              }
+              widget.submit(_finishedMap);
+              print(_finishedMap);
+            },
+            child: Card(
+              shadowColor: theme.colorPrimary,
+              color: theme.colorBackground,
+              elevation: 10,
+              child: Container(
+                width: 200,
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'APPLY',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: theme.colorPrimary,
+                      ),
+                    ),
+                    Icon(
+                      MdiIcons.check,
+                      color: theme.colorPrimary,
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),

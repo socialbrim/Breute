@@ -8,6 +8,7 @@ import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Widget/DrawerWidget.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
+import 'package:profanity_filter/profanity_filter.dart';
 
 import 'package:provider/provider.dart';
 import '../main.dart';
@@ -69,10 +70,13 @@ class _SupportState extends State<Support> {
   }
 
   sendMessage() async {
+    final filter = ProfanityFilter();
+    print(filter.censor('${messageController.text}'));
+
     final ref = FirebaseDatabase.instance.reference().child("ChatRoom");
     final key = ref.push().key;
     ref.child(key).update({
-      'message': messageController.text,
+      'message': filter.censor('${messageController.text}'),
       "uid": userInfo.id,
       "timeStamp": DateTime.now().toIso8601String(),
       'Name': userInfo.name,
