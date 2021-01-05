@@ -54,6 +54,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           'uid': value.user.uid,
           "isPhone": true,
           "phone": value.user.phoneNumber,
+          "PlanName": "fdsadf"
         });
         setState(() {
           _isLoading = false;
@@ -108,6 +109,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             'uid': value.user.uid,
             "phone": value.user.phoneNumber,
             "isPhone": true,
+            "PlanName": "fdsadf"
           });
           setState(() {
             _isLoading = false;

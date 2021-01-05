@@ -10,12 +10,13 @@ import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/CustomerSupport.dart';
 import 'package:parentpreneur/auth/LoginScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
-
+import '../models/PlanDetail.dart';
 import 'package:provider/provider.dart';
 import '../Screens/TodaysMeal.dart';
 import '../main.dart';
 import 'MainHomeScreen.dart';
 import 'MealScreen.dart';
+import '../Providers/MyPlanProvider.dart';
 import 'ProfileScreen.dart';
 
 // ignore: must_be_immutable
@@ -217,6 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
     //.....
   }
 
+  PlanName planInfo;
+
   Future<void> fetchUserInfo() async {
     final user = FirebaseAuth.instance.currentUser;
     FirebaseDatabase.instance
@@ -224,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .child("User Information")
         .child(user.uid)
         .onValue
-        .listen((event) {
+        .listen((event) async {
       final mapped = event.snapshot.value as Map;
 
       if (mapped == null) {
@@ -238,17 +241,41 @@ class _HomeScreenState extends State<HomeScreen> {
         );
         return;
       }
-      UserInformation userData = new UserInformation(
+
+      final plan = mapped['PlanName'];
+      if (planInfo == null) {
+        print(plan);
+        final mappedPlan = await FirebaseDatabase.instance
+            .reference()
+            .child("Plans")
+            .orderByChild("Name")
+            .equalTo("$plan")
+            .once();
+        print(mappedPlan.value);
+        final mappeddata = mappedPlan.value as Map;
+        mappeddata.forEach((key, value) {
+          planInfo = new PlanName(
+            amount: value['amount'],
+            des: value['description'],
+            details: value['Details'],
+            name: value['Name'],
+          );
+        });
+        Provider.of<MyPlanProvider>(context, listen: false).setPlan(planInfo);
+        UserInformation userData = new UserInformation(
           email: mapped['emial'],
           id: mapped['uid'],
           imageUrl: mapped['imageURL'],
           name: mapped['userName'],
           phone: mapped['phone'],
-          isPhone: mapped['isPhone']);
-      Provider.of<UserProvider>(context, listen: false).setUser(userData);
-      setState(() {
-        _isLoading = false;
-      });
+          isPhone: mapped['isPhone'],
+          planDetails: planInfo,
+        );
+        Provider.of<UserProvider>(context, listen: false).setUser(userData);
+        setState(() {
+          _isLoading = false;
+        });
+      }
     });
   }
 

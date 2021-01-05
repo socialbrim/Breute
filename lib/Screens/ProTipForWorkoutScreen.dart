@@ -9,6 +9,9 @@ import 'package:slimy_card/slimy_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/workoutModel.dart';
 import '../main.dart';
+import 'package:provider/provider.dart';
+import '../Screens/UpgradePlanScreen.dart';
+import '../Providers/MyPlanProvider.dart';
 
 class ProTipForWorkOutScreen extends StatefulWidget {
   @override
@@ -18,6 +21,18 @@ class ProTipForWorkOutScreen extends StatefulWidget {
 class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
   List<WorkoutModel> _list = [];
   bool _isLoading = true;
+  bool _isAccessable = false;
+
+  @override
+  void didChangeDependencies() {
+    Provider.of<MyPlanProvider>(context).plan.details.forEach((key, value) {
+      if (key == "Pro Tips" && value) {
+        _isAccessable = true;
+      }
+      print(_isAccessable);
+    });
+    super.didChangeDependencies();
+  }
 
   void fetchProTips() async {
     final data = await FirebaseDatabase.instance
@@ -64,208 +79,211 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: theme.colorBackground,
-      appBar: AppBar(
-        title: Text('Pro Tips for Workout'),
-      ),
-      body: _isLoading
-          ? Center(
-              child: SpinKitThreeBounce(
-                color: theme.colorPrimary,
-              ),
-            )
-          : ListView.builder(
-              itemCount: _list.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SlimyCard(
+    return !_isAccessable
+        ? UpgradeplanScreen()
+        : Scaffold(
+            backgroundColor: theme.colorBackground,
+            appBar: AppBar(
+              title: Text('Pro Tips for Workout'),
+            ),
+            body: _isLoading
+                ? Center(
+                    child: SpinKitThreeBounce(
                       color: theme.colorPrimary,
-                      width: width * 0.8,
-                      topCardHeight: height * 0.3,
-                      bottomCardHeight: height * 0.4,
-                      borderRadius: 15,
-                      topCardWidget: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: width * 0.03,
-                                ),
-                                Text(
-                                  '${index + 1}. ',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: _list.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SlimyCard(
+                            color: theme.colorPrimary,
+                            width: width * 0.8,
+                            topCardHeight: height * 0.3,
+                            bottomCardHeight: height * 0.4,
+                            borderRadius: 15,
+                            topCardWidget: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: height * 0.02,
                                   ),
-                                ),
-                                Text(
-                                  _list[index].name.toLowerCase(),
-                                  style: GoogleFonts.inter(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: width * 0.03,
+                                      ),
+                                      Text(
+                                        '${index + 1}. ',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        _list[index].name.toLowerCase(),
+                                        style: GoogleFonts.inter(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Container(
-                              height: height * 0.18,
-                              width: width * 0.7,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.network(
-                                  _list[index].imageURL,
-                                  fit: BoxFit.cover,
-                                ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Container(
+                                    height: height * 0.18,
+                                    width: width * 0.7,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.network(
+                                        _list[index].imageURL,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                          ],
-                        ),
-                      ),
-                      bottomCardWidget: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Row(
-                            //   children: [
-                            //     SizedBox(
-                            //       width: width * 0.03,
-                            //     ),
-                            //     Text(
-                            //       "Video Link - ",
-                            //       style: GoogleFonts.inter(
-                            //         fontSize: 16,
-                            //         fontWeight: FontWeight.w700,
-                            //         color: Colors.white,
-                            //       ),
-                            //     ),
-                            //     Linkify(
-                            //       onOpen: (link) async {
-                            //         if (await canLaunch(link.url)) {
-                            //           await launch(link.url);
-                            //         } else {
-                            //           throw 'Could not launch $link';
-                            //         }
-                            //       },
-                            //       text: "${_list[index].vidLink}",
-                            //       style: GoogleFonts.inter(
-                            //         fontSize: 14,
-                            //         fontStyle: FontStyle.italic,
-                            //         decoration: TextDecoration.underline,
-                            //         color: Colors.blue,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // SizedBox(
-                            //   height: height * 0.02,
-                            // ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: width * 0.03,
-                                ),
-                                Text(
-                                  "Description",
-                                  style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
+                            bottomCardWidget: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Row(
+                                  //   children: [
+                                  //     SizedBox(
+                                  //       width: width * 0.03,
+                                  //     ),
+                                  //     Text(
+                                  //       "Video Link - ",
+                                  //       style: GoogleFonts.inter(
+                                  //         fontSize: 16,
+                                  //         fontWeight: FontWeight.w700,
+                                  //         color: Colors.white,
+                                  //       ),
+                                  //     ),
+                                  //     Linkify(
+                                  //       onOpen: (link) async {
+                                  //         if (await canLaunch(link.url)) {
+                                  //           await launch(link.url);
+                                  //         } else {
+                                  //           throw 'Could not launch $link';
+                                  //         }
+                                  //       },
+                                  //       text: "${_list[index].vidLink}",
+                                  //       style: GoogleFonts.inter(
+                                  //         fontSize: 14,
+                                  //         fontStyle: FontStyle.italic,
+                                  //         decoration: TextDecoration.underline,
+                                  //         color: Colors.blue,
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // SizedBox(
+                                  //   height: height * 0.02,
+                                  // ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: width * 0.03,
+                                      ),
+                                      Text(
+                                        "Description",
+                                        style: GoogleFonts.inter(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Icon(
+                                        MdiIcons.arrowDown,
+                                        color: Colors.white,
+                                      )
+                                    ],
                                   ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Container(
+                                    width: width * 0.7,
+                                    child: Text(
+                                      "${_list[index].des}",
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            slimeEnabled: true,
+                          ),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: BetterPlayer.network(
+                              "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                              betterPlayerConfiguration:
+                                  BetterPlayerConfiguration(
+                                // autoPlay: true,
+                                aspectRatio: 16 / 9,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: width * 0.03,
+                              ),
+                              Text(
+                                "Video Link - ",
+                                style: GoogleFonts.inter(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: theme.colorCompanion2,
                                 ),
-                                Icon(
-                                  MdiIcons.arrowDown,
-                                  color: Colors.white,
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Container(
-                              width: width * 0.7,
-                              child: Text(
-                                "${_list[index].des}",
+                              ),
+                              Linkify(
+                                onOpen: (link) async {
+                                  if (await canLaunch(link.url)) {
+                                    await launch(link.url);
+                                  } else {
+                                    throw 'Could not launch $link';
+                                  }
+                                },
+                                text: "${_list[index].vidLink}",
                                 style: GoogleFonts.inter(
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  fontStyle: FontStyle.italic,
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.blue,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      slimeEnabled: true,
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: BetterPlayer.network(
-                        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                        betterPlayerConfiguration: BetterPlayerConfiguration(
-                          // autoPlay: true,
-                          aspectRatio: 16 / 9,
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: width * 0.03,
-                        ),
-                        Text(
-                          "Video Link - ",
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: theme.colorCompanion2,
-                          ),
-                        ),
-                        Linkify(
-                          onOpen: (link) async {
-                            if (await canLaunch(link.url)) {
-                              await launch(link.url);
-                            } else {
-                              throw 'Could not launch $link';
-                            }
-                          },
-                          text: "${_list[index].vidLink}",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontStyle: FontStyle.italic,
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-    );
+                  ),
+          );
   }
 }

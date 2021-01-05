@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'Config/theme.dart';
 import './Config/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import './Providers/MyPlanProvider.dart';
 import 'Providers/User.dart';
 import 'Screens/SplashScreen.dart';
 
@@ -28,6 +28,10 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => AppThemeData(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => MyPlanProvider(),
+        ),
+        // MyPlanProvider
       ],
       child: MyApp(),
     ),

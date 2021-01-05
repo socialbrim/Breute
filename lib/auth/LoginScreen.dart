@@ -65,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen>
             "userName": userData['name'],
             "emial": userData['email'],
             "imageURL": userData['picture']['data']['url'],
+            "PlanName": "fdsadf",
           });
           Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.of(context).pushReplacement(
@@ -120,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen>
       "userName": googleUser.displayName,
       "emial": googleUser.email,
       "imageURL": googleUser.photoUrl,
+      "PlanName": "fdsadf",
     });
 
     if (user != null) {

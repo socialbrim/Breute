@@ -1,3 +1,5 @@
+import '../models/PlanDetail.dart';
+
 class UserInformation {
   String name;
   String email;
@@ -5,6 +7,7 @@ class UserInformation {
   String imageUrl;
   String id;
   bool isPhone;
+  PlanName planDetails;
   UserInformation({
     this.email,
     this.id,
@@ -12,5 +15,6 @@ class UserInformation {
     this.name,
     this.phone,
     this.isPhone,
+    this.planDetails,
   });
 }
