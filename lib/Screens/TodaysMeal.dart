@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:parentpreneur/Widget/nutritionalFactsShow.dart';
 import 'package:parentpreneur/main.dart';
 import '../models/MealModel.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -25,12 +26,15 @@ class _TodaysMealState extends State<TodaysMeal> {
   void fetchTodaysMeal() async {
     final data = await FirebaseDatabase.instance
         .reference()
-        .child("Meals")
-        .child(
-          formatDate(
-            DateTime.now().subtract(Duration(days: 4)),
-          ),
-        )
+        // .child("Meals")
+        // .child(
+        //   formatDate(
+        //     DateTime.now().subtract(Duration(days: 4)),
+        //   ),
+        // )
+        // .once();
+        .child("Create Dinner")
+        .child("PzoHaAIEptXMZB97aSdP9Hl29RD3")
         .once();
 
     if (data.value != null) {
@@ -38,18 +42,18 @@ class _TodaysMealState extends State<TodaysMeal> {
       mapped.forEach((key, value) {
         _list.add(
           MealModel(
-            calories: value['Calories'],
-            imageURL: value['ImageURL'],
-            mealDate: value['MealDate'],
-            mealDateInDateFormat: value['MealDateFormat'] == null
-                ? DateTime.now()
-                : DateTime.parse(value['MealDateFormat']), //MealDateFormat
-            mealDes: value['Description'],
-            mealName: value['Meal Name'],
-            recipe: value['Recipe'],
-            type: key,
-            vidURL: value['Video Link'],
-          ),
+              calories: value['Calories'],
+              imageURL: value['ImageURL'],
+              mealDate: value['MealDate'],
+              mealDateInDateFormat: value['MealDateFormat'] == null
+                  ? DateTime.now()
+                  : DateTime.parse(value['MealDateFormat']), //MealDateFormat
+              mealDes: value['Description'],
+              mealName: value['Meal Name'],
+              recipe: value['Recipe'],
+              type: key,
+              vidURL: value['Video Link'],
+              nutrients: value['Nutrients']),
         );
       });
     }
@@ -253,6 +257,9 @@ class _TodaysMealState extends State<TodaysMeal> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
+                                NutritionalFactsShow(
+                                  submit: _list[index].nutrients,
+                                )
                               ],
                             ),
                           ),

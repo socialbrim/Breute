@@ -8,7 +8,9 @@ class MealModel {
   String type;
   String vidURL;
   DateTime mealDateInDateFormat;
+  Map nutrients;
   MealModel({
+    this.nutrients,
     this.calories,
     this.imageURL,
     this.mealDate,

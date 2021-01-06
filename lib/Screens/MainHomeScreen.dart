@@ -47,6 +47,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
     super.initState();
+    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+      BetterPlayerDataSourceType.network,
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    );
+    _betterPlayerController = BetterPlayerController(
+      BetterPlayerConfiguration(autoPlay: true),
+      betterPlayerDataSource: betterPlayerDataSource,
+    );
     initPlatformState();
     fetchLastSevenDays();
   }
@@ -175,6 +183,13 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return formatted;
   }
 
+  BetterPlayerController _betterPlayerController;
+  @override
+  void dispose() {
+    _betterPlayerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -201,13 +216,16 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   children: [
                     AspectRatio(
                       aspectRatio: 16 / 9,
-                      child: BetterPlayer.network(
-                        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                        betterPlayerConfiguration: BetterPlayerConfiguration(
-                          autoPlay: true,
-                          aspectRatio: 16 / 9,
-                        ),
+                      child: BetterPlayer(
+                        controller: _betterPlayerController,
                       ),
+                      // BetterPlayer.network(
+                      //   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                      //   betterPlayerConfiguration: BetterPlayerConfiguration(
+                      //     autoPlay: true,
+                      //     aspectRatio: 16 / 9,
+                      //   ),
+                      // ),
                     ),
                     SizedBox(
                       height: height * 0.04,
