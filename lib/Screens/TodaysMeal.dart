@@ -1,6 +1,9 @@
+import 'package:better_player/better_player.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Widget/nutritionalFactsShow.dart';
 import 'package:parentpreneur/main.dart';
 import '../models/MealModel.dart';
@@ -16,6 +19,7 @@ class TodaysMeal extends StatefulWidget {
 }
 
 class _TodaysMealState extends State<TodaysMeal> {
+  bool _showFacts = false;
   List<MealModel> _list = [];
   String formatDate(DateTime date) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -111,6 +115,8 @@ class _TodaysMealState extends State<TodaysMeal> {
                             child: Column(
                               children: [
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Date:",
@@ -119,34 +125,45 @@ class _TodaysMealState extends State<TodaysMeal> {
                                     SizedBox(
                                       width: width * 0.03,
                                     ),
-                                    Text(
-                                      "${_list[index].mealDate}",
-                                      style: theme.text16,
+                                    Container(
+                                      width: width * 0.46,
+                                      child: Text(
+                                        "${formatDate(_list[index].mealDateInDateFormat)}",
+                                        style: theme.text16,
+                                      ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: height * 0.01,
+                                  height: height * 0.015,
                                 ),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: [
+                                //     Text(
+                                //       "Meal Type:",
+                                //       style: theme.text16boldWhite,
+                                //     ),
+                                //     SizedBox(
+                                //       width: width * 0.03,
+                                //     ),
+                                //     Container(
+                                //       width: width * 0.46,
+                                //       child: Text(
+                                //         "${_list[index].type}",
+                                //         style: theme.text16,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                // SizedBox(
+                                //   height: height * 0.015,
+                                // ),
                                 Row(
-                                  children: [
-                                    Text(
-                                      "Meal Type:",
-                                      style: theme.text16boldWhite,
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.03,
-                                    ),
-                                    Text(
-                                      "${_list[index].type}",
-                                      style: theme.text16,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: height * 0.01,
-                                ),
-                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Meal Name:",
@@ -155,16 +172,22 @@ class _TodaysMealState extends State<TodaysMeal> {
                                     SizedBox(
                                       width: width * 0.03,
                                     ),
-                                    Text(
-                                      "${_list[index].mealName}",
-                                      style: theme.text16,
+                                    Container(
+                                      width: width * 0.46,
+                                      child: Text(
+                                        "${_list[index].mealName}",
+                                        style: theme.text16,
+                                      ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: height * 0.01,
+                                  height: height * 0.015,
                                 ),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Meal Decription:",
@@ -173,16 +196,21 @@ class _TodaysMealState extends State<TodaysMeal> {
                                     SizedBox(
                                       width: width * 0.03,
                                     ),
-                                    Text(
-                                      "${_list[index].mealDes}",
-                                      style: theme.text16,
+                                    Container(
+                                      width: width * 0.46,
+                                      child: Text(
+                                        "${_list[index].mealDes}",
+                                        style: theme.text16,
+                                      ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: height * 0.01,
+                                  height: height * 0.015,
                                 ),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Meal Recipe:",
@@ -191,16 +219,21 @@ class _TodaysMealState extends State<TodaysMeal> {
                                     SizedBox(
                                       width: width * 0.03,
                                     ),
-                                    Text(
-                                      "${_list[index].recipe}",
-                                      style: theme.text16,
+                                    Container(
+                                      width: width * 0.46,
+                                      child: Text(
+                                        "${_list[index].recipe}",
+                                        style: theme.text16,
+                                      ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: height * 0.01,
+                                  height: height * 0.015,
                                 ),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Calories:",
@@ -209,16 +242,24 @@ class _TodaysMealState extends State<TodaysMeal> {
                                     SizedBox(
                                       width: width * 0.03,
                                     ),
-                                    Text(
-                                      "${_list[index].calories}",
-                                      style: theme.text16,
+                                    Container(
+                                      width: width * 0.46,
+                                      child: Text(
+                                        "${_list[index].calories}",
+                                        style: theme.text16,
+                                      ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: height * 0.02,
+                                  height: height * 0.025,
                                 ),
                                 Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: theme.colorDefaultText,
+                                    ),
+                                  ),
                                   height: height * 0.2,
                                   child: Image.network(
                                     "${_list[index].imageURL}",
@@ -226,39 +267,75 @@ class _TodaysMealState extends State<TodaysMeal> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: height * 0.02,
+                                  height: height * 0.025,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Video Link:",
-                                      style: theme.text16boldWhite,
+                                AspectRatio(
+                                  aspectRatio: 16 / 9,
+                                  child: BetterPlayer.network(
+                                    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                                    betterPlayerConfiguration:
+                                        BetterPlayerConfiguration(
+                                      // autoPlay: true,
+                                      aspectRatio: 16 / 9,
                                     ),
-                                    SizedBox(
-                                      width: width * 0.03,
-                                    ),
-                                    Linkify(
-                                      onOpen: (link) async {
-                                        if (await canLaunch(link.url)) {
-                                          await launch(link.url);
-                                        } else {
-                                          throw 'Could not launch $link';
-                                        }
-                                      },
-                                      text: "${_list[index].vidURL}",
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline,
-                                        fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: height * 0.025,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _showFacts = !_showFacts;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Card(
+                                      color: theme.colorBackground,
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Show Nutritonal Facts',
+                                                  style: GoogleFonts.roboto(
+                                                    color: theme.colorPrimary,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Icon(
+                                                  _showFacts
+                                                      ? MdiIcons.arrowUp
+                                                      : MdiIcons.arrowDown,
+                                                  color: theme.colorPrimary,
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                                 SizedBox(
-                                  height: height * 0.01,
+                                  height: height * 0.02,
                                 ),
-                                NutritionalFactsShow(
-                                  submit: _list[index].nutrients,
+                                _showFacts
+                                    ? NutritionalFactsShow(
+                                        submit: _list[index].nutrients,
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  height: height * 0.15,
                                 )
                               ],
                             ),

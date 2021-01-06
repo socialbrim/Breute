@@ -100,6 +100,20 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: BetterPlayer.network(
+                              "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                              betterPlayerConfiguration:
+                                  BetterPlayerConfiguration(
+                                // autoPlay: true,
+                                aspectRatio: 16 / 9,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.04,
+                          ),
                           SlimyCard(
                             color: theme.colorPrimary,
                             width: width * 0.8,
@@ -233,52 +247,6 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                           ),
                           SizedBox(
                             height: height * 0.02,
-                          ),
-                          AspectRatio(
-                            aspectRatio: 16 / 9,
-                            child: BetterPlayer.network(
-                              "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                              betterPlayerConfiguration:
-                                  BetterPlayerConfiguration(
-                                // autoPlay: true,
-                                aspectRatio: 16 / 9,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: width * 0.03,
-                              ),
-                              Text(
-                                "Video Link - ",
-                                style: GoogleFonts.inter(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: theme.colorCompanion2,
-                                ),
-                              ),
-                              Linkify(
-                                onOpen: (link) async {
-                                  if (await canLaunch(link.url)) {
-                                    await launch(link.url);
-                                  } else {
-                                    throw 'Could not launch $link';
-                                  }
-                                },
-                                text: "${_list[index].vidLink}",
-                                style: GoogleFonts.inter(
-                                  fontSize: 14,
-                                  fontStyle: FontStyle.italic,
-                                  decoration: TextDecoration.underline,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
