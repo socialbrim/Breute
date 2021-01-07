@@ -70,7 +70,7 @@ class _TodaysMealState extends State<TodaysMeal> {
     super.initState();
   }
 
-  bool _isAccessable = false;
+  bool _isAccessable = true;
 
   @override
   void didChangeDependencies() {
@@ -99,7 +99,7 @@ class _TodaysMealState extends State<TodaysMeal> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: height * 0.02,
+                      height: height * 0.01,
                     ),
                     Container(
                       height: height,

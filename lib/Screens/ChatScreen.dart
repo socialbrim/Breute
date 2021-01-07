@@ -238,7 +238,7 @@ class MessageTile extends StatelessWidget {
                                 child: Text(
                                   message,
                                   textAlign: isSendByMe
-                                      ? TextAlign.right
+                                      ? TextAlign.left
                                       : TextAlign.left,
                                   style: GoogleFonts.poppins(
                                     fontSize: 14,
@@ -276,7 +276,7 @@ class MessageTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                name == null ? 'Anonymous' : "$name",
+                                name == null ? "Anonymous" : "$name",
                                 style: GoogleFonts.roboto(
                                     fontWeight: FontWeight.bold),
                               ),

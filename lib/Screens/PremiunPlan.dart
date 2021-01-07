@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import '../main.dart';
 import '../models/PlanDetail.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -35,6 +39,333 @@ class _PlansState extends State<Plans> {
     });
   }
 
+  void showDial(PlanName selectedPlan) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Container(
+          height: height * 0.652,
+          padding: EdgeInsets.symmetric(
+            horizontal: 8,
+          ),
+          width: double.infinity,
+          child: Column(
+            children: [
+              Text(
+                'DETAILS',
+                style: theme.text20boldPrimary,
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Create meal',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Create Meal"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["Create Meal"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Community Chat',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Community Chat"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["Community Chat"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Customer Notification Schedule',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Customer Notification Schedule"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color:
+                          selectedPlan.details["Customer Notification Schedule"]
+                              ? Colors.green
+                              : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'DashBoard',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["DashBoard"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["DashBoard"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Dual Theme',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Dual Theme"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["Dual Theme"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Edit Profile',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Edit profile"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["Edit profile"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Pro Tips',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Pro Tips"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["Pro Tips"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Steps And Calories',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Steps And Calories"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["Steps And Calories"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.25,
+                    child: Text(
+                      'Today\'s Meal',
+                      style: theme.text14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  Container(
+                    width: width * 0.15,
+                    child: Icon(
+                      selectedPlan.details["Today's Meal"]
+                          ? MdiIcons.check
+                          : MdiIcons.close,
+                      color: selectedPlan.details["Today's Meal"]
+                          ? Colors.green
+                          : Colors.red,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Divider(
+                color: theme.colorGrey,
+                thickness: 1,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     fetchPlans();
@@ -46,29 +377,136 @@ class _PlansState extends State<Plans> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Column(
-      children: [
-        Container(
-          height: height * 0.67,
-          child: ListView.builder(
-            itemCount: _list.length,
-            itemBuilder: (context, index) => RadioListTile(
-                title: Text(
-                  "${_list[index].name.toUpperCase()}",
-                ),
-                subtitle: Text(
-                  "${_list[index].amount}",
-                ),
-                value: index,
-                groupValue: choosenPlan,
-                onChanged: (val) {
-                  setState(() {
-                    choosenPlan = val;
-                  });
-                }),
+        backgroundColor: theme.colorBackground,
+        appBar: AppBar(
+          title: Text(
+            "Premium Plans",
           ),
         ),
-      ],
-    ));
+        bottomNavigationBar: Container(
+          height: height * 0.07,
+          color: theme.colorPrimary,
+          alignment: Alignment.center,
+          child: Text(
+            'Proceed To Payment',
+            style: theme.text20boldWhite,
+          ),
+        ),
+        body: Column(
+          children: [
+            // SizedBox(
+            //   height: height * 0.03,
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: HexColor('ffccbc'),
+                ),
+                width: width,
+                height: height * 0.25,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 40,
+                        top: 30,
+                      ),
+                      child: Text(
+                        'SELECT A PLAN',
+                        style: GoogleFonts.roboto(
+                          fontSize: 22,
+                          color: HexColor('852508'),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 40,
+                        top: 10,
+                      ),
+                      child: Text(
+                        'and go premium',
+                        style: GoogleFonts.roboto(
+                          fontSize: 16,
+                          color: HexColor('a13311'),
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    Container(
+                      width: width * 0.8,
+                      alignment: Alignment.topRight,
+                      child: Image.network(
+                        'https://www.pngfind.com/pngs/m/234-2348819_how-to-avoid-treadmill-workout-mistakes-at-the.png',
+                        height: height * 0.14,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Container(
+              height: height * 0.5,
+              child: ListView.builder(
+                itemCount: _list.length,
+                itemBuilder: (context, index) => Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: theme.colorBackground,
+                      border: Border.all(color: theme.colorDefaultText),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: RadioListTile(
+                        title: Text(
+                          "${_list[index].name.toUpperCase()}",
+                          style: theme.text16,
+                        ),
+                        subtitle: Row(
+                          children: [
+                            Text(
+                              "\$ ${_list[index].amount}",
+                              style: theme.text16bold,
+                            ),
+                            SizedBox(
+                              width: width * 0.24,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showDial(_list[index]);
+                              },
+                              child: Container(
+                                child: Text(
+                                  'Know More >',
+                                  style: theme.text14primary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        activeColor: theme.colorPrimary,
+                        value: index,
+                        groupValue: choosenPlan,
+                        onChanged: (val) {
+                          setState(() {
+                            choosenPlan = val;
+                          });
+                        }),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 }
