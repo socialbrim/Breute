@@ -6,7 +6,7 @@ import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Widget/DrawerWidget.dart';
 import 'package:parentpreneur/auth/LoginScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
-
+import './PremiunPlan.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import 'editProfile.dart';
@@ -199,7 +199,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: height * 0.03,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                //
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Plans(),
+                ));
+              },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Container(

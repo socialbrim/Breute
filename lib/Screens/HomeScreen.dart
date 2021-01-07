@@ -277,6 +277,11 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
+    FirebaseDatabase.instance
+        .reference()
+        .child("User Information")
+        .child(user.uid)
+        .update({"dateTime": DateTime.now().toIso8601String()});
   }
 
   @override
