@@ -20,6 +20,8 @@ class _ScheduleMealState extends State<ScheduleMeal> {
   TimeOfDay _scheduleTimeofBreakfast;
   TimeOfDay _scheduleTimeofLunch;
   TimeOfDay _scheduleTimeofDinner;
+  TimeOfDay _scheduleTimeofSnacks1;
+  TimeOfDay _scheduleTimeofSnacks2;
 
   Future<void> schedulingBreakfast() async {
     final time = await showTimePicker(
@@ -55,6 +57,44 @@ class _ScheduleMealState extends State<ScheduleMeal> {
     setState(() {
       if (time != null) {
         _scheduleTimeofLunch = time;
+      }
+    });
+  }
+
+  Future<void> schedulingSnacks1() async {
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 12, minute: 00),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+
+    setState(() {
+      if (time != null) {
+        _scheduleTimeofSnacks1 = time;
+      }
+    });
+  }
+
+  Future<void> schedulingSnacks2() async {
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 12, minute: 00),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+
+    setState(() {
+      if (time != null) {
+        _scheduleTimeofSnacks2 = time;
       }
     });
   }
@@ -217,6 +257,80 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                       thickness: 1.5,
                       color: theme.colorCompanion,
                     ),
+                    //.....
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Card(
+                        color: theme.colorPrimary,
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Snacks',
+                                    style: GoogleFonts.ptMono(
+                                      color: theme.colorBackground,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Icon(
+                                    MdiIcons.arrowDown,
+                                    color: theme.colorBackground,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              schedulingSnacks1();
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: height * 0.05,
+                                width: width * 0.45,
+                                color: theme.colorPrimary,
+                                child: Text(
+                                  _scheduleTimeofSnacks1 == null
+                                      ? 'Set Time'
+                                      : pmOrAm(_scheduleTimeofSnacks1),
+                                  // textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.text14boldWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Divider(
+                      thickness: 1.5,
+                      color: theme.colorCompanion,
+                    ),
+
+                    //.....
+
                     SizedBox(
                       height: height * 0.02,
                     ),
@@ -290,6 +404,78 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                       thickness: 1.5,
                       color: theme.colorCompanion,
                     ),
+//...
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Card(
+                        color: theme.colorPrimary,
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Evening Snacks',
+                                    style: GoogleFonts.ptMono(
+                                      color: theme.colorBackground,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Icon(
+                                    MdiIcons.arrowDown,
+                                    color: theme.colorBackground,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              schedulingSnacks2();
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: height * 0.05,
+                                width: width * 0.45,
+                                color: theme.colorPrimary,
+                                child: Text(
+                                  _scheduleTimeofSnacks2 == null
+                                      ? 'Set Time'
+                                      : pmOrAm(_scheduleTimeofSnacks2),
+                                  // textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.text14boldWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    Divider(
+                      thickness: 1.5,
+                      color: theme.colorCompanion,
+                    ),
+                    //....
                     SizedBox(
                       height: height * 0.02,
                     ),

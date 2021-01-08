@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../main.dart';
+import "package:flutter_spinkit/flutter_spinkit.dart";
 
 class NutritionalFacts extends StatefulWidget {
   Function(Map) submit;
@@ -20,6 +21,7 @@ class NutritionalFacts extends StatefulWidget {
 
 class _NutritionalFactsState extends State<NutritionalFacts> {
   Map<String, String> _finishedMap = {};
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -1020,11 +1022,17 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
           ),
           InkWell(
             splashColor: theme.colorCompanion,
-            onTap: () {
+            onTap: () async {
               if (!widget._breakfastformKey.currentState.validate()) {
                 return;
               }
-              widget.submit(_finishedMap);
+              setState(() {
+                _isLoading = true;
+              });
+              await widget.submit(_finishedMap);
+              setState(() {
+                _isLoading = false;
+              });
               print(_finishedMap);
             },
             child: Card(
@@ -1034,23 +1042,28 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
               child: Container(
                 width: 200,
                 padding: EdgeInsets.all(8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'APPLY',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
+                child: _isLoading
+                    ? SpinKitThreeBounce(
                         color: theme.colorPrimary,
+                        size: 20,
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'APPLY',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: theme.colorPrimary,
+                            ),
+                          ),
+                          Icon(
+                            MdiIcons.check,
+                            color: theme.colorPrimary,
+                          )
+                        ],
                       ),
-                    ),
-                    Icon(
-                      MdiIcons.check,
-                      color: theme.colorPrimary,
-                    )
-                  ],
-                ),
               ),
             ),
           ),
