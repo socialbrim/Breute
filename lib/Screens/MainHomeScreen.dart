@@ -52,7 +52,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
     );
     _betterPlayerController = BetterPlayerController(
-      BetterPlayerConfiguration(autoPlay: true),
+      BetterPlayerConfiguration(autoPlay: false),
       betterPlayerDataSource: betterPlayerDataSource,
     );
     initPlatformState();

@@ -424,6 +424,23 @@ class _CreateMealCardState extends State<CreateMealCard> {
                   SizedBox(
                     height: widget.height * 0.02,
                   ),
+                  if (_image != null)
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorDefaultText,
+                        ),
+                      ),
+                      height: widget.height * 0.2,
+                      width: widget.width * 0.8,
+                      child: Image.file(
+                        _image,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  SizedBox(
+                    height: widget.height * 0.02,
+                  ),
                   NutritionalFacts(
                     breakfastformKey: widget._breakfastformKey,
                     submit: save,

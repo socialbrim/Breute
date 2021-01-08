@@ -1015,6 +1015,9 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
             color: theme.colorDefaultText,
             thickness: 3,
           ),
+          SizedBox(
+            height: height * 0.02,
+          ),
           InkWell(
             splashColor: theme.colorCompanion,
             onTap: () {
@@ -1050,6 +1053,9 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 ),
               ),
             ),
+          ),
+          SizedBox(
+            height: height * 0.02,
           ),
         ],
       ),

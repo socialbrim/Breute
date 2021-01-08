@@ -46,8 +46,17 @@ class _PlansState extends State<Plans> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        actions: [
+          FlatButton(
+            child: Text(
+              "OK",
+              style: theme.text14primary,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        ],
         content: Container(
-          height: height * 0.652,
+          height: double.infinity,
           padding: EdgeInsets.symmetric(
             horizontal: 8,
           ),
@@ -59,7 +68,7 @@ class _PlansState extends State<Plans> {
                 style: theme.text20boldPrimary,
               ),
               SizedBox(
-                height: height * 0.02,
+                height: height * 0.07,
               ),
               Row(
                 children: [
@@ -442,8 +451,8 @@ class _PlansState extends State<Plans> {
                     Container(
                       width: width * 0.8,
                       alignment: Alignment.topRight,
-                      child: Image.network(
-                        'https://www.pngfind.com/pngs/m/234-2348819_how-to-avoid-treadmill-workout-mistakes-at-the.png',
+                      child: Image.asset(
+                        'assets/Logo.png',
                         height: height * 0.14,
                       ),
                     )
@@ -479,7 +488,7 @@ class _PlansState extends State<Plans> {
                               style: theme.text16bold,
                             ),
                             SizedBox(
-                              width: width * 0.24,
+                              width: width * 0.2,
                             ),
                             InkWell(
                               onTap: () {

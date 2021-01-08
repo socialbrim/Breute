@@ -302,104 +302,101 @@ class _LoginScreenState extends State<LoginScreen>
                             SizedBox(
                               height: height * 0.01,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                _signInWithGoogle();
-                              },
-                              child: Card(
-                                color: HexColor('DD4B39'),
-                                elevation: 3,
-                                shadowColor: theme.colorCompanion,
-                                child: Container(
-                                  width: width * 0.6,
-                                  height: height * 0.06,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: _isGoogleLogging
-                                        ? SpinKitThreeBounce(
-                                            color: Colors.white,
-                                            size: 20,
-                                          )
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: height * 0.045,
-                                                child: Image.asset(
-                                                  'assets/google.png',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: width * 0.01,
-                                              ),
-                                              Text(
-                                                "Sign in with Google",
-                                                style: GoogleFonts.roboto(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _loginWithFacebook();
-                              },
-                              child: Card(
-                                elevation: 3,
-                                color: HexColor('3b5998'),
-                                shadowColor: theme.colorCompanion,
-                                child: Container(
-                                  width: width * 0.6,
-                                  height: height * 0.06,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: _isFacebookLoggin
-                                        ? SpinKitThreeBounce(
-                                            color: Colors.white,
-                                            size: 20,
-                                          )
-                                        : Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                height: height * 0.035,
-                                                child: Image.asset(
-                                                  'assets/fb.png',
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: width * 0.025,
-                                              ),
-                                              Text(
-                                                "Sign in with Facebook",
-                                                style: GoogleFonts.roboto(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.04,
-                            ),
                           ],
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _signInWithGoogle();
+                      },
+                      child: Card(
+                        color: HexColor('DD4B39'),
+                        elevation: 3,
+                        child: Container(
+                          width: width * 0.6,
+                          height: height * 0.06,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: _isGoogleLogging
+                                ? SpinKitThreeBounce(
+                                    color: Colors.white,
+                                    size: 20,
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: height * 0.045,
+                                        child: Image.asset(
+                                          'assets/google.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.01,
+                                      ),
+                                      Text(
+                                        "Sign in with Google",
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _loginWithFacebook();
+                      },
+                      child: Card(
+                        elevation: 3,
+                        color: HexColor('3b5998'),
+                        child: Container(
+                          width: width * 0.6,
+                          height: height * 0.06,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: _isFacebookLoggin
+                                ? SpinKitThreeBounce(
+                                    color: Colors.white,
+                                    size: 20,
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: height * 0.035,
+                                        child: Image.asset(
+                                          'assets/fb.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.025,
+                                      ),
+                                      Text(
+                                        "Sign in with Facebook",
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.04,
                     ),
                   ],
                 ),
