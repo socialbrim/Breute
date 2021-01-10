@@ -55,6 +55,7 @@ dependencies:
   google_sign_in: ^4.5.1
   better_player: ^0.0.42
   profanity_filter: ^1.0.4
+  permission_handler: ^5.0.1+1
 
 dev_dependencies:
   flutter_test:

@@ -15,6 +15,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/stepsModel.dart';
 import '../main.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MainHomeScreen extends StatefulWidget {
   @override
@@ -69,6 +70,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   @override
   void initState() {
+    checkpermission();
     super.initState();
     fetchLink();
     initPlatformState();
@@ -204,6 +206,17 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   void dispose() {
     _betterPlayerController.dispose();
     super.dispose();
+  }
+
+  void checkpermission() async {
+    var status = await Permission.activityRecognition.status;
+    print(status);
+    if (status.isUndetermined) {}
+    if (status.isGranted) {}
+    if (status.isDenied) {
+      final data = await Permission.activityRecognition.request();
+      print(status);
+    }
   }
 
   @override

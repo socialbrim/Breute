@@ -77,18 +77,7 @@ class _TodaysMealState extends State<TodaysMeal> {
     super.initState();
   }
 
-  bool _isAccessable = false;
-
-  @override
-  void didChangeDependencies() {
-    Provider.of<MyPlanProvider>(context).plan.details.forEach((key, value) {
-      if (key == "Today's Meal" && value) {
-        _isAccessable = true;
-      }
-      print(_isAccessable);
-    });
-    super.didChangeDependencies();
-  }
+  bool _isAccessable = true;
 
   @override
   Widget build(BuildContext context) {
