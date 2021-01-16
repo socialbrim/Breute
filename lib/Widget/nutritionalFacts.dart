@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../main.dart';
 import "package:flutter_spinkit/flutter_spinkit.dart";
 
+// ignore: must_be_immutable
 class NutritionalFacts extends StatefulWidget {
   Function(Map) submit;
 

@@ -214,6 +214,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     if (status.isUndetermined) {}
     if (status.isGranted) {}
     if (status.isDenied) {
+      // ignore: unused_local_variable
       final data = await Permission.activityRecognition.request();
       print(status);
     }

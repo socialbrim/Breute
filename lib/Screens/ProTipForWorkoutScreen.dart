@@ -1,12 +1,10 @@
 import 'package:better_player/better_player.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:slimy_card/slimy_card.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../models/workoutModel.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';

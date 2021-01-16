@@ -7,9 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:parentpreneur/Widget/nutritionalFactsShow.dart';
 import 'package:parentpreneur/main.dart';
 import '../models/MealModel.dart';
-import 'package:provider/provider.dart';
 import '../Screens/UpgradePlanScreen.dart';
-import '../Providers/MyPlanProvider.dart';
 
 enum FilterOption {
   BreakFast,

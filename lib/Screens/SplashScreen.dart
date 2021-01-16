@@ -1,11 +1,4 @@
-import 'package:firebase_database/firebase_database.dart';
-
 import 'package:flutter/material.dart';
-import 'package:parentpreneur/Providers/User.dart';
-import 'package:parentpreneur/models/UserModel.dart';
-
-import 'package:provider/provider.dart';
-
 import '../main.dart';
 import 'HomeScreen.dart';
 import '../auth/LoginScreen.dart';

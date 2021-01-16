@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parentpreneur/Providers/User.dart';
-import 'package:parentpreneur/Widget/DrawerWidget.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
 import 'package:profanity_filter/profanity_filter.dart';
@@ -26,6 +25,7 @@ class _SupportState extends State<Support> {
   String uid;
 
   void stream() {
+    // ignore: unused_local_variable
     final user = FirebaseAuth.instance.currentUser;
 
     final ref = FirebaseDatabase.instance.reference().child("ChatRoom").onValue;
@@ -104,9 +104,6 @@ class _SupportState extends State<Support> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     return Scaffold(
         // bottomNavigationBar:
         // backgroundColor: Colors.blue[900],
@@ -178,6 +175,7 @@ class _SupportState extends State<Support> {
   }
 }
 
+// ignore: must_be_immutable
 class MessageTile extends StatelessWidget {
   final bool isSendByMe;
   final String message;
@@ -193,6 +191,7 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
