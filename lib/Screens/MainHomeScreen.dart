@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:better_player/better_player.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,12 +9,13 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:parentpreneur/Widget/DrawerWidget.dart';
 import 'package:provider/provider.dart';
 import '../Providers/MyPlanProvider.dart';
-import 'package:pedometer/pedometer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/stepsModel.dart';
 import '../main.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:async';
+import 'package:sensors/sensors.dart';
 
 class MainHomeScreen extends StatefulWidget {
   @override
@@ -30,9 +30,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   DateTime _stepDate = DateTime.now();
   int barIndex = 0;
   List<StepsModel> _list = [];
-  Stream<StepCount> _stepCountStream;
-  Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = '?';
+
   bool _isAccessable = false;
 
   @override
@@ -57,7 +55,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         value.value['Link'],
       );
       _betterPlayerController = BetterPlayerController(
-        BetterPlayerConfiguration(autoPlay: false),
+        BetterPlayerConfiguration(
+          autoPlay: false,
+        ),
         betterPlayerDataSource: betterPlayerDataSource,
       );
       setState(() {
@@ -100,62 +100,15 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           );
         });
       }
-      setState(() {});
-    });
-  }
-
-  void onStepCount(StepCount event) {
-    print(event);
-    if (this.mounted) {
       setState(() {
-        achievedsteps = event.steps;
-        _stepDate = event.timeStamp;
-        fetchCalories();
+        _list.forEach((element) {
+          if (element.dateID == formatDate(DateTime.now()) &&
+              achievedsteps == 0) {
+            achievedcalories = double.parse(element.calories);
+            achievedsteps = int.parse(element.step);
+          }
+        });
       });
-    }
-  }
-
-  void onPedestrianStatusChanged(PedestrianStatus event) {
-    print(event);
-    if (this.mounted) {
-      setState(() {
-        _status = event.status;
-      });
-    }
-  }
-
-  void onPedestrianStatusError(error) {
-    print('onPedestrianStatusError: $error');
-    setState(() {
-      _status = 'Pedestrian Status not available';
-    });
-    print(_status);
-    showDialog(
-      context: context,
-      builder: (context) => WillPopScope(
-        onWillPop: () async {
-          return;
-        },
-        child: AlertDialog(
-          title: Text("Device Not Supported"),
-          content: Text("This device is not supported"),
-          actions: [
-            FlatButton(
-              onPressed: () {
-                exit(0);
-              },
-              child: Text("OK"),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  void onStepCountError(error) {
-    print('onStepCountError: $error');
-    setState(() {
-      // _steps = 'Step Count not available';
     });
   }
 
@@ -167,16 +120,20 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     setStepsToServer();
   }
 
+  List<StreamSubscription<dynamic>> _streamSubscriptions =
+      <StreamSubscription<dynamic>>[];
+
   void initPlatformState() {
-    _pedestrianStatusStream = Pedometer.pedestrianStatusStream;
-    _pedestrianStatusStream
-        .listen(onPedestrianStatusChanged)
-        .onError(onPedestrianStatusError);
-
-    _stepCountStream = Pedometer.stepCountStream;
-    _stepCountStream.listen(onStepCount).onError(onStepCountError);
-
-    if (!mounted) return;
+    _streamSubscriptions
+        .add(accelerometerEvents.listen((AccelerometerEvent event) {
+      setState(() {
+        if (event.x > 18 || event.y > 18 || event.z > 18) {
+          achievedsteps++;
+          _stepDate = DateTime.now();
+          fetchCalories();
+        }
+      });
+    }));
   }
 
   void setStepsToServer() {
@@ -314,7 +271,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                     CircularPercentIndicator(
                                       radius: height * 0.1,
                                       lineWidth: 8.0,
-                                      // percent: 0.6,
+                                      animation: true,
                                       percent: achievedsteps /
                                           (totalsteps < achievedsteps
                                               ? achievedsteps
