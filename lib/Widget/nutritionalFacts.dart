@@ -1045,7 +1045,7 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                 padding: EdgeInsets.all(8),
                 child: _isLoading
                     ? SpinKitThreeBounce(
-                        color: theme.colorPrimary,
+                        color: Colors.pink,
                         size: 20,
                       )
                     : Row(

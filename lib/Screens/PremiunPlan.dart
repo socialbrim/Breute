@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Screens/Test.dart';
 import '../main.dart';
 import '../models/PlanDetail.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -396,16 +397,22 @@ class _PlansState extends State<Plans> {
           height: height * 0.07,
           color: theme.colorPrimary,
           alignment: Alignment.center,
-          child: Text(
-            'Proceed To Payment',
-            style: theme.text20boldWhite,
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => Payments(),
+                ),
+              );
+            },
+            child: Text(
+              'Proceed To Payment',
+              style: theme.text20boldWhite,
+            ),
           ),
         ),
         body: Column(
           children: [
-            // SizedBox(
-            //   height: height * 0.03,
-            // ),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Container(

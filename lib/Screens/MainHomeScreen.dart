@@ -159,8 +159,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   }
 
   BetterPlayerController _betterPlayerController;
+
   @override
   void dispose() {
+    for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
+      subscription.cancel();
+    }
     _betterPlayerController.dispose();
     super.dispose();
   }
@@ -214,13 +218,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           child: BetterPlayer(
                             controller: _betterPlayerController,
                           ),
-                          // BetterPlayer.network(
-                          //   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                          //   betterPlayerConfiguration: BetterPlayerConfiguration(
-                          //     autoPlay: true,
-                          //     aspectRatio: 16 / 9,
-                          //   ),
-                          // ),
                         ),
                         SizedBox(
                           height: height * 0.04,

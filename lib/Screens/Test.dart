@@ -1,122 +1,148 @@
-import 'dart:async';
-import 'package:countup/countup.dart';
-
+import 'package:stripe_payment/stripe_payment.dart';
 import 'package:flutter/material.dart';
-import 'package:sensors/sensors.dart';
+import 'dart:io';
 
-class Test extends StatefulWidget {
+class Payments extends StatefulWidget {
   @override
-  _TestState createState() => _TestState();
+  _PaymentsState createState() => new _PaymentsState();
 }
 
-class _TestState extends State<Test> {
-  static const int _snakeRows = 20;
-  static const int _snakeColumns = 20;
-  static const double _snakeCellSize = 10.0;
+class _PaymentsState extends State<Payments> {
+  Token _paymentToken;
+  PaymentMethod _paymentMethod;
+  String _error;
+  final String _currentSecret =
+      "sk_test_51IAWW6HpwMJhGfYrD1LC6dZb2cZ7RbMPFHHlqql2XbfDaP1lI8OTEZq0x1QrsctJUI2xtVjode9POKOe8trBNDqM00wzU3Iovi";
+  PaymentIntentResult _paymentIntent;
+  Source _source;
 
-  List<double> _accelerometerValues;
-  List<double> _userAccelerometerValues;
-  List<double> _gyroscopeValues;
-  List<StreamSubscription<dynamic>> _streamSubscriptions =
-      <StreamSubscription<dynamic>>[];
+  ScrollController _controller = ScrollController();
+
+  final CreditCard testCard = CreditCard(
+    number: '4000002760003184',
+    expMonth: 12,
+    expYear: 21,
+  );
+
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  @override
+  initState() {
+    super.initState();
+
+    StripePayment.setOptions(StripeOptions(
+        publishableKey:
+            "pk_test_51IAWW6HpwMJhGfYrTky5UzFJhSHb4u6EwE0KQZP8tKhhxLUA4Ztq9xlOjVMqSMvJkTzldmtlZKeIVOnYXMkt3UhZ00x7xr9nOX",
+        merchantId: "Test",
+        androidPayMode: 'test'));
+  }
+
+  void setError(dynamic error) {
+    _scaffoldKey.currentState
+        // ignore: deprecated_member_use
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+    setState(() {
+      _error = error.toString();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<String> accelerometer =
-        _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    final List<String> gyroscope =
-        _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    final List<String> userAccelerometer = _userAccelerometerValues
-        ?.map((double v) => v.toStringAsFixed(1))
-        ?.toList();
+    return new MaterialApp(
+      home: new Scaffold(
+        key: _scaffoldKey,
+        body: ListView(
+          controller: _controller,
+          padding: const EdgeInsets.all(20),
+          children: <Widget>[
+            RaisedButton(
+              child: Text("Create Payment Online"),
+              onPressed: () {
+                StripePayment.createSourceWithParams(SourceParams(
+                  type: 'ideal',
+                  amount: 1099,
+                  currency: 'INR',
+                  returnURL: 'example://stripe-redirect',
+                )).then((source) {
+                  // ignore: deprecated_member_use
+                  _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(content: Text('Received ${source.sourceId}')));
+                  setState(() {
+                    _source = source;
+                  });
+                }).catchError(setError);
+              },
+            ),
+            RaisedButton(
+              child: Text("Pay With Card"),
+              onPressed: () {
+                StripePayment.createTokenWithCard(
+                  testCard,
+                ).then((token) {
+                  // ignore: deprecated_member_use
+                  _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(content: Text('Received ${token.tokenId}')));
+                  setState(() {
+                    _paymentToken = token;
+                  });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sensor Example'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Center(
-            child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1.0, color: Colors.black38),
-                ),
-                child: Countup(
-                  begin: 0,
-                  end: steps.toDouble(),
-                  duration: Duration(seconds: 2),
-                  style: TextStyle(
-                    fontSize: 36,
+                  //... payment started
+
+                  StripePayment.createPaymentMethod(
+                    PaymentMethodRequest(
+                      card: CreditCard(
+                        token: _paymentToken.tokenId,
+                      ),
+                    ),
+                  ).then((paymentMethod) {
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        content: Text('Received ${paymentMethod.id}')));
+                    setState(() {
+                      _paymentMethod = paymentMethod;
+                    });
+                  }).catchError(setError);
+
+                  //... payment finished
+                }).catchError(setError);
+              },
+            ),
+            Divider(),
+            RaisedButton(
+              child: Text(
+                Platform.isIOS ? "Pay With Apple Pay" : "Pay With G-Pay",
+              ),
+              onPressed: () {
+                if (Platform.isIOS) {
+                  _controller.jumpTo(450);
+                }
+                StripePayment.paymentRequestWithNativePay(
+                  androidPayOptions: AndroidPayPaymentRequest(
+                    totalPrice: "1.20",
+                    currencyCode: "INR",
                   ),
-                )),
-          ),
-          Padding(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Accelerometer: $accelerometer'),
-              ],
+                  applePayOptions: ApplePayPaymentOptions(
+                    countryCode: 'IN',
+                    currencyCode: 'INR',
+                    items: [
+                      ApplePayItem(
+                        label: 'Test',
+                        amount: '13',
+                      )
+                    ],
+                  ),
+                ).then((token) {
+                  setState(() {
+                    // ignore: deprecated_member_use
+                    _scaffoldKey.currentState.showSnackBar(
+                        SnackBar(content: Text('Received ${token.tokenId}')));
+                    _paymentToken = token;
+                  });
+                }).catchError(setError);
+              },
             ),
-            padding: const EdgeInsets.all(16.0),
-          ),
-          Padding(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('UserAccelerometer: $userAccelerometer'),
-              ],
-            ),
-            padding: const EdgeInsets.all(16.0),
-          ),
-          Padding(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('Steps: $steps'),
-              ],
-            ),
-            padding: const EdgeInsets.all(16.0),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
-      subscription.cancel();
-    }
-  }
-
-  int steps = 0;
-  int privSteps = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _streamSubscriptions
-        .add(accelerometerEvents.listen((AccelerometerEvent event) {
-      setState(() {
-        if (event.x > 18 || event.y > 18 || event.z > 18) {
-          // privSteps = steps;
-          print("step+++++++++++++++++++++++++++");
-          steps++;
-        }
-        setState(() {
-          _userAccelerometerValues = <double>[event.x, event.y, event.z];
-        });
-        _accelerometerValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-    _streamSubscriptions.add(gyroscopeEvents.listen((GyroscopeEvent event) {
-      setState(() {
-        _gyroscopeValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-    _streamSubscriptions
-        .add(userAccelerometerEvents.listen((UserAccelerometerEvent event) {}));
   }
 }

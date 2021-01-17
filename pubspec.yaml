@@ -56,6 +56,7 @@ dependencies:
   better_player: ^0.0.42
   profanity_filter: ^1.0.4
   permission_handler: ^5.0.1+1
+  stripe_payment: ^1.0.9
   sensors: ^0.4.2+6
   countup: ^0.1.3
 
