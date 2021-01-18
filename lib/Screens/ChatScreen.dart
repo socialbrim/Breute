@@ -109,74 +109,76 @@ class _SupportState extends State<Support> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // bottomNavigationBar:
-        // backgroundColor: Colors.blue[900],
-        backgroundColor: theme.colorBackground,
-        appBar: AppBar(
-          title: Text('Chat with us'),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: chatMessageList(),
-            ),
-            Container(
-              color: theme.colorPrimary,
-              child: Row(
-                // mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * .75,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: TextField(
-                        style: theme.text16Primary,
-                        controller: messageController,
-                        onChanged: (val) {
-                          setState(() {});
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(10),
-                          hintText: 'Start Typing....',
-                          hintStyle: theme.text16Primary,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+    return SafeArea(
+      child: Scaffold(
+          // bottomNavigationBar:
+          // backgroundColor: Colors.blue[900],
+          backgroundColor: theme.colorBackground,
+          appBar: AppBar(
+            title: Text('Chat with us'),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: chatMessageList(),
+              ),
+              Container(
+                color: theme.colorPrimary,
+                child: Row(
+                  // mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * .75,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: TextField(
+                          style: theme.text16Primary,
+                          controller: messageController,
+                          onChanged: (val) {
+                            setState(() {});
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10),
+                            hintText: 'Start Typing....',
+                            hintStyle: theme.text16Primary,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
-                          filled: true,
-                          fillColor: Colors.white,
                         ),
                       ),
                     ),
-                  ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      if (messageController.text == null ||
-                          messageController.text == "") {
-                        Fluttertoast.showToast(
-                            msg: "Write some message!",
-                            gravity: ToastGravity.BOTTOM);
-                        return;
-                      }
-                      return sendMessage();
-                    },
-                    child: messageController.text == null ||
-                            messageController.text == ""
-                        ? Text(
-                            'Type',
-                            style: theme.text16boldWhite,
-                          )
-                        : Icon(
-                            Icons.send,
-                            color: theme.colorBackground,
-                          ),
-                  )
-                ],
+                    RawMaterialButton(
+                      onPressed: () {
+                        if (messageController.text == null ||
+                            messageController.text == "") {
+                          Fluttertoast.showToast(
+                              msg: "Write some message!",
+                              gravity: ToastGravity.BOTTOM);
+                          return;
+                        }
+                        return sendMessage();
+                      },
+                      child: messageController.text == null ||
+                              messageController.text == ""
+                          ? Text(
+                              'Type',
+                              style: theme.text16boldWhite,
+                            )
+                          : Icon(
+                              Icons.send,
+                              color: theme.colorBackground,
+                            ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }
 

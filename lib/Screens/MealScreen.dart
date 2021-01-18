@@ -7,6 +7,8 @@ import 'Createmealscreen.dart';
 import 'ProTipForWorkoutScreen.dart';
 import '../Screens/ScheduleMeal.dart';
 
+import './AllMeals.dart';
+
 class MealScreen extends StatefulWidget {
   @override
   _MealScreenState createState() => _MealScreenState();
@@ -110,11 +112,11 @@ class _MealScreenState extends State<MealScreen> {
                 child: InkWell(
                   splashColor: theme.colorCompanion,
                   onTap: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ProTipForWorkOutScreen(),
-                    //   ),
-                    // );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AllMeals(),
+                      ),
+                    );
                   },
                   child: Stack(
                     children: [

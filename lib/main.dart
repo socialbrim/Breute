@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:parentpreneur/Screens/Test.dart';
+import 'package:parentpreneur/Screens/Payments.dart';
 
 import 'package:provider/provider.dart';
 
