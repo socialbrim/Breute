@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,8 +43,10 @@ class _SupportState extends State<Support> {
             dateTime: DateTime.parse(
               value['timeStamp'],
             ),
+            likes: value['Like'],
             imageURL: value['DpURL'],
             nameOfCustomer: value['Name'],
+            messageID: key,
           ),
         );
       });
@@ -97,6 +98,10 @@ class _SupportState extends State<Support> {
                       isSendByMe: list[index].uid == userInfo.id,
                       imageURL: list[index].imageURL,
                       name: list[index].nameOfCustomer,
+                      id: list[index].messageID,
+                      likes: list[index].likes == null
+                          ? 0
+                          : double.parse(list[index].likes),
                     )),
           )
         : Container();
@@ -181,12 +186,16 @@ class MessageTile extends StatelessWidget {
   final String message;
   final String imageURL;
   String name;
+  final String id;
+  double likes;
 
   MessageTile({
     this.isSendByMe,
     this.message,
     this.imageURL,
     this.name,
+    this.id,
+    this.likes,
   });
 
   @override
@@ -201,162 +210,199 @@ class MessageTile extends StatelessWidget {
           right: isSendByMe ? 24 : MediaQuery.of(context).size.width * .2),
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: theme.colorCompanion2,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                    bottomLeft:
-                        isSendByMe ? Radius.circular(15) : Radius.circular(0),
-                    bottomRight:
-                        isSendByMe ? Radius.circular(0) : Radius.circular(15)),
-              ),
-              child: Padding(
-                padding:
-                    EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 12),
-                child: isSendByMe
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                '$name',
-                                style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                width: width * 0.5,
-                                child: Text(
-                                  message,
-                                  textAlign: isSendByMe
-                                      ? TextAlign.left
-                                      : TextAlign.left,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    color: Colors.white,
+      child: InkWell(
+        onDoubleTap: () {
+          FirebaseDatabase.instance
+              .reference()
+              .child("ChatRoom")
+              .child(id)
+              .update({
+            "Like": (likes + 1).toString(),
+          });
+        },
+        onLongPress: () {
+          report(context);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: theme.colorCompanion2,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                      bottomLeft:
+                          isSendByMe ? Radius.circular(15) : Radius.circular(0),
+                      bottomRight: isSendByMe
+                          ? Radius.circular(0)
+                          : Radius.circular(15)),
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 12),
+                  child: isSendByMe
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  name == null ? "Anonymous" : '$name',
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  width: width * 0.5,
+                                  child: Text(
+                                    message,
+                                    textAlign: isSendByMe
+                                        ? TextAlign.left
+                                        : TextAlign.left,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: width * 0.03,
-                          ),
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundImage: imageURL == null
-                                ? AssetImage("assets/unnamed.png")
-                                : NetworkImage(imageURL),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CircleAvatar(
-                            radius: 20,
-                            backgroundImage: imageURL == null
-                                ? AssetImage("assets/unnamed.png")
-                                : NetworkImage(imageURL),
-                          ),
-                          SizedBox(
-                            width: width * 0.03,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                name == null ? "Anonymous" : "$name",
-                                style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                width: width * 0.5,
-                                child: Text(
-                                  message,
-                                  textAlign: isSendByMe
-                                      ? TextAlign.right
-                                      : TextAlign.left,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                                  softWrap: true,
+                              ],
+                            ),
+                            SizedBox(
+                              width: width * 0.03,
+                            ),
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundImage: imageURL == null
+                                  ? AssetImage("assets/unnamed.png")
+                                  : NetworkImage(imageURL),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundImage: imageURL == null
+                                  ? AssetImage("assets/unnamed.png")
+                                  : NetworkImage(imageURL),
+                            ),
+                            SizedBox(
+                              width: width * 0.03,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  name == null ? "Anonymous" : "$name",
+                                  style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            ],
-                          ),
-                          // children: [
-                          //   isSendByMe
-                          //       ? Row(
-                          //           mainAxisAlignment: MainAxisAlignment.end,
-                          //           children: [
-                          //             Text(
-                          //               'Name',
-                          //             ),
-                          //             SizedBox(
-                          //               width: width * 0.02,
-                          //             ),
-                          //             CircleAvatar(
-                          //               radius: 10,
-                          //               backgroundImage: imageURL == null
-                          //                   ? AssetImage("assets/unnamed.png")
-                          //                   : NetworkImage(imageURL),
-                          //             ),
-                          //           ],
-                          //         )
-                          //       : Row(
-                          //           mainAxisAlignment: MainAxisAlignment.start,
-                          //           children: [
-                          //             CircleAvatar(
-                          //               radius: 10,
-                          //               backgroundImage: imageURL == null
-                          //                   ? AssetImage("assets/unnamed.png")
-                          //                   : NetworkImage(imageURL),
-                          //             ),
-                          //             SizedBox(
-                          //               width: width * 0.02,
-                          //             ),
-                          //             Text(
-                          //               'Name',
-                          //             ),
-                          //           ],
-                          //         ),
-                          //   Text(
-                          //     message,
-                          //     // textAlign: isSendByMe ? TextAlign.right : TextAlign.left,
-                          //     style: GoogleFonts.poppins(
-                          //       fontSize: 14,
-                          //       color: Colors.white,
-                          //     ),
-                          //   ),
-                          // ],
-                        ],
-                      ),
+                                Container(
+                                  width: width * 0.5,
+                                  child: Text(
+                                    message,
+                                    textAlign: isSendByMe
+                                        ? TextAlign.right
+                                        : TextAlign.left,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                ),
               ),
-            ),
-            // Positioned(
-            //   top: 2,
-            //   right: isSendByMe ? 2 : null,
-            //   left: !isSendByMe ? 2 : null,
-            // child: CircleAvatar(
-            //   radius: 10,
-            //   backgroundImage: imageURL == null
-            //       ? AssetImage("assets/unnamed.png")
-            //       : NetworkImage(imageURL),
-            // ),
-            // )
-          ],
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: likes == 0 ? Container() : loveIcon(likes),
+              )
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  TextEditingController _ctrl = new TextEditingController();
+
+  void report(BuildContext context) async {
+    if (name == "Admin") {
+      Fluttertoast.showToast(msg: "Cannot report against admin");
+      return;
+    }
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          "Report Against ${name == null ? "Anonymous" : name}",
+          style: theme.text14boldPimary,
+        ),
+        content: TextFormField(
+          controller: _ctrl,
+        ),
+        actions: [
+          FlatButton(
+            child: Text(
+              "Cancel",
+              style: theme.text12bold,
+            ),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(
+              "Submit",
+              style: theme.text12bold,
+            ),
+            onPressed: () {
+              //...
+              if (_ctrl.text == null || _ctrl.text == "") {
+                Fluttertoast.showToast(msg: "Enter in field");
+                return;
+              }
+              FirebaseDatabase.instance
+                  .reference()
+                  .child("ChatRoom")
+                  .child(id)
+                  .child("Report")
+                  .child(FirebaseAuth.instance.currentUser.uid)
+                  .update({
+                "ReportBy": FirebaseAuth.instance.currentUser.uid,
+                "Report": _ctrl.text,
+              });
+              Fluttertoast.showToast(
+                  msg: "Reported against ${name == null ? "Anonymous" : name}");
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget loveIcon(double count) {
+    return Container(
+      width: 50,
+      child: Row(
+        children: [
+          Icon(
+            Icons.favorite,
+            color: Colors.red,
+          ),
+          Text(count.toInt().toString())
+        ],
       ),
     );
   }

@@ -4,11 +4,16 @@ class ChatModel {
   final DateTime dateTime;
   final String nameOfCustomer;
   final String imageURL;
+  String messageID;
+  String likes;
 
-  ChatModel(
-      {this.uid,
-      this.message,
-      this.dateTime,
-      this.nameOfCustomer,
-      this.imageURL});
+  ChatModel({
+    this.likes,
+    this.uid,
+    this.message,
+    this.dateTime,
+    this.nameOfCustomer,
+    this.imageURL,
+    this.messageID,
+  });
 }
