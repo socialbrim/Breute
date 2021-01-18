@@ -401,7 +401,9 @@ class _PlansState extends State<Plans> {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => Payments(),
+                  builder: (context) => Payments(
+                    plandetails: _list[choosenPlan],
+                  ),
                 ),
               );
             },

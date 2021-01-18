@@ -1,8 +1,11 @@
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import '../models/PlanDetail.dart';
 
 class Payments extends StatefulWidget {
+  PlanName plandetails;
+  Payments({this.plandetails});
   @override
   _PaymentsState createState() => new _PaymentsState();
 }
@@ -13,7 +16,6 @@ class _PaymentsState extends State<Payments> {
   String _error;
   final String _currentSecret =
       "sk_test_51IAWW6HpwMJhGfYrD1LC6dZb2cZ7RbMPFHHlqql2XbfDaP1lI8OTEZq0x1QrsctJUI2xtVjode9POKOe8trBNDqM00wzU3Iovi";
-  PaymentIntentResult _paymentIntent;
   Source _source;
 
   ScrollController _controller = ScrollController();
@@ -46,6 +48,11 @@ class _PaymentsState extends State<Payments> {
     });
   }
 
+  void successfulPaid() {
+    //...
+    // FirebaseDatabase
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -62,8 +69,8 @@ class _PaymentsState extends State<Payments> {
                 onPressed: () {
                   StripePayment.createSourceWithParams(SourceParams(
                     type: 'ideal',
-                    amount: 1099,
-                    currency: 'INR',
+                    amount: int.parse(widget.plandetails.amount) * 100,
+                    currency: 'USD',
                     returnURL: 'example://stripe-redirect',
                   )).then((source) {
                     // ignore: deprecated_member_use
@@ -123,16 +130,16 @@ class _PaymentsState extends State<Payments> {
                   }
                   StripePayment.paymentRequestWithNativePay(
                     androidPayOptions: AndroidPayPaymentRequest(
-                      totalPrice: "1.20",
-                      currencyCode: "INR",
+                      totalPrice: widget.plandetails.amount,
+                      currencyCode: "USD",
                     ),
                     applePayOptions: ApplePayPaymentOptions(
-                      countryCode: 'IN',
-                      currencyCode: 'INR',
+                      countryCode: 'US',
+                      currencyCode: 'USD',
                       items: [
                         ApplePayItem(
-                          label: 'Test',
-                          amount: '13',
+                          label: 'Switch to plan',
+                          amount: widget.plandetails.amount,
                         )
                       ],
                     ),
