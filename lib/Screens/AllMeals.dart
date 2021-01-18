@@ -336,14 +336,14 @@ class _AllMealsState extends State<AllMeals> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: height * 0.01,
+                            height: height * 0.02,
                           ),
                           searchWidget(),
                           SizedBox(
                             height: height * 0.01,
                           ),
                           Container(
-                            height: height,
+                            height: height * 0.8,
                             child: ListView.builder(
                               itemCount: _filterdlist.length,
                               itemBuilder: (context, index) => Card(
@@ -542,16 +542,25 @@ class _AllMealsState extends State<AllMeals> {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
 
                                       _showFacts
-                                          ? NutritionalFactsShow(
-                                              submit:
-                                                  _filterdlist[index].nutrients,
+                                          ? Container(
+                                              alignment: Alignment.center,
+                                              child: NutritionalFactsShow(
+                                                submit: _filterdlist[index]
+                                                    .nutrients,
+                                              ),
                                             )
                                           : Container(),
                                       // SizedBox(
                                       //   height: height * 0.15,
                                       // )
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
                                     ],
                                   ),
                                 ),

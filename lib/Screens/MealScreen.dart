@@ -123,12 +123,12 @@ class _MealScreenState extends State<MealScreen> {
                       Container(
                         width: width,
                         child: Image.asset(
-                          'assets/workout.png',
+                          'assets/todaymeals.png',
                           fit: BoxFit.cover,
                         ),
                       ),
                       Positioned(
-                        right: 5,
+                        left: 5,
                         bottom: 5,
                         child: Card(
                           shadowColor: theme.colorPrimary,

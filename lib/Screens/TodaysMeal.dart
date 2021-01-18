@@ -182,7 +182,7 @@ class _TodaysMealState extends State<TodaysMeal> {
                             height: height * 0.01,
                           ),
                           Container(
-                            height: height,
+                            height: height * 0.88,
                             child: ListView.builder(
                               itemCount: _filterdlist.length,
                               itemBuilder: (context, index) => Card(
