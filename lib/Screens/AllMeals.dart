@@ -105,9 +105,9 @@ class _AllMealsState extends State<AllMeals> {
           margin: EdgeInsets.symmetric(horizontal: 20),
           elevation: 10,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           child: Container(
-            height: 60,
+            height: MediaQuery.of(context).size.height * 0.07,
             child: TextFormField(
               onChanged: (val) {
                 setState(

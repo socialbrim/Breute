@@ -381,11 +381,17 @@ class _TodaysMealState extends State<TodaysMeal> {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(
+                                        height: height * .01,
+                                      ),
 
                                       _showFacts
-                                          ? NutritionalFactsShow(
-                                              submit:
-                                                  _filterdlist[index].nutrients,
+                                          ? Container(
+                                              alignment: Alignment.center,
+                                              child: NutritionalFactsShow(
+                                                submit: _filterdlist[index]
+                                                    .nutrients,
+                                              ),
                                             )
                                           : Container(),
                                       // SizedBox(
