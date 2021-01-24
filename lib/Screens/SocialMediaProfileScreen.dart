@@ -3,6 +3,7 @@ import 'package:parentpreneur/Widget/DrawerWidget.dart';
 
 import '../main.dart';
 import 'editProfile.dart';
+import './SocialMediaPostScreen.dart';
 
 class SocialMediaProfileScreen extends StatefulWidget {
   @override
@@ -19,7 +20,6 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
     return Scaffold(
       backgroundColor: theme.colorBackground,
       appBar: AppBar(),
-      drawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -106,9 +106,18 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                 itemCount: 4,
                 itemBuilder: (context, index) {
                   return Container(
-                    child: Image.network(
-                      'https://assets.entrepreneur.com/content/3x2/2000/20200218153611-instagram.jpeg',
-                      fit: BoxFit.cover,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SocialMediaPostScreen(),
+                          ),
+                        );
+                      },
+                      child: Image.network(
+                        'https://assets.entrepreneur.com/content/3x2/2000/20200218153611-instagram.jpeg',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   );
                 },

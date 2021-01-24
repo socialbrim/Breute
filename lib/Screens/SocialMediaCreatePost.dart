@@ -14,7 +14,6 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
     return Scaffold(
       backgroundColor: theme.colorBackground,
       appBar: AppBar(),
-      drawer: DrawerWidget(),
       body: SingleChildScrollView(
         child: Column(
           children: [],

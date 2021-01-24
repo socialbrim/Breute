@@ -3,6 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Widget/DrawerWidget.dart';
+import './SocialMediaMsgScreen.dart';
 
 import '../main.dart';
 
@@ -19,8 +20,25 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
 
     return Scaffold(
       backgroundColor: theme.colorBackground,
-      appBar: AppBar(),
-      drawer: DrawerWidget(),
+      appBar: AppBar(
+        title: Text(
+          'Feed',
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              MdiIcons.facebookMessenger,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SocialMediaMsgScreen(),
+                ),
+              );
+            },
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
