@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'package:image/image.dart' as Im;
+import 'dart:math' as Math;
+import 'package:path_provider/path_provider.dart';
 
 import 'package:storage_path/storage_path.dart';
 import '../models/creatPost.dart';
@@ -17,9 +22,11 @@ class SocialMediaCreatePost extends StatefulWidget {
 }
 
 class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
-  List<FileModel> files;
+  List<FileModel> files = [];
   FileModel selectedModel;
   String image;
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -27,6 +34,9 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
   }
 
   getImagesPath() async {
+    setState(() {
+      _isLoading = true;
+    });
     var imagePath = await StoragePath.imagesPath;
     var images = jsonDecode(imagePath) as List;
     files = images.map<FileModel>((e) => FileModel.fromJson(e)).toList();
@@ -34,82 +44,82 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
       setState(() {
         selectedModel = files[0];
         image = files[0].files[0];
+        _isLoading = false;
       });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: theme.colorBackground,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(MdiIcons.close),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: DropdownButtonHideUnderline(
+            child: DropdownButton<FileModel>(
+              items: getItems(),
+              isExpanded: true,
+              onChanged: (FileModel d) {
+                assert(d.files.length > 0);
+                image = d.files[0];
+                setState(() {
+                  selectedModel = d;
+                });
+              },
+              value: selectedModel,
+            ),
+          ),
+        ),
+        body: _isLoading
+            ? Center(
+                child: SpinKitFadingCircle(
+                  color: theme.colorPrimary,
+                ),
+              )
+            : SingleChildScrollView(
+                child: Column(
                   children: <Widget>[
-                    SizedBox(width: 10),
-                    Icon(Icons.clear),
-                    SizedBox(width: 10),
-                    DropdownButtonHideUnderline(
-                        child: DropdownButton<FileModel>(
-                      items: getItems(),
-                      onChanged: (FileModel d) {
-                        assert(d.files.length > 0);
-                        image = d.files[0];
-                        setState(() {
-                          selectedModel = d;
-                        });
-                      },
-                      value: selectedModel,
-                    ))
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.42,
+                      child: image != null
+                          ? Image.file(File(image),
+                              height: MediaQuery.of(context).size.height * 0.45,
+                              width: MediaQuery.of(context).size.width)
+                          : Container(),
+                    ),
+                    Divider(),
+                    selectedModel == null && selectedModel.files.length < 1
+                        ? Container()
+                        : Container(
+                            height: MediaQuery.of(context).size.height * 0.38,
+                            child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4,
+                                        crossAxisSpacing: 4,
+                                        mainAxisSpacing: 4),
+                                itemBuilder: (_, i) {
+                                  var file = selectedModel.files[i];
+                                  return GestureDetector(
+                                    child: Image.file(
+                                      File(file),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        image = file;
+                                      });
+                                    },
+                                  );
+                                },
+                                itemCount: selectedModel.files.length),
+                          )
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    'Next',
-                    style: theme.text16Primary,
-                  ),
-                ),
-              ],
-            ),
-            Divider(),
-            Container(
-                height: MediaQuery.of(context).size.height * 0.42,
-                child: image != null
-                    ? Image.file(File(image),
-                        height: MediaQuery.of(context).size.height * 0.45,
-                        width: MediaQuery.of(context).size.width)
-                    : Container()),
-            Divider(),
-            selectedModel == null && selectedModel.files.length < 1
-                ? Container()
-                : Container(
-                    height: MediaQuery.of(context).size.height * 0.38,
-                    child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4),
-                        itemBuilder: (_, i) {
-                          var file = selectedModel.files[i];
-                          return GestureDetector(
-                            child: Image.file(
-                              File(file),
-                              fit: BoxFit.cover,
-                            ),
-                            onTap: () {
-                              setState(() {
-                                image = file;
-                              });
-                            },
-                          );
-                        },
-                        itemCount: selectedModel.files.length),
-                  )
-          ],
-        ),
+              ),
       ),
     );
   }
