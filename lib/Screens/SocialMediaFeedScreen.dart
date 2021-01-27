@@ -4,6 +4,7 @@ import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Widget/DrawerWidget.dart';
 import './SocialMediaMsgScreen.dart';
+import 'SocialMediaCommentScreen.dart';
 
 import '../main.dart';
 
@@ -36,7 +37,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                 ),
               );
             },
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -200,9 +201,19 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                             SizedBox(
                               width: width * 0.02,
                             ),
-                            Text(
-                              '19 Comments',
-                              style: theme.text14,
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SocialMediaCommentScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                '19 Comments',
+                                style: theme.text14,
+                              ),
                             ),
                           ],
                         ),
@@ -219,7 +230,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                             style: theme.text14,
                           ),
                         ),
-                        Divider()
+                        Divider(),
                       ],
                     ),
                   );
