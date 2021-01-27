@@ -3,6 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../main.dart';
 import 'ChatScreen.dart';
+import './SocialMediaHomeScreen.dart';
 
 // ignore: must_be_immutable
 class CustomerSupport extends StatefulWidget {
@@ -36,7 +37,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.only(top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -49,7 +50,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   Center(
                     child: Text(
@@ -78,7 +79,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                             children: [
                               Icon(
                                 MdiIcons.messageTextOutline,
-                                color: HexColor('FA163F'),
+                                color: theme.colorCompanion,
                                 size: 54,
                               ),
                               Center(
@@ -97,7 +98,43 @@ class _CustomerSupportState extends State<CustomerSupport> {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 30,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SocialMediaHomeScreen(),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      elevation: 20,
+                      margin: EdgeInsets.symmetric(horizontal: 50),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(18.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                MdiIcons.accountMultiple,
+                                color: theme.colorCompanion,
+                                size: 54,
+                              ),
+                              Center(
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    'Connect with your Friends',
+                                    style: theme.text16bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   // Padding(

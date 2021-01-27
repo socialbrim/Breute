@@ -211,7 +211,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   alignment: Alignment.center,
                   height: height * 0.05,
                   width: width * 0.7,
-                  color: Colors.amber,
+                  color: theme.colorCompanion,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
