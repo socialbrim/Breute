@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/main.dart';
+import 'package:provider/provider.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -50,9 +54,28 @@ class _PaymentsState extends State<Payments> {
     });
   }
 
-  void successfulPaid() {
+  void successfulPaid(String transactionID) {
+    final userInfo =
+        Provider.of<UserProvider>(context, listen: false).userInformation;
     //...
-    // FirebaseDatabase
+    final user = FirebaseAuth.instance.currentUser;
+    FirebaseDatabase.instance
+        .reference()
+        .child("Payments")
+        .child(user.uid)
+        .update({
+      "uid": user.uid,
+      "plan Name": widget.plandetails.name,
+      "CustomerName": userInfo.name,
+      "amountPaid": widget.plandetails.amount,
+      "trxnID": transactionID,
+      "DateTime": DateTime.now().toIso8601String(),
+    });
+    FirebaseDatabase.instance
+        .reference()
+        .child("User Information")
+        .child(user.uid)
+        .update({"PlanName": widget.plandetails.name});
   }
 
   @override
@@ -289,7 +312,7 @@ class _PaymentsState extends State<Payments> {
                   top: 100,
                 ),
                 child: Card(
-                  // color: Colors.cyan,
+                  color: theme.colorBackground,
                   elevation: 6,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
