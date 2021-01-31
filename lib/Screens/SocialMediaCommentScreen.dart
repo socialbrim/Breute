@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
-
+import '../models/PostModel.dart';
 import '../main.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SocialMediaCommentScreen extends StatefulWidget {
+  PostModel post;
+  SocialMediaCommentScreen({
+    this.post,
+  });
   @override
   _SocialMediaCommentScreenState createState() =>
       _SocialMediaCommentScreenState();
 }
 
 class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
+  String comment;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -20,24 +27,6 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
       appBar: AppBar(
         title: Text('All Comments'),
       ),
-      // bottomNavigationBar: Container(
-      //   // height: height * .08,
-      //   width: width,
-      //   padding: EdgeInsets.only(top: 5, bottom: 10, left: 13, right: 13),
-      //   child: Container(
-      //     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-      //     decoration: BoxDecoration(
-      //       border: Border.all(),
-      //       borderRadius: BorderRadius.circular(15),
-      //     ),
-      //     child: TextFormField(
-      //       decoration: InputDecoration(
-      //         hintText: 'Add a Comment',
-      //         disabledBorder: InputBorder.none,
-      //       ),
-      //     ),
-      //   ),
-      // ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -139,7 +128,6 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
               ),
             ),
             Container(
-              // height: height * .08,
               width: width,
               padding: EdgeInsets.only(top: 5, bottom: 10, left: 13, right: 13),
               child: Container(
@@ -150,9 +138,27 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                 ),
                 child: TextFormField(
                   decoration: InputDecoration(
+                    prefix: IconButton(
+                      onPressed: () {
+                        // FirebaseDatabase.instance
+                        //     .reference()
+                        //     .child("Social Media Data")
+                        //     .child(widget.post.uid)
+                        //     .child(widget.post.postID)
+                        //     .child("comments")
+                        //     .update({
+                        //   FirebaseAuth.instance.currentUser.uid: comment
+                        // });
+                      },
+                      icon: Icon(
+                        Icons.send,
+                        color: Colors.black,
+                      ),
+                    ),
                     hintText: 'Add a Comment',
                     disabledBorder: InputBorder.none,
                   ),
+                  onChanged: (value) {},
                 ),
               ),
             ),

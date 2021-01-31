@@ -8,6 +8,7 @@ class PostModel {
   String uid;
   String postID;
   DateTime dateTime;
+  Map likeIDs;
 
   String get getName => name;
 
@@ -42,5 +43,6 @@ class PostModel {
     this.postID,
     this.uid,
     this.dateTime,
+    this.likeIDs,
   });
 }

@@ -40,6 +40,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                 key != "imageURL" &&
                 key != "phone" &&
                 key != "userName") {
+              print(value['likeIDs']);
               _list.add(
                 PostModel(
                   caption: value['caption'],
@@ -50,6 +51,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                   postID: key,
                   postURL: value['image'],
                   uid: uid,
+                  likeIDs: value['likeIDs'],
                   dateTime: value['dateTime'] == null
                       ? DateTime.now()
                       : DateTime.parse(
@@ -71,6 +73,22 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
   void initState() {
     fetchFeeds();
     super.initState();
+  }
+
+  bool isLiked(Map likeList) {
+    // print(likeList);
+    if (likeList == null) {
+      return false;
+    }
+    bool _isreturn = false;
+    likeList.forEach((key, value) {
+      if (key == FirebaseAuth.instance.currentUser.uid) {
+        //...
+        _isreturn = true;
+      }
+    });
+
+    return _isreturn;
   }
 
   @override
@@ -115,167 +133,207 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                 ),
               ],
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: height * 0.9,
-                    child: ListView.builder(
-                      itemCount: _list.length,
-                      itemBuilder: (context, index) {
-                        return Container(
+            body: Container(
+              height: height * 0.9,
+              child: ListView.builder(
+                itemCount: _list.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: width,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: height * .01,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: width * .05,
+                            ),
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundImage: _list[index].imageURl == null
+                                  ? AssetImage('assets/unnamed.png')
+                                  : NetworkImage(_list[index].imageURl),
+                            ),
+                            SizedBox(
+                              width: width * .05,
+                            ),
+                            Text(
+                              '${_list[index].name}',
+                              style: theme.text14bold,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        Divider(
+                          height: 0,
+                        ),
+                        Container(
                           width: width,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: height * .01,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: width * .05,
-                                  ),
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: _list[index].imageURl ==
-                                            null
-                                        ? AssetImage('assets/unnamed.png')
-                                        : NetworkImage(_list[index].imageURl),
-                                  ),
-                                  SizedBox(
-                                    width: width * .05,
-                                  ),
-                                  Text(
-                                    '${_list[index].name}',
-                                    style: theme.text14bold,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: height * 0.01,
-                              ),
-                              Divider(
-                                height: 0,
-                              ),
-                              Container(
-                                width: width,
-                                child: Image.network(
-                                  '${_list[index].postURL}',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              Divider(
-                                height: 0,
-                              ),
-                              SizedBox(
-                                height: height * .01,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: width * 0.05,
-                                  ),
-                                  // Icon(
-                                  //   Icons.favorite,
-                                  //   color: Colors.red,
-                                  //   size: 28,
-                                  // ),
-                                  LikeButton(
-                                    size: 28,
-                                    circleColor: CircleColor(
-                                        start: Color(0xff00ddff),
-                                        end: Color(0xff0099cc)),
-                                    bubblesColor: BubblesColor(
-                                      dotPrimaryColor: Color(0xff33b5e5),
-                                      dotSecondaryColor: Color(0xff0099cc),
-                                    ),
-                                    likeBuilder: (bool isLiked) {
-                                      return Icon(
-                                        Icons.favorite,
-                                        color:
-                                            isLiked ? Colors.red : Colors.grey,
-                                        size: 28,
-                                      );
-                                    },
-                                    likeCount: 0,
-                                    countBuilder:
-                                        (int count, bool isLiked, String text) {
-                                      var color = isLiked
-                                          ? theme.colorDefaultText
-                                          : Colors.grey;
-                                      Widget result;
-                                      if (count == 0) {
-                                        result = Text(
-                                          "0",
-                                          style: TextStyle(color: color),
-                                        );
-                                      } else
-                                        result = Text(
-                                          text,
-                                          style: TextStyle(color: color),
-                                        );
-                                      return result;
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.01,
-                                  ),
-                                  Text(
-                                    'Likes',
-                                    style: theme.text14,
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.23,
-                                  ),
-                                  Icon(
-                                    Icons.comment,
-                                    size: 25,
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.02,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              SocialMediaCommentScreen(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      '19 Comments',
-                                      style: theme.text14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: height * .01,
-                              ),
-                              Container(
-                                width: width,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 25,
-                                ),
-                                child: Text(
-                                  'Here, caption will be displayed',
-                                  style: theme.text14,
-                                ),
-                              ),
-                              Divider(),
-                            ],
+                          child: Image.network(
+                            '${_list[index].postURL}',
+                            fit: BoxFit.contain,
                           ),
-                        );
-                      },
+                        ),
+                        Divider(
+                          height: 0,
+                        ),
+                        SizedBox(
+                          height: height * .01,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: width * 0.05,
+                            ),
+                            LikeButton(
+                              onTap: (isLiked) {
+                                return onLikeButtonTapped(
+                                    isLiked, _list[index]);
+                              },
+                              isLiked: isLiked(_list[index].likeIDs),
+                              size: 28,
+                              circleColor: CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.favorite,
+                                  color: isLiked ? Colors.red : Colors.grey,
+                                  size: 28,
+                                );
+                              },
+                              likeCount: _list[index].likes == null
+                                  ? 0
+                                  : _list[index].likes,
+                              countBuilder:
+                                  (int count, bool isLiked, String text) {
+                                var color = isLiked
+                                    ? theme.colorDefaultText
+                                    : Colors.grey;
+                                Widget result;
+                                if (count == 0) {
+                                  result = Text(
+                                    "0",
+                                    style: TextStyle(color: color),
+                                  );
+                                } else
+                                  result = Text(
+                                    text,
+                                    style: TextStyle(color: color),
+                                  );
+                                return result;
+                              },
+                            ),
+                            SizedBox(
+                              width: width * 0.01,
+                            ),
+                            Text(
+                              'Likes',
+                              style: theme.text14,
+                            ),
+                            SizedBox(
+                              width: width * 0.23,
+                            ),
+                            Icon(
+                              Icons.comment,
+                              size: 25,
+                            ),
+                            SizedBox(
+                              width: width * 0.02,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SocialMediaCommentScreen(
+                                      post: _list[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                '${_list[index].comments == null ? 0 : _list[index].comments.length} Comments',
+                                style: theme.text14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * .01,
+                        ),
+                        Container(
+                          width: width,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 25,
+                          ),
+                          child: Text(
+                            '${_list[index].caption}',
+                            style: theme.text14,
+                          ),
+                        ),
+                        Divider(),
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    height: height * .05,
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           );
+  }
+
+  Future<bool> onLikeButtonTapped(bool isLiked, PostModel data) async {
+    print(isLiked);
+    print("------------------");
+    final likes = data.likes == null ? 0 : data.likes;
+    if (!isLiked) {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .child("likeIDs")
+          .update({
+        FirebaseAuth.instance.currentUser.uid: 1,
+      });
+
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .update({
+        "likes": likes + 1,
+      });
+
+      print(isLiked);
+    } else {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .child("likeIDs")
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .remove();
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .update({
+        "likes": likes - 1,
+      });
+    }
+
+    return !isLiked;
   }
 }
