@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import './Providers/MyPlanProvider.dart';
 import 'Providers/User.dart';
 import 'Screens/SplashScreen.dart';
+import 'Providers/socialmedialBarindex.dart';
 
 AppThemeData theme = AppThemeData();
 Future<void> main() async {
@@ -28,6 +29,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => AppThemeData(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => BarIndexChange(),
         ),
         ChangeNotifierProvider(
           create: (_) => MyPlanProvider(),

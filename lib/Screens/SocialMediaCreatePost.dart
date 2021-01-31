@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -80,11 +81,14 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
           ),
           actions: [
             InkWell(
-              onTap: () {
+              onTap: () async {
+                final data = await ImagesPicker.pick();
+                print(data.first.path);
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => SocialMediaCreateCaption(
-                      image: image,
+                      image: data.first.path, // image,
                     ),
                   ),
                 );

@@ -118,6 +118,17 @@ class _EditProfileState extends State<EditProfile> {
         "imageURL": vals,
       });
 
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .update({
+        "userName": name.text,
+        "emial": email.text,
+        "phone": phone.text,
+        "imageURL": vals,
+      });
+
       setState(() {
         _isUploadig = false;
       });
@@ -143,6 +154,17 @@ class _EditProfileState extends State<EditProfile> {
       "userName": name.text,
       "emial": email.text,
       "phone": phone.text,
+    });
+
+    FirebaseDatabase.instance
+        .reference()
+        .child("Social Media Data")
+        .child(FirebaseAuth.instance.currentUser.uid)
+        .update({
+      "userName": name.text,
+      "emial": email.text,
+      "phone": phone.text,
+      "imageURL": data.imageUrl,
     });
 
     setState(() {
@@ -340,7 +362,7 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextFormField(
-                    enabled: false,
+                    // enabled: false,
                     controller: phone,
                     keyboardType: TextInputType.name,
                     style: theme.text16,

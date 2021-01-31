@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:parentpreneur/Widget/DrawerWidget.dart';
 import './SocialMediaMsgScreen.dart';
 import 'SocialMediaCommentScreen.dart';
-
+import '../Screens/SearchScreen.dart';
 import '../main.dart';
 
 class SocialMediaFeedScreen extends StatefulWidget {
@@ -55,28 +53,35 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
                 height: height * 0.07,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      MdiIcons.magnify,
-                      size: 28,
-                    ),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    Container(
-                      width: width * .6,
-                      child: TextFormField(
-                        cursorColor: theme.colorPrimary,
-                        decoration: InputDecoration(
-                          hintText: "Search Friend",
-                          hintStyle: theme.text16,
-                          border: InputBorder.none,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SearchScreen(),
+                    ));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        MdiIcons.magnify,
+                        size: 28,
+                      ),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      Container(
+                        width: width * .6,
+                        child: TextFormField(
+                          cursorColor: theme.colorPrimary,
+                          decoration: InputDecoration(
+                            hintText: "Search Friend",
+                            hintStyle: theme.text16,
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -90,10 +95,8 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
               height: height * 0.69,
               child: ListView.builder(
                 itemCount: 3,
-                // physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Container(
-                    // height: height * 0.4,
                     width: width,
                     child: Column(
                       children: [
