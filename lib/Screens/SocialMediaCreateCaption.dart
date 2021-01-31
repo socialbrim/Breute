@@ -62,7 +62,11 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
                       .child("Social Media Data")
                       .child(FirebaseAuth.instance.currentUser.uid)
                       .child(key)
-                      .update({"image": vals, "caption": caption});
+                      .update({
+                    "image": vals,
+                    "caption": caption,
+                    "dateTime": DateTime.now().toIso8601String(),
+                  });
                   Fluttertoast.showToast(msg: "Post uploaded successfully");
 
                   Navigator.of(context).pop();
