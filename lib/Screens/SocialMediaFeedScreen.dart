@@ -64,7 +64,16 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
               _isLoading = false;
             });
           });
+        } else {
+          setState(() {
+            _isLoading = false;
+          });
         }
+      });
+      Future.delayed(Duration(seconds: 4)).then((value) {
+        setState(() {
+          _isLoading = false;
+        });
       });
     }
   }
@@ -133,160 +142,173 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                 ),
               ],
             ),
-            body: Container(
-              height: height * 0.9,
-              child: ListView.builder(
-                itemCount: _list.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: width,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: height * .01,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: width * .05,
-                            ),
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: _list[index].imageURl == null
-                                  ? AssetImage('assets/unnamed.png')
-                                  : NetworkImage(_list[index].imageURl),
-                            ),
-                            SizedBox(
-                              width: width * .05,
-                            ),
-                            Text(
-                              '${_list[index].name}',
-                              style: theme.text14bold,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * 0.01,
-                        ),
-                        Divider(
-                          height: 0,
-                        ),
-                        Container(
+            body: _list.isEmpty
+                ? Center(
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SearchScreen(),
+                          ));
+                        },
+                        child: Text(
+                            "No New Feed Add Friends to see their feeds!\nClick here to find friend")),
+                  )
+                : Container(
+                    height: height * 0.9,
+                    child: ListView.builder(
+                      itemCount: _list.length,
+                      itemBuilder: (context, index) {
+                        return Container(
                           width: width,
-                          child: Image.network(
-                            '${_list[index].postURL}',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                        Divider(
-                          height: 0,
-                        ),
-                        SizedBox(
-                          height: height * .01,
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: width * 0.05,
-                            ),
-                            LikeButton(
-                              onTap: (isLiked) {
-                                return onLikeButtonTapped(
-                                    isLiked, _list[index]);
-                              },
-                              isLiked: isLiked(_list[index].likeIDs),
-                              size: 28,
-                              circleColor: CircleColor(
-                                  start: Color(0xff00ddff),
-                                  end: Color(0xff0099cc)),
-                              bubblesColor: BubblesColor(
-                                dotPrimaryColor: Color(0xff33b5e5),
-                                dotSecondaryColor: Color(0xff0099cc),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: height * .01,
                               ),
-                              likeBuilder: (bool isLiked) {
-                                return Icon(
-                                  Icons.favorite,
-                                  color: isLiked ? Colors.red : Colors.grey,
-                                  size: 28,
-                                );
-                              },
-                              likeCount: _list[index].likes == null
-                                  ? 0
-                                  : _list[index].likes,
-                              countBuilder:
-                                  (int count, bool isLiked, String text) {
-                                var color = isLiked
-                                    ? theme.colorDefaultText
-                                    : Colors.grey;
-                                Widget result;
-                                if (count == 0) {
-                                  result = Text(
-                                    "0",
-                                    style: TextStyle(color: color),
-                                  );
-                                } else
-                                  result = Text(
-                                    text,
-                                    style: TextStyle(color: color),
-                                  );
-                                return result;
-                              },
-                            ),
-                            SizedBox(
-                              width: width * 0.01,
-                            ),
-                            Text(
-                              'Likes',
-                              style: theme.text14,
-                            ),
-                            SizedBox(
-                              width: width * 0.23,
-                            ),
-                            Icon(
-                              Icons.comment,
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: width * 0.02,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SocialMediaCommentScreen(
-                                      post: _list[index],
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * .05,
+                                  ),
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: _list[index].imageURl ==
+                                            null
+                                        ? AssetImage('assets/unnamed.png')
+                                        : NetworkImage(_list[index].imageURl),
+                                  ),
+                                  SizedBox(
+                                    width: width * .05,
+                                  ),
+                                  Text(
+                                    '${_list[index].name}',
+                                    style: theme.text14bold,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Divider(
+                                height: 0,
+                              ),
+                              Container(
+                                width: width,
+                                child: Image.network(
+                                  '${_list[index].postURL}',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                              Divider(
+                                height: 0,
+                              ),
+                              SizedBox(
+                                height: height * .01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  LikeButton(
+                                    onTap: (isLiked) {
+                                      return onLikeButtonTapped(
+                                          isLiked, _list[index]);
+                                    },
+                                    isLiked: isLiked(_list[index].likeIDs),
+                                    size: 28,
+                                    circleColor: CircleColor(
+                                        start: Color(0xff00ddff),
+                                        end: Color(0xff0099cc)),
+                                    bubblesColor: BubblesColor(
+                                      dotPrimaryColor: Color(0xff33b5e5),
+                                      dotSecondaryColor: Color(0xff0099cc),
+                                    ),
+                                    likeBuilder: (bool isLiked) {
+                                      return Icon(
+                                        Icons.favorite,
+                                        color:
+                                            isLiked ? Colors.red : Colors.grey,
+                                        size: 28,
+                                      );
+                                    },
+                                    likeCount: _list[index].likes == null
+                                        ? 0
+                                        : _list[index].likes,
+                                    countBuilder:
+                                        (int count, bool isLiked, String text) {
+                                      var color = isLiked
+                                          ? theme.colorDefaultText
+                                          : Colors.grey;
+                                      Widget result;
+                                      if (count == 0) {
+                                        result = Text(
+                                          "0",
+                                          style: TextStyle(color: color),
+                                        );
+                                      } else
+                                        result = Text(
+                                          text,
+                                          style: TextStyle(color: color),
+                                        );
+                                      return result;
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.01,
+                                  ),
+                                  Text(
+                                    'Likes',
+                                    style: theme.text14,
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.23,
+                                  ),
+                                  Icon(
+                                    Icons.comment,
+                                    size: 25,
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.02,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SocialMediaCommentScreen(
+                                            post: _list[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      '${_list[index].comments == null ? 0 : _list[index].comments.length} Comments',
+                                      style: theme.text14,
                                     ),
                                   ),
-                                );
-                              },
-                              child: Text(
-                                '${_list[index].comments == null ? 0 : _list[index].comments.length} Comments',
-                                style: theme.text14,
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * .01,
-                        ),
-                        Container(
-                          width: width,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 25,
+                              SizedBox(
+                                height: height * .01,
+                              ),
+                              Container(
+                                width: width,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 25,
+                                ),
+                                child: Text(
+                                  '${_list[index].caption}',
+                                  style: theme.text14,
+                                ),
+                              ),
+                              Divider(),
+                            ],
                           ),
-                          child: Text(
-                            '${_list[index].caption}',
-                            style: theme.text14,
-                          ),
-                        ),
-                        Divider(),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
+                  ),
           );
   }
 
