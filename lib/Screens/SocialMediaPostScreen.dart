@@ -1,14 +1,35 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:parentpreneur/models/PostModel.dart';
 
 import '../main.dart';
 
 class SocialMediaPostScreen extends StatefulWidget {
+  PostModel postModel;
+  SocialMediaPostScreen({this.postModel});
   @override
   _SocialMediaPostScreenState createState() => _SocialMediaPostScreenState();
 }
 
 class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
+  bool isLiked(Map likeList) {
+    // print(likeList);
+    if (likeList == null) {
+      return false;
+    }
+    bool _isreturn = false;
+    likeList.forEach((key, value) {
+      if (key == FirebaseAuth.instance.currentUser.uid) {
+        //...
+        _isreturn = true;
+      }
+    });
+
+    return _isreturn;
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -38,13 +59,17 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                         ),
                         CircleAvatar(
                           radius: 20,
-                          backgroundImage: AssetImage('assets/unnamed.png'),
+                          backgroundImage: widget.postModel.imageURl == null
+                              ? AssetImage('assets/unnamed.png')
+                              : NetworkImage(widget.postModel.imageURl),
                         ),
                         SizedBox(
                           width: width * .05,
                         ),
                         Text(
-                          'Harsh Mehta',
+                          widget.postModel.name == null
+                              ? "Unknown"
+                              : '${widget.postModel.name}',
                           style: theme.text14bold,
                         ),
                       ],
@@ -59,7 +84,7 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                       // height: width * .75,
                       width: width,
                       child: Image.network(
-                        'https://assets.entrepreneur.com/content/3x2/2000/20200218153611-instagram.jpeg',
+                        '${widget.postModel.postURL}',
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -75,6 +100,11 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                           width: width * 0.05,
                         ),
                         LikeButton(
+                          onTap: (isLiked) {
+                            return onLikeButtonTapped(
+                                isLiked, widget.postModel);
+                          },
+                          isLiked: isLiked(widget.postModel.likeIDs),
                           size: 28,
                           circleColor: CircleColor(
                               start: Color(0xff00ddff), end: Color(0xff0099cc)),
@@ -89,7 +119,9 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                               size: 28,
                             );
                           },
-                          likeCount: 0,
+                          likeCount: widget.postModel.likes == null
+                              ? 0
+                              : widget.postModel.likes,
                           countBuilder: (int count, bool isLiked, String text) {
                             var color =
                                 isLiked ? theme.colorDefaultText : Colors.grey;
@@ -139,7 +171,7 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                         horizontal: 25,
                       ),
                       child: Text(
-                        'Here, caption will be displayed',
+                        '${widget.postModel.caption}',
                         style: theme.text14,
                       ),
                     ),
@@ -152,5 +184,52 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool> onLikeButtonTapped(bool isLiked, PostModel data) async {
+    print(isLiked);
+    print("------------------");
+    final likes = data.likes == null ? 0 : data.likes;
+    if (!isLiked) {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .child("likeIDs")
+          .update({
+        FirebaseAuth.instance.currentUser.uid: 1,
+      });
+
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .update({
+        "likes": likes + 1,
+      });
+
+      print(isLiked);
+    } else {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .child("likeIDs")
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .remove();
+      FirebaseDatabase.instance
+          .reference()
+          .child("Social Media Data")
+          .child(data.uid)
+          .child(data.postID)
+          .update({
+        "likes": likes - 1,
+      });
+    }
+
+    return !isLiked;
   }
 }

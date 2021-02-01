@@ -40,7 +40,6 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                 key != "imageURL" &&
                 key != "phone" &&
                 key != "userName") {
-              print(value['likeIDs']);
               _list.add(
                 PostModel(
                   caption: value['caption'],

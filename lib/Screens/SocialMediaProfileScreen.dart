@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
+import 'package:parentpreneur/models/PostModel.dart';
 import 'package:parentpreneur/models/UserModel.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 import 'editProfile.dart';
@@ -24,6 +27,7 @@ class SocialMediaProfileScreen extends StatefulWidget {
 class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
   bool _isMyFriend = false;
   UserInformation userData;
+  List<PostModel> _list = [];
   bool _isLoading = true;
 
   void profileFetch() async {
@@ -48,7 +52,36 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
           .child("Social Media Data")
           .child(widget.uid)
           .once();
+
+      if (socailMediaLife.value != null) {
+        socailMediaLife.value.forEach((key, value) {
+          if (key != "emial" &&
+              key != "imageURL" &&
+              key != "phone" &&
+              key != "userName") {
+            _list.add(
+              PostModel(
+                caption: value['caption'],
+                comments: value['comments'],
+                imageURl: socailMediaLife.value['imageURL'],
+                likes: value['likes'],
+                name: socailMediaLife.value['userName'],
+                postID: key,
+                postURL: value['image'],
+                uid: widget.uid,
+                likeIDs: value['likeIDs'],
+                dateTime: value['dateTime'] == null
+                    ? DateTime.now()
+                    : DateTime.parse(
+                        value['dateTime'],
+                      ),
+              ),
+            );
+          }
+        });
+      }
       setState(() {
+        print(_list.length);
         _isLoading = false;
       });
     } else {
@@ -231,41 +264,55 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                     height: 0,
                     color: theme.colorDefaultText,
                   ),
-                  Container(
-                    height: height * .5,
-                    // height: count % 3 == 0
-                    //     ? (count / 3) * (height * .16)
-                    //     : count % 3 == 2
-                    //         ? ((count + 1) / 3) * (height * .16)
-                    //         : ((count + 2) / 3) * (height * .16),
-                    width: width,
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 0,
-                        childAspectRatio: 1,
-                      ),
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Container(
+                  _list.isEmpty && widget.isme
+                      ? Center(
                           child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => SocialMediaPostScreen(),
+                              onTap: () {
+                                Provider.of<BarIndexChange>(context,
+                                        listen: false)
+                                    .setBarindex(1);
+                              },
+                              child: Text(
+                                  "Create Post Now!\nClick here to create!")),
+                        )
+                      : _list.isEmpty && !widget.isme
+                          ? Center(
+                              child: Text("No Post Available!"),
+                            )
+                          : Container(
+                              height: height * .5,
+                              width: width,
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 0,
+                                  mainAxisSpacing: 0,
+                                  childAspectRatio: 1,
                                 ),
-                              );
-                            },
-                            child: Image.network(
-                              'https://assets.entrepreneur.com/content/3x2/2000/20200218153611-instagram.jpeg',
-                              fit: BoxFit.cover,
+                                itemCount: _list.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SocialMediaPostScreen(
+                                              postModel: _list[index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Image.network(
+                                        '${_list[index].postURL}',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
                   SizedBox(
                     height: height * 1,
                   ),
