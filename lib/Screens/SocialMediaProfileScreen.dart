@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
 import 'package:parentpreneur/models/PostModel.dart';
 import 'package:parentpreneur/models/UserModel.dart';
@@ -214,9 +215,11 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                         )
                       : _isMyFriend
                           ? RaisedButton(
+                              color: theme.colorCompanion,
                               onPressed: () {
                                 final snackBar = SnackBar(
-                                  content: Text('You are start following'),
+                                  content: Text(
+                                      'You removed ${userData.name.toUpperCase()}'),
                                   duration: Duration(seconds: 2),
                                 );
                                 FirebaseDatabase.instance
@@ -232,12 +235,17 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                   _isMyFriend = false;
                                 });
                               },
-                              child: Text("UnFollow"),
+                              child: Text(
+                                "Unfollow",
+                                style: theme.text14boldWhite,
+                              ),
                             )
                           : RaisedButton(
+                              color: theme.colorPrimary,
                               onPressed: () {
                                 final snackBar = SnackBar(
-                                  content: Text('You are start following'),
+                                  content: Text(
+                                      'You started following ${userData.name.toUpperCase()}'),
                                   duration: Duration(seconds: 2),
                                 );
                                 FirebaseDatabase.instance
@@ -255,7 +263,10 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                   _isMyFriend = true;
                                 });
                               },
-                              child: Text("Follow"),
+                              child: Text(
+                                "Follow",
+                                style: theme.text14boldWhite,
+                              ),
                             ),
                   SizedBox(
                     height: height * .05,
@@ -276,8 +287,28 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                   "Create Post Now!\nClick here to create!")),
                         )
                       : _list.isEmpty && !widget.isme
-                          ? Center(
-                              child: Text("No Post Available!"),
+                          ? Container(
+                              height: height * .4,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    MdiIcons.cameraImage,
+                                    size: 60,
+                                    color: theme.colorDefaultText,
+                                  ),
+                                  SizedBox(
+                                    height: height * .01,
+                                  ),
+                                  Text(
+                                    "No Posts Yet!",
+                                    style: theme.text16,
+                                  ),
+                                  SizedBox(
+                                    height: height * .03,
+                                  ),
+                                ],
+                              ),
                             )
                           : Container(
                               height: height * .5,

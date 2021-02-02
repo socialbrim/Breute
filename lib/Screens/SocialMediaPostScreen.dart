@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/models/PostModel.dart';
 
 import '../main.dart';
@@ -40,6 +41,17 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
           title: Text('Post'),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: IconButton(
+                  icon: Icon(
+                    MdiIcons.delete,
+                    size: 28,
+                  ),
+                  onPressed: () {}),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(

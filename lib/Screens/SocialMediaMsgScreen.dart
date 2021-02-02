@@ -99,7 +99,23 @@ class _SocialMediaMsgScreenState extends State<SocialMediaMsgScreen> {
                         ),
                       );
                     },
-                    title: Text(_allFriends[index].name),
+                    title: Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .05,
+                        ),
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundImage: _allFriends[index].imageUrl == null
+                              ? AssetImage('assets/unnamed.png')
+                              : NetworkImage(_allFriends[index].imageUrl),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .05,
+                        ),
+                        Text(_allFriends[index].name),
+                      ],
+                    ),
                   ),
                 ),
         ));

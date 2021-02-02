@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/Screens/SocialMediaProfileScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
 import 'package:profanity_filter/profanity_filter.dart';
@@ -146,7 +147,19 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
           // backgroundColor: Colors.blue[900],
           backgroundColor: theme.colorBackground,
           appBar: AppBar(
-            title: Text('Chat with us'),
+            // title: Text('Chat'),
+            title: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SocialMediaProfileScreen(
+                        uid: widget.data.id,
+                        isme: false,
+                      ),
+                    ),
+                  );
+                },
+                child: Text('${widget.data.name}')),
           ),
           body: Column(
             children: [
@@ -159,10 +172,13 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                   // mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * .75,
+                      width: MediaQuery.of(context).size.width * .77,
                       child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        padding: EdgeInsets.only(
+                          left: 15,
+                          top: 10,
+                          bottom: 10,
+                        ),
                         child: TextField(
                           style: theme.text16Primary,
                           controller: messageController,
@@ -269,13 +285,13 @@ class MessageTile extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(
-                                  name == null ? "Anonymous" : '$name',
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                // Text(
+                                //   name == null ? "Anonymous" : '$name',
+                                //   style: GoogleFonts.roboto(
+                                //       fontWeight: FontWeight.bold),
+                                // ),
                                 Container(
-                                  width: width * 0.5,
+                                  width: width * 0.63,
                                   child: Text(
                                     message,
                                     textAlign: isSendByMe
@@ -292,37 +308,37 @@ class MessageTile extends StatelessWidget {
                             SizedBox(
                               width: width * 0.03,
                             ),
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: imageURL == null
-                                  ? AssetImage("assets/unnamed.png")
-                                  : NetworkImage(imageURL),
-                            ),
+                            // CircleAvatar(
+                            //   radius: 20,
+                            //   backgroundImage: imageURL == null
+                            //       ? AssetImage("assets/unnamed.png")
+                            //       : NetworkImage(imageURL),
+                            // ),
                           ],
                         )
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: imageURL == null
-                                  ? AssetImage("assets/unnamed.png")
-                                  : NetworkImage(imageURL),
-                            ),
-                            SizedBox(
-                              width: width * 0.03,
-                            ),
+                            // CircleAvatar(
+                            //   radius: 20,
+                            //   backgroundImage: imageURL == null
+                            //       ? AssetImage("assets/unnamed.png")
+                            //       : NetworkImage(imageURL),
+                            // ),
+                            // SizedBox(
+                            //   width: width * 0.03,
+                            // ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  name == null ? "Anonymous" : "$name",
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                // Text(
+                                //   name == null ? "Anonymous" : "$name",
+                                //   style: GoogleFonts.roboto(
+                                //       fontWeight: FontWeight.bold),
+                                // ),
                                 Container(
-                                  width: width * 0.5,
+                                  width: width * 0.63,
                                   child: Text(
                                     message,
                                     textAlign: isSendByMe
