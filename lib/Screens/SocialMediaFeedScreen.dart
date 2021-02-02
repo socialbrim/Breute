@@ -74,6 +74,10 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
           _isLoading = false;
         });
       });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

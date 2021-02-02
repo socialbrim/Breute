@@ -5,11 +5,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'dart:convert';
 import 'dart:io';
 import 'package:parentpreneur/Screens/SocialMediaHomeScreen.dart';
-
 import 'package:storage_path/storage_path.dart';
 import '../models/creatPost.dart';
 import './SocialMediaCreateCaption.dart';
-
 import '../main.dart';
 
 class SocialMediaCreatePost extends StatefulWidget {
