@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:parentpreneur/Screens/Payments.dart';
+import './Providers/feedProvider.dart';
 
 import 'package:provider/provider.dart';
 
@@ -36,7 +36,9 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => MyPlanProvider(),
         ),
-        // MyPlanProvider
+        ChangeNotifierProvider(
+          create: (_) => FeedProvider(),
+        ),
       ],
       child: MyApp(),
     ),

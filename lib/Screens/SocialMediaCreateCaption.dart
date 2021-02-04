@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:parentpreneur/Providers/User.dart';
+
 import '../Providers/socialmedialBarindex.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -39,6 +41,17 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
             InkWell(
               onTap: () async {
                 //...
+                if (caption == null || caption == "") {
+                  Fluttertoast.showToast(msg: "Please enter correct Caption");
+                  return;
+                }
+                final user = Provider.of<UserProvider>(context).userInformation;
+                if (user.name == null) {
+                  Fluttertoast.showToast(
+                      msg: "Please complete your profile first");
+
+                  return;
+                }
                 try {
                   File file = File(widget.image);
                   final compFile = await compressImage(file);
