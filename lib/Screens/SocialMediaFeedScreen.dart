@@ -3,7 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:pos_pinch_zoom_image/pos_pinch_zoom_image.dart';
 import './SocialMediaMsgScreen.dart';
 import 'SocialMediaCommentScreen.dart';
 import '../Screens/SearchScreen.dart';
@@ -224,46 +223,34 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                   height: 0,
                                 ),
                                 Container(
-                                    width: width,
-                                    child: PinchZoomImage(
-                                      image: Image.network(
-                                        '${_list[index].postURL}',
-                                        fit: BoxFit.contain,
-                                        loadingBuilder: (BuildContext context,
-                                            Widget child,
-                                            ImageChunkEvent loadingProgress) {
-                                          if (loadingProgress == null)
-                                            return child;
-                                          return Center(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 75),
-                                              child: CircularProgressIndicator(
-                                                backgroundColor: Colors.black,
-                                                value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                    ? loadingProgress
-                                                            .cumulativeBytesLoaded /
-                                                        loadingProgress
-                                                            .expectedTotalBytes
-                                                    : null,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      zoomedBackgroundColor:
-                                          Color.fromRGBO(240, 240, 240, 1.0),
-                                      hideStatusBarWhileZooming: true,
-                                      onZoomStart: () {
-                                        print('Zoom started');
-                                      },
-                                      onZoomEnd: () {
-                                        print('Zoom finished');
-                                      },
-                                    )),
+                                  width: width,
+                                  child: Image.network(
+                                    '${_list[index].postURL}',
+                                    fit: BoxFit.contain,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 75),
+                                          child: CircularProgressIndicator(
+                                            backgroundColor: Colors.black,
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes
+                                                : null,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
                                 Divider(
                                   height: 0,
                                 ),

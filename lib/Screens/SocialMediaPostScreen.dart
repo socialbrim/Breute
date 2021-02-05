@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/models/PostModel.dart';
-import 'package:pos_pinch_zoom_image/pos_pinch_zoom_image.dart';
 
 import '../main.dart';
 
@@ -97,20 +96,9 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                     Container(
                       // height: width * .75,
                       width: width,
-                      child: PinchZoomImage(
-                        image: Image.network(
-                          '${widget.postModel.postURL}',
-                          fit: BoxFit.contain,
-                        ),
-                        zoomedBackgroundColor:
-                            Color.fromRGBO(240, 240, 240, 1.0),
-                        hideStatusBarWhileZooming: true,
-                        onZoomStart: () {
-                          print('Zoom started');
-                        },
-                        onZoomEnd: () {
-                          print('Zoom finished');
-                        },
+                      child: Image.network(
+                        '${widget.postModel.postURL}',
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Divider(

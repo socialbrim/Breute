@@ -34,7 +34,7 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
     var width = MediaQuery.of(context).size.width;
     List<Widget> _list = [];
 
-    if (data.comments != null || data.comments.isNotEmpty) {
+    if (data.comments != null) {
       data.comments.forEach((key, value) {
         _list.add(Container(
           // height: height * ,
