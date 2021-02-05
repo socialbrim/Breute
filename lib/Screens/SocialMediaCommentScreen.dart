@@ -95,7 +95,7 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: height * .03,
+              height: height * .025,
             ),
             Row(
               children: [
@@ -147,14 +147,14 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
               height: height * .02,
             ),
             Container(
-                height: height * .63,
+                height: height * .61,
                 child: ListView(
                   cacheExtent: 999,
                   children: parseData(),
                 )),
             Container(
               width: width,
-              padding: EdgeInsets.only(top: 5, bottom: 10, left: 13, right: 13),
+              padding: EdgeInsets.only(top: 5, bottom: 15, left: 13, right: 13),
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
                 decoration: BoxDecoration(
