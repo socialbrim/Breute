@@ -555,6 +555,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  pos_pinch_zoom_image:
+    dependency: "direct main"
+    description:
+      name: pos_pinch_zoom_image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   process:
     dependency: transitive
     description:

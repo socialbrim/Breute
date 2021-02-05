@@ -112,12 +112,39 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
         _isMyFriend = true;
       }
 
+      // ignore: unused_local_variable
       final socailMediaLife = await FirebaseDatabase.instance
           .reference()
           .child("Social Media Data")
           .child(widget.uid)
           .once();
-
+      if (socailMediaLife.value != null) {
+        socailMediaLife.value.forEach((key, value) {
+          if (key != "emial" &&
+              key != "imageURL" &&
+              key != "phone" &&
+              key != "userName") {
+            _list.add(
+              PostModel(
+                caption: value['caption'],
+                comments: value['comments'],
+                imageURl: socailMediaLife.value['imageURL'],
+                likes: value['likes'],
+                name: socailMediaLife.value['userName'],
+                postID: key,
+                postURL: value['image'],
+                uid: widget.uid,
+                likeIDs: value['likeIDs'],
+                dateTime: value['dateTime'] == null
+                    ? DateTime.now()
+                    : DateTime.parse(
+                        value['dateTime'],
+                      ),
+              ),
+            );
+          }
+        });
+      }
       setState(() {
         _isLoading = false;
       });
@@ -235,6 +262,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                       .child(widget.uid)
                                       .remove();
                                   _scaffoldKey.currentState
+                                      // ignore: deprecated_member_use
                                       .showSnackBar(snackBar);
                                   setState(() {
                                     _isMyFriend = false;
@@ -263,6 +291,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                   });
 
                                   _scaffoldKey.currentState
+                                      // ignore: deprecated_member_use
                                       .showSnackBar(snackBar);
                                   setState(() {
                                     _isMyFriend = true;
@@ -329,21 +358,24 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                   ),
                                   itemCount: _list.length,
                                   itemBuilder: (context, index) {
-                                    return Container(
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SocialMediaPostScreen(
-                                                postModel: _list[index],
+                                    return InkWell(
+                                      onLongPress: () {},
+                                      child: Container(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SocialMediaPostScreen(
+                                                  postModel: _list[index],
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        child: Image.network(
-                                          '${_list[index].postURL}',
-                                          fit: BoxFit.cover,
+                                            );
+                                          },
+                                          child: Image.network(
+                                            '${_list[index].postURL}',
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     );

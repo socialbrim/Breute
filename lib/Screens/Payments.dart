@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/main.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import '../models/PlanDetail.dart';
 
+// ignore: must_be_immutable
 class Payments extends StatefulWidget {
   PlanName plandetails;
   Payments({this.plandetails});
@@ -18,10 +18,12 @@ class Payments extends StatefulWidget {
 
 class _PaymentsState extends State<Payments> {
   Token _paymentToken;
+  // ignore: unused_field
   PaymentMethod _paymentMethod;
-  String _error;
+  // ignore: unused_field
   final String _currentSecret =
       "sk_test_51IAWW6HpwMJhGfYrD1LC6dZb2cZ7RbMPFHHlqql2XbfDaP1lI8OTEZq0x1QrsctJUI2xtVjode9POKOe8trBNDqM00wzU3Iovi";
+  // ignore: unused_field
   Source _source;
 
   ScrollController _controller = ScrollController();
@@ -49,9 +51,7 @@ class _PaymentsState extends State<Payments> {
     _scaffoldKey.currentState
         // ignore: deprecated_member_use
         .showSnackBar(SnackBar(content: Text(error.toString())));
-    setState(() {
-      _error = error.toString();
-    });
+    setState(() {});
   }
 
   void successfulPaid(String transactionID) {
@@ -199,6 +199,7 @@ class _PaymentsState extends State<Payments> {
                                 print(paymentMethod.card.brand);
                                 print(paymentMethod.type);
 
+                                // ignore: deprecated_member_use
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                     content:
                                         Text('Received ${paymentMethod.id}')));

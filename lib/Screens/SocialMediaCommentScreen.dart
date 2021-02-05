@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../Providers/User.dart';
 
+// ignore: must_be_immutable
 class SocialMediaCommentScreen extends StatefulWidget {
   PostModel post;
   SocialMediaCommentScreen({
@@ -28,6 +29,7 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
   }
 
   List<Widget> parseData() {
+    // ignore: unused_local_variable
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     List<Widget> _list = [];

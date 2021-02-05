@@ -12,6 +12,7 @@ import 'package:profanity_filter/profanity_filter.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 
+// ignore: must_be_immutable
 class SocialMediaChat extends StatefulWidget {
   String uid;
   UserInformation data;

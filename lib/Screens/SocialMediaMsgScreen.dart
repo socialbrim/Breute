@@ -81,42 +81,64 @@ class _SocialMediaMsgScreenState extends State<SocialMediaMsgScreen> {
 
   void bottomSheet() {
     _scaffoldKey.currentState.showBottomSheet((context) => Container(
+          height: MediaQuery.of(context).size.height * 0.5,
           color: Colors.white,
           child: _allFriends.isEmpty
               ? Center(
                   child: Text("Make New Friend Now"),
                 )
-              : ListView.builder(
-                  itemCount: _allFriends.length,
-                  itemBuilder: (context, index) => ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => SocialMediaChat(
-                            uid: _allFriends[index].id,
-                            data: _allFriends[index],
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back),
+                            onPressed: () => Navigator.of(context).pop(),
                           ),
                         ),
-                      );
-                    },
-                    title: Row(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * .05,
-                        ),
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundImage: _allFriends[index].imageUrl == null
-                              ? AssetImage('assets/unnamed.png')
-                              : NetworkImage(_allFriends[index].imageUrl),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * .05,
-                        ),
-                        Text(_allFriends[index].name),
+                        Text("Chat With?")
                       ],
                     ),
-                  ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: ListView.builder(
+                        itemCount: _allFriends.length,
+                        itemBuilder: (context, index) => ListTile(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => SocialMediaChat(
+                                  uid: _allFriends[index].id,
+                                  data: _allFriends[index],
+                                ),
+                              ),
+                            );
+                          },
+                          title: Row(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .05,
+                              ),
+                              CircleAvatar(
+                                radius: 25,
+                                backgroundImage: _allFriends[index].imageUrl ==
+                                        null
+                                    ? AssetImage('assets/unnamed.png')
+                                    : NetworkImage(_allFriends[index].imageUrl),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .05,
+                              ),
+                              Text(_allFriends[index].name),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
         ));
   }

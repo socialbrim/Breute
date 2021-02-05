@@ -26,6 +26,7 @@ class SocialMediaCreateCaption extends StatefulWidget {
 
 class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
   String caption;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,72 +38,78 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
           title: Text('Caption'),
-          actions: [
-            InkWell(
-              onTap: () async {
-                //...
-                if (caption == null || caption == "") {
-                  Fluttertoast.showToast(msg: "Please enter correct Caption");
-                  return;
-                }
-                final user = Provider.of<UserProvider>(context).userInformation;
-                if (user.name == null) {
-                  Fluttertoast.showToast(
-                      msg: "Please complete your profile first");
-
-                  return;
-                }
-                try {
-                  File file = File(widget.image);
-                  final compFile = await compressImage(file);
-                  final key = FirebaseDatabase.instance
-                      .reference()
-                      .child("Social Media Data")
-                      .child(FirebaseAuth.instance.currentUser.uid)
-                      .push()
-                      .key;
-                  final ref = FirebaseStorage.instance
-                      .ref()
-                      .child("CustomerSocialMedial")
-                      .child("${FirebaseAuth.instance.currentUser.uid}")
-                      .child("$key" + ".jpg");
-                  await ref.putFile(compFile);
-
-                  final vals = await ref.getDownloadURL();
-
-                  FirebaseDatabase.instance
-                      .reference()
-                      .child("Social Media Data")
-                      .child(FirebaseAuth.instance.currentUser.uid)
-                      .child(key)
-                      .update({
-                    "image": vals,
-                    "caption": caption,
-                    "dateTime": DateTime.now().toIso8601String(),
-                  });
-                  Fluttertoast.showToast(msg: "Post uploaded successfully");
-
-                  Navigator.of(context).pop();
-                  Provider.of<BarIndexChange>(context, listen: false)
-                      .setBarindex(0);
-                } catch (e) {
-                  Fluttertoast.showToast(msg: "Something went wrong");
-                  Navigator.of(context).pop();
-                  Provider.of<BarIndexChange>(context, listen: false)
-                      .setBarindex(0);
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * .2,
-                child: Text(
-                  'Next >',
-                  style: theme.text16Primary,
-                ),
-              ),
-            )
-          ],
         ),
+        bottomNavigationBar: _isLoading
+            ? Container(
+                height: 50,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.black,
+                  ),
+                ),
+              )
+            : RaisedButton(
+                child: Text("Upload Post"),
+                onPressed: () async {
+                  if (caption == null || caption == "") {
+                    Fluttertoast.showToast(msg: "Please enter correct Caption");
+                    return;
+                  }
+                  final user = Provider.of<UserProvider>(context, listen: false)
+                      .userInformation;
+                  if (user.name == null) {
+                    Fluttertoast.showToast(
+                        msg: "Please complete your profile first");
+                    return;
+                  }
+                  try {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    File file = File(widget.image);
+                    final compFile = await compressImage(file);
+                    final key = FirebaseDatabase.instance
+                        .reference()
+                        .child("Social Media Data")
+                        .child(FirebaseAuth.instance.currentUser.uid)
+                        .push()
+                        .key;
+                    final ref = FirebaseStorage.instance
+                        .ref()
+                        .child("CustomerSocialMedial")
+                        .child("${FirebaseAuth.instance.currentUser.uid}")
+                        .child("$key" + ".jpg");
+                    await ref.putFile(compFile);
+                    final vals = await ref.getDownloadURL();
+                    FirebaseDatabase.instance
+                        .reference()
+                        .child("Social Media Data")
+                        .child(FirebaseAuth.instance.currentUser.uid)
+                        .child(key)
+                        .update({
+                      "image": vals,
+                      "caption": caption,
+                      "dateTime": DateTime.now().toIso8601String(),
+                    });
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Fluttertoast.showToast(msg: "Post uploaded successfully");
+
+                    Navigator.of(context).pop();
+                    Provider.of<BarIndexChange>(context, listen: false)
+                        .setBarindex(0);
+                  } catch (e) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Fluttertoast.showToast(msg: "Something went wrong");
+                    Navigator.of(context).pop();
+                    Provider.of<BarIndexChange>(context, listen: false)
+                        .setBarindex(0);
+                  }
+                },
+              ),
         body: SingleChildScrollView(
           child: Column(
             children: [

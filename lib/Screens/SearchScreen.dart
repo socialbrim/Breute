@@ -70,6 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    // ignore: unused_local_variable
     var height = MediaQuery.of(context).size.height;
 
     return SafeArea(
