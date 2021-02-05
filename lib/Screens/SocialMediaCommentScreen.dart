@@ -108,7 +108,9 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                   children: [
                     CircleAvatar(
                       radius: 25,
-                      backgroundImage: AssetImage('assets/unnamed.png'),
+                      backgroundImage: widget.post.imageURl == null
+                          ? AssetImage('assets/unnamed.png')
+                          : NetworkImage(widget.post.imageURl),
                     ),
                   ],
                 ),
@@ -119,13 +121,15 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Harsh Mehta',
+                      widget.post.name == null
+                          ? "Unknown"
+                          : '${widget.post.name.toUpperCase()}',
                       style: theme.text16bold,
                     ),
                     Container(
                       width: width * .7,
                       child: Text(
-                        'Here, caption will be displayed',
+                        '${widget.post.caption}',
                         style: theme.text14,
                         textAlign: TextAlign.start,
                       ),
@@ -216,7 +220,9 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                             }
                           });
                           comment.clear();
-                          setState(() {});
+                          setState(() {
+                            FocusScope.of(context).unfocus();
+                          });
                         } catch (e) {
                           print(e);
                           Fluttertoast.showToast(msg: e.toString());

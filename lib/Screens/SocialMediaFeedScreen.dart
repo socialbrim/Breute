@@ -5,7 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/SocialMediaPostScreen.dart';
+import 'package:parentpreneur/models/UserModel.dart';
 import './SocialMediaMsgScreen.dart';
 import 'SocialMediaCommentScreen.dart';
 import '../Screens/SearchScreen.dart';
@@ -88,8 +90,10 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
     }
   }
 
+  UserInformation data;
   @override
   void didChangeDependencies() {
+    data = Provider.of<UserProvider>(context).userInformation;
     _list = Provider.of<FeedProvider>(context).getData;
     super.didChangeDependencies();
   }
@@ -182,20 +186,28 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                       color: Colors.blueGrey, fontSize: 14),
                                 ),
                               ),
-                              Text(
-                                'My Name !',
-                                style: theme.text20bold,
+                              Container(
+                                width: width * .5,
+                                child: Text(
+                                  data.name == null
+                                      ? 'My Name !'
+                                      : "${data.name.split(" ")[0].toUpperCase()} !",
+                                  style: theme.text20bold,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),
                           SizedBox(
-                            width: width * .3,
+                            width: width * .1,
                           ),
                           Card(
                             shape: CircleBorder(),
                             elevation: 10,
                             child: CircleAvatar(
-                              backgroundImage: AssetImage('assets/unnamed.png'),
+                              backgroundImage: data.imageUrl == null
+                                  ? AssetImage('assets/unnamed.png')
+                                  : NetworkImage(data.imageUrl),
                               radius: 38,
                             ),
                           )
@@ -285,7 +297,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                           ),
                                           Container(
                                             width: width,
-                                            height: height * .4,
+                                            // height: height * .4,
                                             child: Image.network(
                                               '${_list[index].postURL}',
                                               fit: BoxFit.cover,
@@ -467,6 +479,9 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                 },
                               ),
                             ),
+                      SizedBox(
+                        height: height * .02,
+                      ),
                     ],
                   ),
                 )),
@@ -474,8 +489,6 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked, PostModel data) async {
-    print(isLiked);
-    print("------------------");
     final likes = data.likes == null ? 0 : data.likes;
     if (!isLiked) {
       FirebaseDatabase.instance

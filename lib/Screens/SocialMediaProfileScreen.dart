@@ -30,6 +30,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
   UserInformation userData;
   List<PostModel> _list = [];
   bool _isLoading = true;
+  // int lengthofFollowing = 0;
 
   void profileFetch() async {
     if (widget.isme) {
@@ -329,7 +330,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                     height: height * .01,
                                   ),
                                   Text(
-                                    '69',
+                                    _list != null ? '${_list.length}' : "0",
                                     style: theme.text18bold,
                                   ),
                                 ],

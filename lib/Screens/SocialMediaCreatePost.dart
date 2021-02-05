@@ -80,13 +80,13 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
           actions: [
             InkWell(
               onTap: () async {
-                final data = await ImagesPicker.pick();
-                print(data.first.path);
+                // final data = await ImagesPicker.pick();
+                // print(data.first.path);
 
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => SocialMediaCreateCaption(
-                      image: data.first.path, // image,
+                      image: image, // image,
                     ),
                   ),
                 );

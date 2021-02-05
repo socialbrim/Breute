@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/models/PostModel.dart';
-
+import './SocialMediaCommentScreen.dart';
 import '../main.dart';
 
 // ignore: must_be_immutable
@@ -169,9 +169,20 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                         SizedBox(
                           width: width * 0.02,
                         ),
-                        Text(
-                          '19 Comments',
-                          style: theme.text14,
+                        InkWell(
+                          onTap: () {
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => SocialMediaCommentScreen(
+                            //       post: widget.postModel,
+                            //     ),
+                            //   ),
+                            // );
+                          },
+                          child: Text(
+                            '19 Comments',
+                            style: theme.text14,
+                          ),
                         ),
                       ],
                     ),
@@ -200,8 +211,6 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked, PostModel data) async {
-    print(isLiked);
-    print("------------------");
     final likes = data.likes == null ? 0 : data.likes;
     if (!isLiked) {
       FirebaseDatabase.instance
@@ -222,8 +231,6 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
           .update({
         "likes": likes + 1,
       });
-
-      print(isLiked);
     } else {
       FirebaseDatabase.instance
           .reference()
