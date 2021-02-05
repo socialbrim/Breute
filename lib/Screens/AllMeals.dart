@@ -185,7 +185,7 @@ class _AllMealsState extends State<AllMeals> {
                   },
                   icon: Icon(
                     Icons.search,
-                    color: Colors.black,
+                    color: theme.colorDefaultText,
                   ),
                 ),
               ),
@@ -309,7 +309,7 @@ class _AllMealsState extends State<AllMeals> {
                     },
                     icon: Icon(
                       MdiIcons.dotsVertical,
-                      color: Colors.black,
+                      color: theme.colorBackground,
                     ),
                     itemBuilder: (_) => [
                       PopupMenuItem(

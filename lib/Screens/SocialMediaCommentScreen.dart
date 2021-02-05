@@ -159,7 +159,9 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
                 decoration: BoxDecoration(
-                  border: Border.all(),
+                  border: Border.all(
+                    color: theme.colorDefaultText,
+                  ),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: TextFormField(
@@ -222,11 +224,11 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                       },
                       icon: Icon(
                         Icons.send,
-                        color: Colors.black,
+                        color: theme.colorDefaultText,
                       ),
                     ),
                     hintText: 'Add a Comment',
-                    disabledBorder: InputBorder.none,
+                    border: InputBorder.none,
                   ),
                   controller: comment,
                 ),

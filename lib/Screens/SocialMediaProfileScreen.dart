@@ -182,126 +182,202 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: height * 0.03,
-                    ),
-                    Center(
-                      child: CircleAvatar(
-                        radius: 70,
-                        backgroundImage: userData.imageUrl == null
-                            ? AssetImage('assets/unnamed.png')
-                            : NetworkImage(userData.imageUrl),
+                    Card(
+                      margin: EdgeInsets.all(0),
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: height * .02,
-                    ),
-                    Center(
-                      child: Text(
-                        userData.name == null
-                            ? "Unknown"
-                            : '${userData.name.toUpperCase()}',
-                        style: theme.text20boldPrimary,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * .01,
-                    ),
-                    Container(
-                      width: width,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 25,
-                      ),
-                      child: Text(
-                        'Here, Bio will be displayed.',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * .02,
-                    ),
-                    widget.isme
-                        ? InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => EditProfile(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: width * .6,
-                              height: height * .04,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: theme.colorGrey,
-                                ),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Edit Profile',
-                                style: theme.text14bold,
-                              ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: height * 0.03,
+                          ),
+                          Center(
+                            child: CircleAvatar(
+                              radius: 70,
+                              backgroundImage: userData.imageUrl == null
+                                  ? AssetImage('assets/unnamed.png')
+                                  : NetworkImage(userData.imageUrl),
                             ),
-                          )
-                        : _isMyFriend
-                            ? RaisedButton(
-                                color: theme.colorCompanion,
-                                onPressed: () {
-                                  final snackBar = SnackBar(
-                                    content: Text(
-                                        'You removed ${userData.name.toUpperCase()}'),
-                                    duration: Duration(seconds: 2),
-                                  );
-                                  FirebaseDatabase.instance
-                                      .reference()
-                                      .child("MyFriends")
-                                      .child(
-                                          FirebaseAuth.instance.currentUser.uid)
-                                      .child(widget.uid)
-                                      .remove();
-                                  _scaffoldKey.currentState
-                                      // ignore: deprecated_member_use
-                                      .showSnackBar(snackBar);
-                                  setState(() {
-                                    _isMyFriend = false;
-                                  });
-                                },
-                                child: Text(
-                                  "Unfollow",
-                                  style: theme.text14boldWhite,
-                                ),
-                              )
-                            : RaisedButton(
-                                color: theme.colorPrimary,
-                                onPressed: () {
-                                  final snackBar = SnackBar(
-                                    content: Text(
-                                        'You started following ${userData.name.toUpperCase()}'),
-                                    duration: Duration(seconds: 2),
-                                  );
-                                  FirebaseDatabase.instance
-                                      .reference()
-                                      .child("MyFriends")
-                                      .child(
-                                          FirebaseAuth.instance.currentUser.uid)
-                                      .update({
-                                    widget.uid: "true",
-                                  });
+                          ),
+                          SizedBox(
+                            height: height * .02,
+                          ),
+                          Center(
+                            child: Text(
+                              userData.name == null
+                                  ? "Unknown"
+                                  : '${userData.name.toUpperCase()}',
+                              style: theme.text20boldPrimary,
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Container(
+                            width: width,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 25,
+                            ),
+                            child: Text(
+                              'Here, Bio will be displayed.',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * .02,
+                          ),
+                          widget.isme
+                              ? InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => EditProfile(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: width * .6,
+                                    height: height * .04,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: theme.colorGrey,
+                                      ),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Edit Profile',
+                                      style: theme.text14bold,
+                                    ),
+                                  ),
+                                )
+                              : _isMyFriend
+                                  ? RaisedButton(
+                                      color: theme.colorCompanion,
+                                      onPressed: () {
+                                        final snackBar = SnackBar(
+                                          content: Text(
+                                              'You removed ${userData.name.toUpperCase()}'),
+                                          duration: Duration(seconds: 2),
+                                        );
+                                        FirebaseDatabase.instance
+                                            .reference()
+                                            .child("MyFriends")
+                                            .child(FirebaseAuth
+                                                .instance.currentUser.uid)
+                                            .child(widget.uid)
+                                            .remove();
+                                        _scaffoldKey.currentState
+                                            // ignore: deprecated_member_use
+                                            .showSnackBar(snackBar);
+                                        setState(() {
+                                          _isMyFriend = false;
+                                        });
+                                      },
+                                      child: Text(
+                                        "Unfollow",
+                                        style: theme.text14boldWhite,
+                                      ),
+                                    )
+                                  : RaisedButton(
+                                      color: theme.colorPrimary,
+                                      onPressed: () {
+                                        final snackBar = SnackBar(
+                                          content: Text(
+                                              'You started following ${userData.name.toUpperCase()}'),
+                                          duration: Duration(seconds: 2),
+                                        );
+                                        FirebaseDatabase.instance
+                                            .reference()
+                                            .child("MyFriends")
+                                            .child(FirebaseAuth
+                                                .instance.currentUser.uid)
+                                            .update({
+                                          widget.uid: "true",
+                                        });
 
-                                  _scaffoldKey.currentState
-                                      // ignore: deprecated_member_use
-                                      .showSnackBar(snackBar);
-                                  setState(() {
-                                    _isMyFriend = true;
-                                  });
-                                },
-                                child: Text(
-                                  "Follow",
-                                  style: theme.text14boldWhite,
-                                ),
+                                        _scaffoldKey.currentState
+                                            // ignore: deprecated_member_use
+                                            .showSnackBar(snackBar);
+                                        setState(() {
+                                          _isMyFriend = true;
+                                        });
+                                      },
+                                      child: Text(
+                                        "Follow",
+                                        style: theme.text14boldWhite,
+                                      ),
+                                    ),
+                          SizedBox(
+                            height: height * .05,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    'Photos',
+                                    style: theme.text16,
+                                  ),
+                                  SizedBox(
+                                    height: height * .01,
+                                  ),
+                                  Text(
+                                    '69',
+                                    style: theme.text18bold,
+                                  ),
+                                ],
                               ),
+                              SizedBox(
+                                width: width * .05,
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Followers',
+                                    style: theme.text16,
+                                  ),
+                                  SizedBox(
+                                    height: height * .01,
+                                  ),
+                                  Text(
+                                    '350',
+                                    style: theme.text18bold,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: width * .05,
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Follows',
+                                    style: theme.text16,
+                                  ),
+                                  SizedBox(
+                                    height: height * .01,
+                                  ),
+                                  Text(
+                                    '29',
+                                    style: theme.text18bold,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .06,
+                          ),
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: height * .05,
                     ),

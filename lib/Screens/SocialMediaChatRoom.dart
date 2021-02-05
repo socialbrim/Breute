@@ -149,6 +149,7 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
           backgroundColor: theme.colorBackground,
           appBar: AppBar(
             // title: Text('Chat'),
+            // backgroundColor: theme.colorCompanion,
             title: InkWell(
                 onTap: () {
                   Navigator.of(context).push(
@@ -162,69 +163,79 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                 },
                 child: Text('${widget.data.name}')),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: chatMessageList(),
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/chatBG.png",
+                ),
+                fit: BoxFit.cover,
               ),
-              Container(
-                color: theme.colorPrimary,
-                child: Row(
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * .77,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 15,
-                          top: 10,
-                          bottom: 10,
-                        ),
-                        child: TextField(
-                          style: theme.text16Primary,
-                          controller: messageController,
-                          onChanged: (val) {
-                            setState(() {});
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10),
-                            hintText: 'Start Typing....',
-                            hintStyle: theme.text16Primary,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: chatMessageList(),
+                ),
+                Container(
+                  color: theme.colorPrimary,
+                  child: Row(
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * .77,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 15,
+                            top: 10,
+                            bottom: 10,
+                          ),
+                          child: TextField(
+                            style: theme.text16Primary,
+                            controller: messageController,
+                            onChanged: (val) {
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              hintText: 'Start Typing....',
+                              hintStyle: theme.text16Primary,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              filled: true,
+                              fillColor: theme.colorBackgroundDialog,
                             ),
-                            filled: true,
-                            fillColor: Colors.white,
                           ),
                         ),
                       ),
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {
-                        if (messageController.text == null ||
-                            messageController.text == "") {
-                          Fluttertoast.showToast(
-                              msg: "Write some message!",
-                              gravity: ToastGravity.BOTTOM);
-                          return;
-                        }
-                        return sendMessage();
-                      },
-                      child: messageController.text == null ||
-                              messageController.text == ""
-                          ? Text(
-                              'Type',
-                              style: theme.text16boldWhite,
-                            )
-                          : Icon(
-                              Icons.send,
-                              color: theme.colorBackground,
-                            ),
-                    )
-                  ],
+                      RawMaterialButton(
+                        onPressed: () {
+                          if (messageController.text == null ||
+                              messageController.text == "") {
+                            Fluttertoast.showToast(
+                                msg: "Write some message!",
+                                gravity: ToastGravity.BOTTOM);
+                            return;
+                          }
+                          return sendMessage();
+                        },
+                        child: messageController.text == null ||
+                                messageController.text == ""
+                            ? Text(
+                                'Type',
+                                style: theme.text16boldWhite,
+                              )
+                            : Icon(
+                                Icons.send,
+                                color: theme.colorBackground,
+                              ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )),
     );
   }
@@ -265,7 +276,9 @@ class MessageTile extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: theme.colorCompanion2,
+                  color: isSendByMe
+                      ? theme.colorCompanion3
+                      : theme.colorCompanion2,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),
@@ -300,7 +313,7 @@ class MessageTile extends StatelessWidget {
                                         : TextAlign.left,
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
