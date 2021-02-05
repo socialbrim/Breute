@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:parentpreneur/Providers/feedProvider.dart';
 import 'package:provider/provider.dart';
 import '../models/PostModel.dart';
@@ -165,54 +166,59 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                   decoration: InputDecoration(
                     prefix: IconButton(
                       onPressed: () {
-                        final user =
-                            Provider.of<UserProvider>(context, listen: false)
-                                .userInformation;
-                        Map<String, Map<String, String>> data = {};
-                        if (widget.post.comments != null) {
-                          data = widget.post.comments;
-                        }
-                        if (data.containsKey(
-                            FirebaseAuth.instance.currentUser.uid)) {
-                          data.remove(FirebaseAuth.instance.currentUser.uid);
-                        }
-                        data.putIfAbsent(
-                            FirebaseAuth.instance.currentUser.uid, () => {});
-                        data[FirebaseAuth.instance.currentUser.uid]
-                            .putIfAbsent("comment", () => comment.text);
-                        data[FirebaseAuth.instance.currentUser.uid]
-                            .putIfAbsent("imageURL", () => user.imageUrl);
-                        data[FirebaseAuth.instance.currentUser.uid]
-                            .putIfAbsent("name", () => user.name);
-                        PostModel change = PostModel(
-                            caption: widget.post.caption,
-                            comments: data,
-                            dateTime: widget.post.dateTime,
-                            imageURl: widget.post.imageURl,
-                            likeIDs: widget.post.likeIDs,
-                            likes: widget.post.likes,
-                            name: widget.post.name,
-                            postID: widget.post.postID,
-                            postURL: widget.post.postURL,
-                            uid: widget.post.uid);
-
-                        Provider.of<FeedProvider>(context, listen: false)
-                            .setChangeInFeed(widget.post.postID, change);
-                        FirebaseDatabase.instance
-                            .reference()
-                            .child("Social Media Data")
-                            .child(widget.post.uid)
-                            .child(widget.post.postID)
-                            .child("comments")
-                            .update({
-                          FirebaseAuth.instance.currentUser.uid: {
-                            "comment": comment.text,
-                            "imageURL": user.imageUrl,
-                            "name": user.name,
+                        try {
+                          final user =
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .userInformation;
+                          Map<String, Map<String, String>> data = {};
+                          if (widget.post.comments != null) {
+                            data = widget.post.comments;
                           }
-                        });
-                        comment.clear();
-                        setState(() {});
+                          if (data.containsKey(
+                              FirebaseAuth.instance.currentUser.uid)) {
+                            data.remove(FirebaseAuth.instance.currentUser.uid);
+                          }
+                          data.putIfAbsent(
+                              FirebaseAuth.instance.currentUser.uid, () => {});
+                          data[FirebaseAuth.instance.currentUser.uid]
+                              .putIfAbsent("comment", () => comment.text);
+                          data[FirebaseAuth.instance.currentUser.uid]
+                              .putIfAbsent("imageURL", () => user.imageUrl);
+                          data[FirebaseAuth.instance.currentUser.uid]
+                              .putIfAbsent("name", () => user.name);
+                          PostModel change = PostModel(
+                              caption: widget.post.caption,
+                              comments: data,
+                              dateTime: widget.post.dateTime,
+                              imageURl: widget.post.imageURl,
+                              likeIDs: widget.post.likeIDs,
+                              likes: widget.post.likes,
+                              name: widget.post.name,
+                              postID: widget.post.postID,
+                              postURL: widget.post.postURL,
+                              uid: widget.post.uid);
+
+                          Provider.of<FeedProvider>(context, listen: false)
+                              .setChangeInFeed(widget.post.postID, change);
+                          FirebaseDatabase.instance
+                              .reference()
+                              .child("Social Media Data")
+                              .child(widget.post.uid)
+                              .child(widget.post.postID)
+                              .child("comments")
+                              .update({
+                            FirebaseAuth.instance.currentUser.uid: {
+                              "comment": comment.text,
+                              "imageURL": user.imageUrl,
+                              "name": user.name,
+                            }
+                          });
+                          comment.clear();
+                          setState(() {});
+                        } catch (e) {
+                          print(e);
+                          Fluttertoast.showToast(msg: e.toString());
+                        }
                       },
                       icon: Icon(
                         Icons.send,
