@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../main.dart';
 import 'ChatScreen.dart';
 import './SocialMediaHomeScreen.dart';
+import './RoomsScreen.dart';
 
 // ignore: must_be_immutable
 class CustomerSupport extends StatefulWidget {
@@ -36,7 +38,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -48,9 +50,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Center(
                     child: Text(
                       'Community Chat',
@@ -58,7 +57,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: height * .03,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -73,17 +72,18 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       margin: EdgeInsets.symmetric(horizontal: 50),
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.all(18.0),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                           child: Column(
                             children: [
                               Icon(
                                 MdiIcons.messageTextOutline,
                                 color: theme.colorCompanion,
-                                size: 54,
+                                size: 45,
                               ),
                               Center(
                                 child: Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(8),
                                   child: Text(
                                     'Chat with All',
                                     style: theme.text16bold,
@@ -97,7 +97,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: height * .025,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -108,28 +108,95 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       );
                     },
                     child: Card(
+                      // color: HexColor('ffd7db'),
                       elevation: 20,
                       margin: EdgeInsets.symmetric(horizontal: 50),
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(18.0),
-                          child: Column(
-                            children: [
-                              Icon(
-                                MdiIcons.accountMultiple,
-                                color: theme.colorCompanion,
-                                size: 54,
-                              ),
-                              Center(
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text(
-                                    'Connect with your Friends',
-                                    style: theme.text16bold,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              HexColor('FED8F7'),
+                              HexColor('C4DDFE'),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(18.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  MdiIcons.accountMultiple,
+                                  color: theme.colorCompanion,
+                                  size: 45,
+                                ),
+                                Center(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 10),
+                                    child: Text(
+                                      'Connect with your Friends',
+                                      style: theme.text16bold,
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * .025,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => RoomsScreen(),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: HexColor('c1e5e2'),
+                      elevation: 20,
+                      margin: EdgeInsets.symmetric(horizontal: 50),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              HexColor('C4DDFE'),
+                              HexColor('FED8F7'),
                             ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(18.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  MdiIcons.accountMultiplePlus,
+                                  color: theme.colorCompanion,
+                                  size: 45,
+                                ),
+                                Center(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 10),
+                                    child: Text(
+                                      'Rooms',
+                                      style: theme.text16bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
