@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:image/image.dart' as Im;
 import 'package:parentpreneur/Screens/SocialMediaHomeScreen.dart';
 
 import 'package:storage_path/storage_path.dart';
 import '../models/creatPost.dart';
 import './SocialMediaCreateCaption.dart';
-
 import '../main.dart';
 
 class SocialMediaCreatePost extends StatefulWidget {
@@ -73,7 +72,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
             ),
           ),
           title: Container(
-            width: MediaQuery.of(context).size.width * .3,
+            width: MediaQuery.of(context).size.width * .4,
             child: DropdownButtonHideUnderline(
               child: DropdownButton<FileModel>(
                 items: getItems(),
@@ -91,11 +90,14 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
           ),
           actions: [
             InkWell(
-              onTap: () {
+              onTap: () async {
+                // final data = await ImagesPicker.pick();
+                // print(data.first.path);
+
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => SocialMediaCreateCaption(
-                      image: image,
+                      image: image, // image,
                     ),
                   ),
                 );
@@ -188,15 +190,17 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
   // }
 
   List<DropdownMenuItem> getItems() {
-    return files
-            .map((e) => DropdownMenuItem(
-                  child: Text(
-                    e.folder,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  value: e,
-                ))
-            .toList() ??
-        [];
+    return files == null
+        ? []
+        : files
+                .map((e) => DropdownMenuItem(
+                      child: Text(
+                        e.folder,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      value: e,
+                    ))
+                .toList() ??
+            [];
   }
 }

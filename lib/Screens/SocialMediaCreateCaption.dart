@@ -1,7 +1,16 @@
 import 'dart:io';
+import 'package:parentpreneur/Providers/User.dart';
 
+import '../Providers/socialmedialBarindex.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:math' as Math;
+import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as Im;
+import 'package:provider/provider.dart';
 import '../main.dart';
 
 // ignore: must_be_immutable
@@ -16,6 +25,9 @@ class SocialMediaCreateCaption extends StatefulWidget {
 }
 
 class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
+  String caption;
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -26,28 +38,78 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
           title: Text('Caption'),
-          actions: [
-            InkWell(
-              onTap: () {
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => SocialMediaCreateCaption(
-                //         // image: "${Image.file(File(image))}",
-                //         ),
-                //   ),
-                // );
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * .2,
-                child: Text(
-                  'Next >',
-                  style: theme.text16Primary,
-                ),
-              ),
-            )
-          ],
         ),
+        bottomNavigationBar: _isLoading
+            ? Container(
+                height: 50,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.black,
+                  ),
+                ),
+              )
+            : RaisedButton(
+                child: Text("Upload Post"),
+                onPressed: () async {
+                  if (caption == null || caption == "") {
+                    Fluttertoast.showToast(msg: "Please enter correct Caption");
+                    return;
+                  }
+                  final user = Provider.of<UserProvider>(context, listen: false)
+                      .userInformation;
+                  if (user.name == null) {
+                    Fluttertoast.showToast(
+                        msg: "Please complete your profile first");
+                    return;
+                  }
+                  try {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    File file = File(widget.image);
+                    final compFile = await compressImage(file);
+                    final key = FirebaseDatabase.instance
+                        .reference()
+                        .child("Social Media Data")
+                        .child(FirebaseAuth.instance.currentUser.uid)
+                        .push()
+                        .key;
+                    final ref = FirebaseStorage.instance
+                        .ref()
+                        .child("CustomerSocialMedial")
+                        .child("${FirebaseAuth.instance.currentUser.uid}")
+                        .child("$key" + ".jpg");
+                    await ref.putFile(compFile);
+                    final vals = await ref.getDownloadURL();
+                    FirebaseDatabase.instance
+                        .reference()
+                        .child("Social Media Data")
+                        .child(FirebaseAuth.instance.currentUser.uid)
+                        .child(key)
+                        .update({
+                      "image": vals,
+                      "caption": caption,
+                      "dateTime": DateTime.now().toIso8601String(),
+                    });
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Fluttertoast.showToast(msg: "Post uploaded successfully");
+
+                    Navigator.of(context).pop();
+                    Provider.of<BarIndexChange>(context, listen: false)
+                        .setBarindex(0);
+                  } catch (e) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    Fluttertoast.showToast(msg: "Something went wrong");
+                    Navigator.of(context).pop();
+                    Provider.of<BarIndexChange>(context, listen: false)
+                        .setBarindex(0);
+                  }
+                },
+              ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -109,6 +171,9 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: TextFormField(
+                    onChanged: (val) {
+                      caption = val;
+                    },
                     decoration: InputDecoration(
                       hintText: 'Enter Caption',
                       disabledBorder: InputBorder.none,
@@ -121,5 +186,22 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
         ),
       ),
     );
+  }
+
+  Future<File> compressImage(File images) async {
+    File compressedimage;
+
+    File imageFile = images;
+    final tempDir = await getTemporaryDirectory();
+    final path = tempDir.path;
+    int rand = new Math.Random().nextInt(10000);
+
+    Im.Image image = Im.decodeImage(imageFile.readAsBytesSync());
+
+    var compressedImage = new File('$path/img_$rand.jpg')
+      ..writeAsBytesSync(Im.encodeJpg(image, quality: 20));
+    compressedimage = compressedImage;
+
+    return compressedimage;
   }
 }
