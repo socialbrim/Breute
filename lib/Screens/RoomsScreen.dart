@@ -13,6 +13,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
   int index = 0;
   int choosenPlan = 0;
   bool ispublished = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   TimeOfDay _scheduleTime;
 
@@ -35,177 +36,178 @@ class _RoomsScreenState extends State<RoomsScreen> {
     });
   }
 
-  void _bottomSheet(context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+  void bottomSheet() {
+    _scaffoldKey.currentState.showBottomSheet((context) => StatefulBuilder(
+          builder: (ctx, setState) {
+            var height = MediaQuery.of(context).size.height;
+            var width = MediaQuery.of(context).size.width;
 
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc) {
-        return Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 18,
-            vertical: 15,
-          ),
-          height: height * .5,
-          width: width,
-          color: theme.colorBackgroundDialog,
-          child: Column(
-            children: [
-              Text(
-                '+ Create Room',
-                style: theme.text16boldPrimary,
+            return Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18,
+                vertical: 15,
               ),
-              SizedBox(
-                height: height * .01,
-              ),
-              Container(
-                width: width * .9,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Name of room',
-                    focusColor: theme.colorPrimary,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * .01,
-              ),
-              Row(
+              height: height * .47,
+              width: width,
+              color: theme.colorBackgroundDialog,
+              child: Column(
                 children: [
-                  Container(
-                    width: width * .4,
-                    child: RadioListTile(
-                        title: Text(
-                          "Private",
-                          style: theme.text16,
-                        ),
-                        activeColor: theme.colorPrimary,
-                        value: 0,
-                        groupValue: choosenPlan,
-                        onChanged: (val) {
-                          setState(() {
-                            choosenPlan = val;
-                          });
-                        }),
+                  Text(
+                    '+ Create Room',
+                    style: theme.text16boldPrimary,
                   ),
-                  Container(
-                    width: width * .4,
-                    child: RadioListTile(
-                        title: Text(
-                          "Public",
-                          style: theme.text16,
-                        ),
-                        activeColor: theme.colorPrimary,
-                        value: 1,
-                        groupValue: choosenPlan,
-                        onChanged: (val) {
-                          setState(() {
-                            choosenPlan = val;
-                          });
-                        }),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: height * .003,
-              ),
-              Container(
-                width: width * .9,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Create Password',
-                    focusColor: theme.colorPrimary,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * .01,
-              ),
-              Row(
-                children: [
                   SizedBox(
-                    width: width * .04,
+                    height: height * .01,
                   ),
                   Container(
-                    width: 50,
-                    height: 50,
-                    child: Checkbox(
-                      value: ispublished,
-                      activeColor: theme.colorPrimary,
-                      onChanged: (val) {
-                        setState(() {
-                          ispublished = val;
-                        });
-                      },
+                    width: width * .9,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Name of room',
+                        focusColor: theme.colorPrimary,
+                      ),
                     ),
                   ),
-                  Text(
-                    'Schedule ',
-                    style: GoogleFonts.workSans(
-                        fontSize: 18, fontWeight: FontWeight.w600),
+                  SizedBox(
+                    height: height * .01,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: width * .4,
+                        child: RadioListTile(
+                            title: Text(
+                              "Public",
+                              style: theme.text16,
+                            ),
+                            activeColor: theme.colorPrimary,
+                            value: 0,
+                            groupValue: choosenPlan,
+                            onChanged: (val) {
+                              setState(() {
+                                choosenPlan = val;
+                              });
+                            }),
+                      ),
+                      Container(
+                        width: width * .4,
+                        child: RadioListTile(
+                            title: Text(
+                              "Private",
+                              style: theme.text16,
+                            ),
+                            activeColor: theme.colorPrimary,
+                            value: 1,
+                            groupValue: choosenPlan,
+                            onChanged: (val) {
+                              setState(() {
+                                choosenPlan = val;
+                              });
+                            }),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    width: width * .02,
+                    height: height * .003,
                   ),
-                  ispublished == true
-                      ? GestureDetector(
-                          onTap: () {
-                            schedulingTime();
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: height * 0.04,
-                              width: width * 0.3,
-                              color: theme.colorPrimary,
-                              child: Text(
-                                _scheduleTime == null
-                                    ? 'Set Time'
-                                    : pmOrAm(_scheduleTime),
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.text14boldWhite,
-                              ),
+                  choosenPlan == 1
+                      ? Container(
+                          width: width * .9,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Create Password',
+                              focusColor: theme.colorPrimary,
                             ),
                           ),
                         )
                       : Container(),
+                  SizedBox(
+                    height: height * .01,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: width * .04,
+                      ),
+                      Container(
+                        width: 50,
+                        height: 50,
+                        child: Checkbox(
+                          value: ispublished,
+                          activeColor: theme.colorPrimary,
+                          onChanged: (val) {
+                            setState(() {
+                              ispublished = val;
+                            });
+                          },
+                        ),
+                      ),
+                      Text(
+                        'Schedule ',
+                        style: GoogleFonts.workSans(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        width: width * .02,
+                      ),
+                      ispublished == true
+                          ? GestureDetector(
+                              onTap: () {
+                                schedulingTime();
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: height * 0.04,
+                                  width: width * 0.3,
+                                  color: theme.colorPrimary,
+                                  child: Text(
+                                    _scheduleTime == null
+                                        ? 'Set Time'
+                                        : pmOrAm(_scheduleTime),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: theme.text14boldWhite,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * .01,
+                  ),
+                  SizedBox(
+                    height: height * .015,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          50,
+                        ),
+                      ),
+                      color: theme.colorCompanion,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15.0,
+                          horizontal: 81,
+                        ),
+                        child: Text(
+                          ' Submit',
+                          style: theme.text16boldWhite,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(
-                height: height * .01,
-              ),
-              SizedBox(
-                height: height * .015,
-              ),
-              InkWell(
-                onTap: () {},
-                child: Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      50,
-                    ),
-                  ),
-                  color: theme.colorCompanion,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15.0,
-                      horizontal: 15,
-                    ),
-                    child: Text(
-                      ' Submit',
-                      style: theme.text16boldWhite,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+            );
+          },
+        ));
   }
 
   @override
@@ -215,6 +217,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
 
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: theme.colorBackground,
         appBar: AppBar(),
         body: SingleChildScrollView(
@@ -343,7 +346,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      _bottomSheet(context);
+                      bottomSheet();
                     },
                     child: Card(
                       elevation: 7,
