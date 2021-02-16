@@ -15,7 +15,9 @@
       },
       "oauth_client": [
         {
+
           "client_id": "291219541445-f3mr2upmpnbtcujdjnghrthiaeabnro3.apps.googleusercontent.com",
+
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.parentpreneur",

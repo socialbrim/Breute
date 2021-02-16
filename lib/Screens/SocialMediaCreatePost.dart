@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'dart:convert';
 import 'dart:io';
 import 'package:parentpreneur/Screens/SocialMediaHomeScreen.dart';
+
 import 'package:storage_path/storage_path.dart';
 import '../models/creatPost.dart';
 import './SocialMediaCreateCaption.dart';
@@ -24,6 +25,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
   FileModel selectedModel;
   String image;
   bool _isLoading = false;
+  List<File> _files = [];
 
   @override
   void initState() {
@@ -35,15 +37,24 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
     setState(() {
       _isLoading = true;
     });
-    var imagePath = await StoragePath.imagesPath;
-    var images = jsonDecode(imagePath) as List;
-    files = images.map<FileModel>((e) => FileModel.fromJson(e)).toList();
-    if (files != null && files.length > 0)
+    try {
+      var imagePath = await StoragePath.imagesPath;
+      var images = jsonDecode(imagePath) as List;
+      files = images.map<FileModel>((e) => FileModel.fromJson(e)).toList();
+      if (files != null && files.length > 0)
+        setState(() {
+          selectedModel = files[0];
+          image = files[0].files[0];
+          // fetchData();
+          _isLoading = false;
+        });
+    } catch (e) {
+      print(e);
+      print("-------------------------");
       setState(() {
-        selectedModel = files[0];
-        image = files[0].files[0];
         _isLoading = false;
       });
+    }
   }
 
   @override
@@ -120,8 +131,12 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                           : Container(),
                     ),
                     Divider(),
-                    selectedModel == null && selectedModel.files.length < 1
-                        ? Container()
+                    selectedModel == null ||
+                            selectedModel.files == null ||
+                            selectedModel.files.length < 1
+                        ? Container(
+                            child: Text("Center"),
+                          )
                         : Container(
                             height: MediaQuery.of(context).size.height * 0.38,
                             child: GridView.builder(
@@ -132,6 +147,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                                         mainAxisSpacing: 4),
                                 itemBuilder: (_, i) {
                                   var file = selectedModel.files[i];
+
                                   return GestureDetector(
                                     child: Image.file(
                                       File(file),
@@ -139,7 +155,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                                     ),
                                     onTap: () {
                                       setState(() {
-                                        image = file;
+                                        image = file; //_files[i].path;
                                       });
                                     },
                                   );
@@ -152,6 +168,26 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
       ),
     );
   }
+
+  // Future<File> compressNow(File _imageFile) async {
+  //   print("FILE SIZE BEFORE: " + _imageFile.lengthSync().toString());
+  //   await CompressImage.compress(
+  //       imageSrc: _imageFile.path,
+  //       desiredQuality: 50); //desiredQuality ranges from 0 to 100
+  //   print("FILE SIZE  AFTER: " + _imageFile.lengthSync().toString());
+  //   return _imageFile;
+  //   // compressimage: ^0.1.1
+  // }
+
+  // void fetchData() async {
+  //   for (var i = 0; i < selectedModel.files.length; i++) {
+  //     File file = await compressNow(File(selectedModel.files[i]));
+  //     _files.add(file);
+  //   }
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  // }
 
   List<DropdownMenuItem> getItems() {
     return files == null
