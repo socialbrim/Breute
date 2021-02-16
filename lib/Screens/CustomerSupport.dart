@@ -113,6 +113,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       margin: EdgeInsets.symmetric(horizontal: 50),
                       child: Container(
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
@@ -166,6 +167,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       margin: EdgeInsets.symmetric(horizontal: 50),
                       child: Container(
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
