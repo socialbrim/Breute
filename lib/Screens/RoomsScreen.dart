@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 import '../main.dart';
+import '../models/UserModel.dart';
+import '../Providers/User.dart';
+import 'package:provider/provider.dart';
+import './RoomChat.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RoomsScreen extends StatefulWidget {
   @override
@@ -14,200 +20,249 @@ class _RoomsScreenState extends State<RoomsScreen> {
   int choosenPlan = 0;
   bool ispublished = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   TimeOfDay _scheduleTime;
-
-  Future<void> schedulingTime() async {
-    final time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay(hour: 12, minute: 00),
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.dark(),
-          child: child,
-        );
-      },
-    );
-
-    setState(() {
-      if (time != null) {
-        _scheduleTime = time;
-      }
-    });
-  }
+  TextEditingController _name = TextEditingController();
+  TextEditingController _pass = TextEditingController();
+  void fetchScheduledRooms() {}
+  void fetchTrendingOpenRooms() {}
 
   void bottomSheet() {
-    _scaffoldKey.currentState.showBottomSheet((context) => StatefulBuilder(
-          builder: (ctx, setState) {
-            var height = MediaQuery.of(context).size.height;
-            var width = MediaQuery.of(context).size.width;
+    _scaffoldKey.currentState.showBottomSheet(
+      (context) => StatefulBuilder(
+        builder: (ctx, setState) {
+          var height = MediaQuery.of(context).size.height;
+          var width = MediaQuery.of(context).size.width;
 
-            return Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 18,
-                vertical: 15,
-              ),
-              height: height * .47,
-              width: width,
-              color: theme.colorBackgroundDialog,
-              child: Column(
-                children: [
-                  Text(
-                    '+ Create Room',
-                    style: theme.text16boldPrimary,
-                  ),
-                  SizedBox(
-                    height: height * .01,
-                  ),
-                  Container(
-                    width: width * .9,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'Name of room',
-                        focusColor: theme.colorPrimary,
-                      ),
+          return Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 18,
+              vertical: 15,
+            ),
+            height: height * .47,
+            width: width,
+            color: theme.colorBackgroundDialog,
+            child: Column(
+              children: [
+                Text(
+                  '+ Create Room',
+                  style: theme.text16boldPrimary,
+                ),
+                SizedBox(
+                  height: height * .01,
+                ),
+                Container(
+                  width: width * .9,
+                  child: TextFormField(
+                    controller: _name,
+                    decoration: InputDecoration(
+                      hintText: 'Name of room',
+                      focusColor: theme.colorPrimary,
                     ),
                   ),
-                  SizedBox(
-                    height: height * .01,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: width * .4,
-                        child: RadioListTile(
-                            title: Text(
-                              "Public",
-                              style: theme.text16,
-                            ),
-                            activeColor: theme.colorPrimary,
-                            value: 0,
-                            groupValue: choosenPlan,
-                            onChanged: (val) {
-                              setState(() {
-                                choosenPlan = val;
-                              });
-                            }),
-                      ),
-                      Container(
-                        width: width * .4,
-                        child: RadioListTile(
-                            title: Text(
-                              "Private",
-                              style: theme.text16,
-                            ),
-                            activeColor: theme.colorPrimary,
-                            value: 1,
-                            groupValue: choosenPlan,
-                            onChanged: (val) {
-                              setState(() {
-                                choosenPlan = val;
-                              });
-                            }),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: height * .003,
-                  ),
-                  choosenPlan == 1
-                      ? Container(
-                          width: width * .9,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              hintText: 'Create Password',
-                              focusColor: theme.colorPrimary,
-                            ),
+                ),
+                SizedBox(
+                  height: height * .01,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: width * .4,
+                      child: RadioListTile(
+                          title: Text(
+                            "Public",
+                            style: theme.text16,
                           ),
-                        )
-                      : Container(),
-                  SizedBox(
-                    height: height * .01,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: width * .04,
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        child: Checkbox(
-                          value: ispublished,
                           activeColor: theme.colorPrimary,
+                          value: 0,
+                          groupValue: choosenPlan,
                           onChanged: (val) {
                             setState(() {
-                              ispublished = val;
+                              choosenPlan = val;
                             });
-                          },
+                          }),
+                    ),
+                    Container(
+                      width: width * .4,
+                      child: RadioListTile(
+                          title: Text(
+                            "Private",
+                            style: theme.text16,
+                          ),
+                          activeColor: theme.colorPrimary,
+                          value: 1,
+                          groupValue: choosenPlan,
+                          onChanged: (val) {
+                            setState(() {
+                              choosenPlan = val;
+                            });
+                          }),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: height * .003,
+                ),
+                choosenPlan == 1
+                    ? Container(
+                        width: width * .9,
+                        child: TextFormField(
+                          controller: _pass,
+                          decoration: InputDecoration(
+                            hintText: 'Create Password',
+                            focusColor: theme.colorPrimary,
+                          ),
                         ),
+                      )
+                    : Container(),
+                SizedBox(
+                  height: height * .01,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: width * .04,
+                    ),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      child: Checkbox(
+                        value: ispublished,
+                        activeColor: theme.colorPrimary,
+                        onChanged: (val) {
+                          setState(() {
+                            ispublished = val;
+                          });
+                        },
                       ),
-                      Text(
-                        'Schedule ',
-                        style: GoogleFonts.workSans(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        width: width * .02,
-                      ),
-                      ispublished == true
-                          ? GestureDetector(
-                              onTap: () {
-                                schedulingTime();
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: height * 0.04,
-                                  width: width * 0.3,
-                                  color: theme.colorPrimary,
-                                  child: Text(
-                                    _scheduleTime == null
-                                        ? 'Set Time'
-                                        : pmOrAm(_scheduleTime),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: theme.text14boldWhite,
-                                  ),
+                    ),
+                    Text(
+                      'Schedule ',
+                      style: GoogleFonts.workSans(
+                          fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      width: width * .02,
+                    ),
+                    ispublished == true
+                        ? GestureDetector(
+                            onTap: () async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay(hour: 12, minute: 00),
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: ThemeData.dark(),
+                                    child: child,
+                                  );
+                                },
+                              );
+
+                              setState(() {
+                                if (time != null) {
+                                  _scheduleTime = time;
+                                }
+                              });
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: height * 0.04,
+                                width: width * 0.3,
+                                color: theme.colorPrimary,
+                                child: Text(
+                                  _scheduleTime == null
+                                      ? 'Set Time'
+                                      : pmOrAm(_scheduleTime),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.text14boldWhite,
                                 ),
                               ),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                  SizedBox(
-                    height: height * .01,
-                  ),
-                  SizedBox(
-                    height: height * .015,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          50,
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
+                SizedBox(
+                  height: height * .01,
+                ),
+                SizedBox(
+                  height: height * .015,
+                ),
+                InkWell(
+                  onTap: () {
+                    UserInformation userInfo;
+                    userInfo = Provider.of<UserProvider>(context, listen: false)
+                        .userInformation;
+                    final key = FirebaseDatabase.instance
+                        .reference()
+                        .child("GroupChatRoom")
+                        .push()
+                        .key;
+                    final ref = FirebaseDatabase.instance
+                        .reference()
+                        .child("GroupChatRoom")
+                        .child("$key");
+                    final newkey = ref.push().key;
+                    ref.child(newkey).update({
+                      'message': "Welcome everyone",
+                      "uid": userInfo.id,
+                      "timeStamp": DateTime.now().toIso8601String(),
+                      'Name': userInfo.name,
+                      "DpURL": userInfo.imageUrl,
+                    });
+
+                    FirebaseDatabase.instance
+                        .reference()
+                        .child("Roomsinformation")
+                        .child(key)
+                        .update({
+                      "roomID": key,
+                      "dateTime": DateTime.now().toIso8601String(),
+                      "roomName": _name.text,
+                      "isPublic": choosenPlan == 0 ? true : false,
+                      "password": _pass.text,
+                      "isSchedule": ispublished,
+                      "roomIDtoEnter": key.substring(1, 6),
+                      "scheduleTime":
+                          "${_scheduleTime.hour} : ${_scheduleTime.minute}",
+                      "${FirebaseAuth.instance.currentUser.uid}": "Admin",
+                    });
+                    Navigator.of(ctx).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ChatRoomGrp(
+                          chatRoomID: key,
                         ),
                       ),
-                      color: theme.colorCompanion,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 15.0,
-                          horizontal: 81,
-                        ),
-                        child: Text(
-                          ' Submit',
-                          style: theme.text16boldWhite,
-                        ),
+                    );
+                  },
+                  child: Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        50,
+                      ),
+                    ),
+                    color: theme.colorCompanion,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15.0,
+                        horizontal: 81,
+                      ),
+                      child: Text(
+                        ' Submit',
+                        style: theme.text16boldWhite,
                       ),
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ));
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -378,29 +433,34 @@ class _RoomsScreenState extends State<RoomsScreen> {
                   SizedBox(
                     width: width * .02,
                   ),
-                  Card(
-                    elevation: 7,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        50,
+                  InkWell(
+                    onTap: () {
+                      bottomSheettoJoin();
+                    },
+                    child: Card(
+                      elevation: 7,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          50,
+                        ),
                       ),
-                    ),
-                    color: theme.colorPrimary,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15.0,
-                        horizontal: 23,
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            MdiIcons.plus,
-                          ),
-                          Text(
-                            'Join',
-                            style: theme.text16boldWhite,
-                          ),
-                        ],
+                      color: theme.colorPrimary,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15.0,
+                          horizontal: 23,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              MdiIcons.plus,
+                            ),
+                            Text(
+                              'Join',
+                              style: theme.text16boldWhite,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -411,6 +471,162 @@ class _RoomsScreenState extends State<RoomsScreen> {
         ),
       ),
     );
+  }
+
+  TextEditingController _id = TextEditingController();
+  TextEditingController _passtoenter = TextEditingController();
+
+  Map ifprivate;
+  bool _isPrivate = false;
+  void bottomSheettoJoin() {
+    _scaffoldKey.currentState.showBottomSheet((context) => StatefulBuilder(
+          builder: (ctx, setState) {
+            var height = MediaQuery.of(context).size.height;
+            var width = MediaQuery.of(context).size.width;
+
+            return Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18,
+                vertical: 15,
+              ),
+              height: height * .47,
+              width: width,
+              color: theme.colorBackgroundDialog,
+              child: Column(
+                children: [
+                  Text(
+                    'Join Room',
+                    style: theme.text16boldPrimary,
+                  ),
+                  SizedBox(
+                    height: height * .01,
+                  ),
+                  Container(
+                    width: width * .9,
+                    child: TextFormField(
+                      controller: _id,
+                      decoration: InputDecoration(
+                        hintText: 'ID of room',
+                        focusColor: theme.colorPrimary,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * .003,
+                  ),
+                  choosenPlan == 1
+                      ? Container(
+                          width: width * .9,
+                          child: TextFormField(
+                            controller: _passtoenter,
+                            decoration: InputDecoration(
+                              hintText: 'Create Password',
+                              focusColor: theme.colorPrimary,
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: height * .015,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      final data = await FirebaseDatabase.instance
+                          .reference()
+                          .child("Roomsinformation")
+                          .orderByChild("roomIDtoEnter")
+                          .equalTo(_id.text)
+                          .once();
+                      final dat = data.value as Map;
+                      if (dat != null) {
+                        dat.forEach((key, value) {
+                          if (value['isPublic']) {
+                            Navigator.of(ctx).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChatRoomGrp(
+                                  chatRoomID: key,
+                                ),
+                              ),
+                            );
+                          } else {
+                            setState(() {
+                              choosenPlan = 1;
+                              _isPrivate = true;
+                              ifprivate = dat;
+                            });
+                          }
+                        });
+                      } else {
+                        Fluttertoast.showToast(msg: "Room not found");
+                      }
+                    },
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          50,
+                        ),
+                      ),
+                      color: theme.colorCompanion,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15.0,
+                          horizontal: 81,
+                        ),
+                        child: Text(
+                          _isPrivate ? "Change Code" : ' Submit',
+                          style: theme.text16boldWhite,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (_isPrivate)
+                    InkWell(
+                      onTap: () async {
+                        //....
+                        ifprivate.forEach((key, value) {
+                          if (value['password'] == _passtoenter.text) {
+                            Navigator.of(ctx).pop();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChatRoomGrp(
+                                  chatRoomID: key,
+                                ),
+                              ),
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Enter Correct password");
+                          }
+                        });
+                        //....
+                      },
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            50,
+                          ),
+                        ),
+                        color: theme.colorCompanion,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 15.0,
+                            horizontal: 81,
+                          ),
+                          child: Text(
+                            ' Submit',
+                            style: theme.text16boldWhite,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        ));
   }
 
   String pmOrAm(TimeOfDay _time) {

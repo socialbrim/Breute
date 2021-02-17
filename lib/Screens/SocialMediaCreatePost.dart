@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:images_picker/images_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -25,6 +24,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
   FileModel selectedModel;
   String image;
   bool _isLoading = false;
+  // ignore: unused_field
   List<File> _files = [];
 
   @override

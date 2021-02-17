@@ -117,6 +117,21 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
         : Container();
   }
 
+  String id;
+  String pass;
+  String grpName;
+  String grpDP;
+
+  ///... mood hua to
+  void roomInformation() async {
+    final data = await FirebaseDatabase.instance
+        .reference()
+        .child("Roomsinformation")
+        .child(widget.chatRoomID)
+        .once();
+    final map = data.value as Map;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

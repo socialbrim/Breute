@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/models/PostModel.dart';
-import './SocialMediaCommentScreen.dart';
 import '../main.dart';
 
 // ignore: must_be_immutable
