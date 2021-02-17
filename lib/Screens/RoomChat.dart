@@ -7,10 +7,11 @@ import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
 import 'package:profanity_filter/profanity_filter.dart';
-
+import './RoomInformation.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 
+// ignore: must_be_immutable
 class ChatRoomGrp extends StatefulWidget {
   String chatRoomID;
   ChatRoomGrp({this.chatRoomID});
@@ -24,6 +25,24 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
   ChatModel data;
   TextEditingController messageController = TextEditingController();
   String uid;
+
+  String grpName;
+  String grpDP; //.... mood hua to badme krenge
+  bool currentUserTypeAdmin = false;
+
+  ///... mood hua to
+  void roomInformation() async {
+    final data = await FirebaseDatabase.instance
+        .reference()
+        .child("Roomsinformation")
+        .child(widget.chatRoomID)
+        .once();
+    final map = data.value as Map;
+    for (MapEntry entry in map.entries) {
+      grpName = map['roomName'];
+    }
+    setState(() {});
+  }
 
   void stream() {
     // ignore: unused_local_variable
@@ -69,6 +88,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
 
   UserInformation userInfo;
   initState() {
+    roomInformation();
     userInfo =
         Provider.of<UserProvider>(context, listen: false).userInformation;
     // uid = userInfo.id;
@@ -117,21 +137,6 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
         : Container();
   }
 
-  String id;
-  String pass;
-  String grpName;
-  String grpDP;
-
-  ///... mood hua to
-  void roomInformation() async {
-    final data = await FirebaseDatabase.instance
-        .reference()
-        .child("Roomsinformation")
-        .child(widget.chatRoomID)
-        .once();
-    final map = data.value as Map;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -140,7 +145,19 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
           // backgroundColor: Colors.blue[900],
           backgroundColor: theme.colorBackground,
           appBar: AppBar(
-            title: Text('Chat with us'),
+            title: Text('$grpName'),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.info),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => RoomInformation(
+                      roomID: widget.chatRoomID,
+                    ),
+                  ));
+                },
+              )
+            ],
           ),
           body: Column(
             children: [

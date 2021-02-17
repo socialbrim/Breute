@@ -9,6 +9,7 @@ import '../Providers/User.dart';
 import 'package:provider/provider.dart';
 import './RoomChat.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../models/RoomModel.dart';
 
 class RoomsScreen extends StatefulWidget {
   @override
@@ -23,8 +24,75 @@ class _RoomsScreenState extends State<RoomsScreen> {
   TimeOfDay _scheduleTime;
   TextEditingController _name = TextEditingController();
   TextEditingController _pass = TextEditingController();
-  void fetchScheduledRooms() {}
-  void fetchTrendingOpenRooms() {}
+  List<RoomModel> _trendingList = [];
+  List<RoomModel> _scheduleMyList = [];
+
+  void fetchScheduledRooms() async {
+    //..
+    final data = await FirebaseDatabase.instance
+        .reference()
+        .child("Roomsinformation")
+        .orderByChild("isSchedule")
+        .equalTo(true)
+        .once();
+    if (data.value != null) {
+      final dataset = data.value as Map;
+      dataset.forEach((key, value) {
+        _scheduleMyList.add(
+          RoomModel(
+            dateTime: value['roomName'] == null
+                ? DateTime.now()
+                : DateTime.parse(
+                    value['dateTime'],
+                  ),
+            id: key,
+            name: value['roomName'],
+            roomIDTOENTER: value['roomIDtoEnter'],
+            forSchedulesAndAll: value,
+            scheduleTime: value['scheduleTime'],
+          ),
+        );
+      });
+    }
+
+    _scheduleMyList.removeWhere((element) {
+      bool isRemove = true;
+      element.forSchedulesAndAll.forEach((key, value) {
+        if (key == FirebaseAuth.instance.currentUser.uid) {
+          isRemove = false;
+        }
+      });
+      return isRemove;
+    });
+    print(_scheduleMyList.length);
+  }
+
+  void fetchTrendingOpenRooms() async {
+    final data = await FirebaseDatabase.instance
+        .reference()
+        .child("Roomsinformation")
+        .orderByChild('isPublic')
+        .equalTo(true)
+        .once();
+    final dataset = data.value as Map;
+    if (dataset != null) {
+      dataset.forEach((key, value) {
+        _trendingList.add(
+          RoomModel(
+            dateTime: value['roomName'] == null
+                ? DateTime.now()
+                : DateTime.parse(
+                    value['dateTime'],
+                  ),
+            id: key,
+            name: value['roomName'],
+            roomIDTOENTER: value['roomIDtoEnter'],
+          ),
+        );
+      });
+    }
+    setState(() {});
+  }
 
   void bottomSheet() {
     _scaffoldKey.currentState.showBottomSheet(
@@ -211,7 +279,24 @@ class _RoomsScreenState extends State<RoomsScreen> {
                       'Name': userInfo.name,
                       "DpURL": userInfo.imageUrl,
                     });
-
+                    if (choosenPlan == 0) {
+                      FirebaseDatabase.instance
+                          .reference()
+                          .child("Roomsinformation")
+                          .child(key)
+                          .update({
+                        "roomID": key,
+                        "dateTime": DateTime.now().toIso8601String(),
+                        "roomName": _name.text,
+                        "isPublic": true,
+                        "isSchedule": ispublished,
+                        "roomIDtoEnter": key.substring(1, 6),
+                        "scheduleTime": ispublished
+                            ? "${_scheduleTime.hour} : ${_scheduleTime.minute}"
+                            : null,
+                        "${FirebaseAuth.instance.currentUser.uid}": "Admin",
+                      });
+                    }
                     FirebaseDatabase.instance
                         .reference()
                         .child("Roomsinformation")
@@ -224,8 +309,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
                       "password": _pass.text,
                       "isSchedule": ispublished,
                       "roomIDtoEnter": key.substring(1, 6),
-                      "scheduleTime":
-                          "${_scheduleTime.hour} : ${_scheduleTime.minute}",
+                      "scheduleTime": ispublished
+                          ? "${_scheduleTime.hour} : ${_scheduleTime.minute}"
+                          : null,
                       "${FirebaseAuth.instance.currentUser.uid}": "Admin",
                     });
                     Navigator.of(ctx).pop();
@@ -266,6 +352,13 @@ class _RoomsScreenState extends State<RoomsScreen> {
   }
 
   @override
+  void initState() {
+    fetchTrendingOpenRooms();
+    fetchScheduledRooms();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -274,53 +367,55 @@ class _RoomsScreenState extends State<RoomsScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: theme.colorBackground,
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text("Rooms"),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
                 height: height * .025,
               ),
-              Card(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(35),
-                ),
-                child: Container(
-                  height: 50,
-                  width: width,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: width * .04,
-                      ),
-                      Icon(
-                        MdiIcons.magnify,
-                        size: 23,
-                      ),
-                      SizedBox(
-                        width: width * .025,
-                      ),
-                      Container(
-                        height: 50,
-                        width: width * .5,
-                        child: TextFormField(
-                          cursorColor: theme.colorPrimary,
-                          decoration: InputDecoration(
-                            hintText: "Search Rooms",
-                            hintStyle: theme.text16,
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.04,
-              ),
+              // Card(
+              //   margin: EdgeInsets.symmetric(horizontal: 20),
+              //   elevation: 10,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(35),
+              //   ),
+              //   child: Container(
+              //     height: 50,
+              //     width: width,
+              //     child: Row(
+              //       children: [
+              //         SizedBox(
+              //           width: width * .04,
+              //         ),
+              //         Icon(
+              //           MdiIcons.magnify,
+              //           size: 23,
+              //         ),
+              //         SizedBox(
+              //           width: width * .025,
+              //         ),
+              //         Container(
+              //           height: 50,
+              //           width: width * .5,
+              //           child: TextFormField(
+              //             cursorColor: theme.colorPrimary,
+              //             decoration: InputDecoration(
+              //               hintText: "Search Rooms",
+              //               hintStyle: theme.text16,
+              //               border: InputBorder.none,
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: height * 0.04,
+              // ),
               Row(
                 children: [
                   SizedBox(
@@ -585,8 +680,28 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     InkWell(
                       onTap: () async {
                         //....
+                        bool isNew = true;
+                        ifprivate.forEach((key, value) {
+                          final vl = value as Map;
+                          vl.forEach((key, value) {
+                            if (key == FirebaseAuth.instance.currentUser.uid) {
+                              isNew = false;
+                            }
+                          });
+                        });
                         ifprivate.forEach((key, value) {
                           if (value['password'] == _passtoenter.text) {
+                            //....
+                            if (isNew) {
+                              FirebaseDatabase.instance
+                                  .reference()
+                                  .child("Roomsinformation")
+                                  .child(key)
+                                  .update({
+                                "${FirebaseAuth.instance.currentUser.uid}":
+                                    "User",
+                              });
+                            }
                             Navigator.of(ctx).pop();
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -600,6 +715,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                 msg: "Enter Correct password");
                           }
                         });
+
                         //....
                       },
                       child: Card(

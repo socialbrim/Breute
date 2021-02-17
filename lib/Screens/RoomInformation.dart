@@ -1,7 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:parentpreneur/models/UserModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+// ignore: must_be_immutable
 class RoomInformation extends StatefulWidget {
   String roomID;
   RoomInformation({this.roomID});
@@ -14,7 +16,9 @@ class _RoomInformationState extends State<RoomInformation> {
   String id;
   String pass;
   String grpName;
-  String grpDP;
+  String adminID;
+  String grpDP; //.... mood hua to badme krenge
+  bool currentUserTypeAdmin = false;
 
   ///... mood hua to
   void roomInformation() async {
@@ -25,7 +29,8 @@ class _RoomInformationState extends State<RoomInformation> {
         .once();
     final map = data.value as Map;
     for (MapEntry entry in map.entries) {
-      if (entry.key == "User") {
+      print("${entry.key} ${entry.value}");
+      if (entry.value == "User") {
         final mapped = await FirebaseDatabase.instance
             .reference()
             .child("User Information")
@@ -41,13 +46,16 @@ class _RoomInformationState extends State<RoomInformation> {
           isPhone: mapped.value['isPhone'],
         );
         _users.add(userData);
-      } else if (entry.key == "Admin") {
+        print("done------");
+      } else if (entry.value == "Admin") {
         final mapped = await FirebaseDatabase.instance
             .reference()
             .child("User Information")
             .child(entry.key)
             .once();
-
+        currentUserTypeAdmin =
+            mapped.value['uid'] == FirebaseAuth.instance.currentUser.uid;
+        adminID = mapped.value['uid'];
         UserInformation userData = new UserInformation(
           email: mapped.value['emial'],
           id: mapped.value['uid'],
@@ -57,14 +65,30 @@ class _RoomInformationState extends State<RoomInformation> {
           isPhone: mapped.value['isPhone'],
         );
         _users.add(userData);
+        print("done");
       } else {
         //.....
+        id = map['roomIDtoEnter'];
+        grpName = map['roomName'];
+        pass = map['password'];
       }
+      print(_users.length);
     }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    roomInformation();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("$grpName"),
+      ),
+    );
   }
 }
