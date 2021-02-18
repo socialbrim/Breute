@@ -26,72 +26,89 @@ class _RoomsScreenState extends State<RoomsScreen> {
   TextEditingController _pass = TextEditingController();
   List<RoomModel> _trendingList = [];
   List<RoomModel> _scheduleMyList = [];
+  bool _isLoading = true;
 
-  void fetchScheduledRooms() async {
-    //..
-    final data = await FirebaseDatabase.instance
-        .reference()
-        .child("Roomsinformation")
-        .orderByChild("isSchedule")
-        .equalTo(true)
-        .once();
-    if (data.value != null) {
-      final dataset = data.value as Map;
-      dataset.forEach((key, value) {
-        _scheduleMyList.add(
-          RoomModel(
-            dateTime: value['roomName'] == null
-                ? DateTime.now()
-                : DateTime.parse(
-                    value['dateTime'],
-                  ),
-            id: key,
-            name: value['roomName'],
-            roomIDTOENTER: value['roomIDtoEnter'],
-            forSchedulesAndAll: value,
-            scheduleTime: value['scheduleTime'],
-          ),
-        );
+  Future<void> fetchScheduledRooms() async {
+    try {
+      //..
+      final data = await FirebaseDatabase.instance
+          .reference()
+          .child("Roomsinformation")
+          .orderByChild("isSchedule")
+          .equalTo(true)
+          .once();
+      if (data.value != null) {
+        final dataset = data.value as Map;
+        dataset.forEach((key, value) {
+          _scheduleMyList.add(
+            RoomModel(
+              dateTime: value['roomName'] == null
+                  ? DateTime.now()
+                  : DateTime.parse(
+                      value['dateTime'],
+                    ),
+              id: key,
+              name: value['roomName'],
+              roomIDTOENTER: value['roomIDtoEnter'],
+              forSchedulesAndAll: value,
+              scheduleTime: value['scheduleTime'],
+            ),
+          );
+        });
+      }
+
+      _scheduleMyList.removeWhere((element) {
+        bool isRemove = true;
+        element.forSchedulesAndAll.forEach((key, value) {
+          if (key == FirebaseAuth.instance.currentUser.uid) {
+            isRemove = false;
+          }
+        });
+        return isRemove;
+      });
+      print(_scheduleMyList.length);
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Something went wront to fetch Schedule List");
+      setState(() {
+        _isLoading = false;
       });
     }
-
-    _scheduleMyList.removeWhere((element) {
-      bool isRemove = true;
-      element.forSchedulesAndAll.forEach((key, value) {
-        if (key == FirebaseAuth.instance.currentUser.uid) {
-          isRemove = false;
-        }
-      });
-      return isRemove;
-    });
-    print(_scheduleMyList.length);
   }
 
-  void fetchTrendingOpenRooms() async {
-    final data = await FirebaseDatabase.instance
-        .reference()
-        .child("Roomsinformation")
-        .orderByChild('isPublic')
-        .equalTo(true)
-        .once();
-    final dataset = data.value as Map;
-    if (dataset != null) {
-      dataset.forEach((key, value) {
-        _trendingList.add(
-          RoomModel(
-            dateTime: value['roomName'] == null
-                ? DateTime.now()
-                : DateTime.parse(
-                    value['dateTime'],
-                  ),
-            id: key,
-            name: value['roomName'],
-            roomIDTOENTER: value['roomIDtoEnter'],
-          ),
-        );
-      });
+  Future<void> fetchTrendingOpenRooms() async {
+    try {
+      final data = await FirebaseDatabase.instance
+          .reference()
+          .child("Roomsinformation")
+          .orderByChild('isPublic')
+          .equalTo(true)
+          .once();
+      final dataset = data.value as Map;
+      if (dataset != null) {
+        dataset.forEach((key, value) {
+          _trendingList.add(
+            RoomModel(
+              dateTime: value['roomName'] == null
+                  ? DateTime.now()
+                  : DateTime.parse(
+                      value['dateTime'],
+                    ),
+              id: key,
+              name: value['roomName'],
+              roomIDTOENTER: value['roomIDtoEnter'],
+            ),
+          );
+        });
+      }
+      setState(() {});
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Something went wront to fetch trendng list");
+      setState(() {});
     }
-    setState(() {});
   }
 
   void bottomSheet() {
@@ -241,7 +258,8 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                 child: Text(
                                   _scheduleTime == null
                                       ? 'Set Time'
-                                      : pmOrAm(_scheduleTime),
+                                      : pmOrAm(
+                                          "${_scheduleTime.hour} : ${_scheduleTime.minute}"),
                                   overflow: TextOverflow.ellipsis,
                                   style: theme.text14boldWhite,
                                 ),
@@ -353,8 +371,8 @@ class _RoomsScreenState extends State<RoomsScreen> {
 
   @override
   void initState() {
-    fetchTrendingOpenRooms();
-    fetchScheduledRooms();
+    fetchTrendingOpenRooms().then((value) => fetchScheduledRooms());
+
     super.initState();
   }
 
@@ -370,200 +388,217 @@ class _RoomsScreenState extends State<RoomsScreen> {
         appBar: AppBar(
           title: Text("Rooms"),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: height * .025,
-              ),
-              // Card(
-              //   margin: EdgeInsets.symmetric(horizontal: 20),
-              //   elevation: 10,
-              //   shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(35),
-              //   ),
-              //   child: Container(
-              //     height: 50,
-              //     width: width,
-              //     child: Row(
-              //       children: [
-              //         SizedBox(
-              //           width: width * .04,
-              //         ),
-              //         Icon(
-              //           MdiIcons.magnify,
-              //           size: 23,
-              //         ),
-              //         SizedBox(
-              //           width: width * .025,
-              //         ),
-              //         Container(
-              //           height: 50,
-              //           width: width * .5,
-              //           child: TextFormField(
-              //             cursorColor: theme.colorPrimary,
-              //             decoration: InputDecoration(
-              //               hintText: "Search Rooms",
-              //               hintStyle: theme.text16,
-              //               border: InputBorder.none,
-              //             ),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: height * 0.04,
-              // ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: width * .06,
-                  ),
-                  Text(
-                    'Scheduled Rooms',
-                    style: theme.text20bold,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: height * .02,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(15),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.black,
                 ),
-                height: height * .25,
-                width: width * .9,
-                child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      tileColor: theme.colorBackgroundGray,
-                      leading: Text(
-                        '>',
-                        style: theme.text14boldPimary,
-                      ),
-                      title: Text('Scheduled Rooms'),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                height: height * 0.03,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: width * .06,
-                  ),
-                  Text(
-                    'Trending Rooms',
-                    style: theme.text20bold,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: height * .02,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                height: height * .25,
-                width: width * .9,
-                child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Text(
-                        '>',
-                        style: theme.text14boldPimary,
-                      ),
-                      title: Text('Trending Rooms'),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                height: height * .02,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      bottomSheet();
-                    },
-                    child: Card(
-                      elevation: 7,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          50,
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: height * .025,
+                    ),
+                    // Card(
+                    //   margin: EdgeInsets.symmetric(horizontal: 20),
+                    //   elevation: 10,
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(35),
+                    //   ),
+                    //   child: Container(
+                    //     height: 50,
+                    //     width: width,
+                    //     child: Row(
+                    //       children: [
+                    //         SizedBox(
+                    //           width: width * .04,
+                    //         ),
+                    //         Icon(
+                    //           MdiIcons.magnify,
+                    //           size: 23,
+                    //         ),
+                    //         SizedBox(
+                    //           width: width * .025,
+                    //         ),
+                    //         Container(
+                    //           height: 50,
+                    //           width: width * .5,
+                    //           child: TextFormField(
+                    //             cursorColor: theme.colorPrimary,
+                    //             decoration: InputDecoration(
+                    //               hintText: "Search Rooms",
+                    //               hintStyle: theme.text16,
+                    //               border: InputBorder.none,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: height * 0.04,
+                    // ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width * .06,
                         ),
-                      ),
-                      color: theme.colorPrimary,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 15.0,
-                          horizontal: 15,
+                        Text(
+                          'Scheduled Rooms',
+                          style: theme.text20bold,
                         ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              MdiIcons.accountPlus,
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * .02,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      height: height * .25,
+                      width: width * .9,
+                      child: ListView.builder(
+                        itemCount: _scheduleMyList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ChatRoomGrp(
+                                    chatRoomID: _scheduleMyList[index].id,
+                                  ),
+                                ),
+                              );
+                            },
+                            tileColor: theme.colorBackgroundGray,
+                            leading: Text(
+                              '>',
+                              style: theme.text14boldPimary,
                             ),
-                            Text(
-                              ' Create',
-                              style: theme.text16boldWhite,
-                            ),
-                          ],
-                        ),
+                            title: Text('${_scheduleMyList[index].name}'),
+                            trailing: Text(
+                                pmOrAm(_scheduleMyList[index].scheduleTime)),
+                          );
+                        },
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: width * .02,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      bottomSheettoJoin();
-                    },
-                    child: Card(
-                      elevation: 7,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          50,
+                    SizedBox(
+                      height: height * 0.03,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width * .06,
                         ),
+                        Text(
+                          'Trending Rooms',
+                          style: theme.text20bold,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * .02,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      color: theme.colorPrimary,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 15.0,
-                          horizontal: 23,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              MdiIcons.plus,
+                      height: height * .25,
+                      width: width * .9,
+                      child: ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: Text(
+                              '>',
+                              style: theme.text14boldPimary,
                             ),
-                            Text(
-                              'Join',
-                              style: theme.text16boldWhite,
-                            ),
-                          ],
-                        ),
+                            title: Text('Trending Rooms'),
+                          );
+                        },
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: height * .02,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            bottomSheet();
+                          },
+                          child: Card(
+                            elevation: 7,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            color: theme.colorPrimary,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 15.0,
+                                horizontal: 15,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    MdiIcons.accountPlus,
+                                  ),
+                                  Text(
+                                    ' Create',
+                                    style: theme.text16boldWhite,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: width * .02,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            bottomSheettoJoin();
+                          },
+                          child: Card(
+                            elevation: 7,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            color: theme.colorPrimary,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 15.0,
+                                horizontal: 23,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    MdiIcons.plus,
+                                  ),
+                                  Text(
+                                    'Join',
+                                    style: theme.text16boldWhite,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -745,10 +780,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
         ));
   }
 
-  String pmOrAm(TimeOfDay _time) {
-    final time = "${_time.hour}:${_time.minute}";
+  String pmOrAm(String time) {
     final data = time.split(":");
-    var val = int.parse(data[0]);
+    var val = int.parse(data[0].trim());
     var pmORAm = "AM";
     if (val > 12) {
       val = val - 12;
@@ -758,7 +792,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
     } else if (val == 12) {
       pmORAm = "PM";
     }
-    var min = int.parse(data[1]);
+    var min = int.parse(data[1].trim());
     String zero;
     String aZero;
     val < 12

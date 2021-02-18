@@ -38,9 +38,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
         .child(widget.chatRoomID)
         .once();
     final map = data.value as Map;
-    for (MapEntry entry in map.entries) {
-      grpName = map['roomName'];
-    }
+    grpName = map['roomName'];
     setState(() {});
   }
 
