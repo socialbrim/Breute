@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'dart:convert';
+
 import 'dart:io';
 import 'package:parentpreneur/Screens/SocialMediaHomeScreen.dart';
 
-import 'package:storage_path/storage_path.dart';
 import '../models/creatPost.dart';
 import './SocialMediaCreateCaption.dart';
 import '../main.dart';
@@ -30,32 +29,32 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
   @override
   void initState() {
     super.initState();
-    getImagesPath();
+    // getImagesPath();
   }
 
-  getImagesPath() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      var imagePath = await StoragePath.imagesPath;
-      var images = jsonDecode(imagePath) as List;
-      files = images.map<FileModel>((e) => FileModel.fromJson(e)).toList();
-      if (files != null && files.length > 0)
-        setState(() {
-          selectedModel = files[0];
-          image = files[0].files[0];
-          // fetchData();
-          _isLoading = false;
-        });
-    } catch (e) {
-      print(e);
-      print("-------------------------");
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  // getImagesPath() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   try {
+  //     var imagePath = await StoragePath.imagesPath;
+  //     var images = jsonDecode(imagePath) as List;
+  //     files = images.map<FileModel>((e) => FileModel.fromJson(e)).toList();
+  //     if (files != null && files.length > 0)
+  //       setState(() {
+  //         selectedModel = files[0];
+  //         image = files[0].files[0];
+  //         // fetchData();
+  //         _isLoading = false;
+  //       });
+  //   } catch (e) {
+  //     print(e);
+  //     print("-------------------------");
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -71,23 +70,23 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
               ),
             ),
           ),
-          title: Container(
-            width: MediaQuery.of(context).size.width * .4,
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<FileModel>(
-                items: getItems(),
-                isExpanded: true,
-                onChanged: (FileModel d) {
-                  assert(d.files.length > 0);
-                  image = d.files[0];
-                  setState(() {
-                    selectedModel = d;
-                  });
-                },
-                value: selectedModel,
-              ),
-            ),
-          ),
+          // title: Container(
+          //   width: MediaQuery.of(context).size.width * .4,
+          //   child: DropdownButtonHideUnderline(
+          //     child: DropdownButton<FileModel>(
+          //       items: getItems(),
+          //       isExpanded: true,
+          //       onChanged: (FileModel d) {
+          //         assert(d.files.length > 0);
+          //         image = d.files[0];
+          //         setState(() {
+          //           selectedModel = d;
+          //         });
+          //       },
+          //       value: selectedModel,
+          //     ),
+          //   ),
+          // ),
           actions: [
             InkWell(
               onTap: () async {
@@ -113,58 +112,52 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
             )
           ],
         ),
-        body: _isLoading
-            ? Center(
-                child: SpinKitFadingCircle(
-                  color: theme.colorPrimary,
-                ),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.42,
-                      child: image != null
-                          ? Image.file(File(image),
-                              height: MediaQuery.of(context).size.height * 0.45,
-                              width: MediaQuery.of(context).size.width)
-                          : Container(),
-                    ),
-                    Divider(),
-                    selectedModel == null ||
-                            selectedModel.files == null ||
-                            selectedModel.files.length < 1
-                        ? Container(
-                            child: Text("Center"),
-                          )
-                        : Container(
-                            height: MediaQuery.of(context).size.height * 0.38,
-                            child: GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 4,
-                                        crossAxisSpacing: 4,
-                                        mainAxisSpacing: 4),
-                                itemBuilder: (_, i) {
-                                  var file = selectedModel.files[i];
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              // Container(
+              //   height: MediaQuery.of(context).size.height * 0.42,
+              //   child: image != null
+              //       ? Image.file(File(image),
+              //           height: MediaQuery.of(context).size.height * 0.45,
+              //           width: MediaQuery.of(context).size.width)
+              //       : Container(),
+              // ),
+              // Divider(),
+              // selectedModel == null ||
+              //         selectedModel.files == null ||
+              //         selectedModel.files.length < 1
+              //     ? Container(
+              //         child: Text("Center"),
+              //       )
+              //     : Container(
+              //         height: MediaQuery.of(context).size.height * 0.38,
+              //         child: GridView.builder(
+              //             gridDelegate:
+              //                 SliverGridDelegateWithFixedCrossAxisCount(
+              //                     crossAxisCount: 4,
+              //                     crossAxisSpacing: 4,
+              //                     mainAxisSpacing: 4),
+              //             itemBuilder: (_, i) {
+              //               var file = selectedModel.files[i];
 
-                                  return GestureDetector(
-                                    child: Image.file(
-                                      File(file),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        image = file; //_files[i].path;
-                                      });
-                                    },
-                                  );
-                                },
-                                itemCount: selectedModel.files.length),
-                          )
-                  ],
-                ),
-              ),
+              //               return GestureDetector(
+              //                 child: Image.file(
+              //                   File(file),
+              //                   fit: BoxFit.cover,
+              //                 ),
+              //                 onTap: () {
+              //                   setState(() {
+              //                     image = file; //_files[i].path;
+              //                   });
+              //                 },
+              //               );
+              //             },
+              //             itemCount: selectedModel.files.length),
+              //       )
+            ],
+          ),
+        ),
       ),
     );
   }
