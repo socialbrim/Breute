@@ -26,6 +26,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
   TextEditingController _pass = TextEditingController();
   List<RoomModel> _trendingList = [];
   List<RoomModel> _scheduleMyList = [];
+  List<RoomModel> _myRoomList = [];
   bool _isLoading = true;
 
   Future<void> fetchScheduledRooms() async {
@@ -67,6 +68,55 @@ class _RoomsScreenState extends State<RoomsScreen> {
         return isRemove;
       });
       print(_scheduleMyList.length);
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Something went wront to fetch Schedule List");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchMyRooms() async {
+    try {
+      //..
+      final data = await FirebaseDatabase.instance
+          .reference()
+          .child("Roomsinformation")
+          .once();
+      if (data.value != null) {
+        final dataset = data.value as Map;
+        dataset.forEach((key, value) {
+          _myRoomList.add(
+            RoomModel(
+              dateTime: value['roomName'] == null
+                  ? DateTime.now()
+                  : DateTime.parse(
+                      value['dateTime'],
+                    ),
+              id: key,
+              name: value['roomName'],
+              roomIDTOENTER: value['roomIDtoEnter'],
+              forSchedulesAndAll: value,
+              scheduleTime: value['scheduleTime'],
+            ),
+          );
+        });
+      }
+
+      _myRoomList.removeWhere((element) {
+        bool isRemove = true;
+        element.forSchedulesAndAll.forEach((key, value) {
+          if (key == FirebaseAuth.instance.currentUser.uid) {
+            isRemove = false;
+          }
+        });
+        return isRemove;
+      });
+
       setState(() {
         _isLoading = false;
       });
@@ -371,7 +421,8 @@ class _RoomsScreenState extends State<RoomsScreen> {
 
   @override
   void initState() {
-    fetchTrendingOpenRooms().then((value) => fetchScheduledRooms());
+    fetchTrendingOpenRooms()
+        .then((value) => fetchMyRooms().then((value) => fetchScheduledRooms()));
 
     super.initState();
   }
