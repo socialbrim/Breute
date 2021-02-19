@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../main.dart';
 
 // ignore: must_be_immutable
 class RoomInformation extends StatefulWidget {
@@ -19,6 +20,7 @@ class _RoomInformationState extends State<RoomInformation> {
   String adminID;
   String grpDP; //.... mood hua to badme krenge
   bool currentUserTypeAdmin = false;
+  bool _isLoading = true;
 
   ///... mood hua to
   void roomInformation() async {
@@ -74,7 +76,9 @@ class _RoomInformationState extends State<RoomInformation> {
       }
       print(_users.length);
     }
-    setState(() {});
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -85,10 +89,161 @@ class _RoomInformationState extends State<RoomInformation> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("$grpName"),
       ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.black,
+              ),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Room Id:   ",
+                          style: theme.text16bold,
+                        ),
+                        Text(
+                          id,
+                          style: theme.text16,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  if (pass != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Password:   ",
+                            style: theme.text16bold,
+                          ),
+                          Text(
+                            pass,
+                            style: theme.text16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Text(
+                    "Users",
+                    style: theme.text16bold,
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Card(
+                    elevation: 20,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      height: _users.length * height * .15,
+                      width: width * .9,
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: _users.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Row(
+                                children: [
+                                  Center(
+                                    child: CircleAvatar(
+                                      backgroundImage:
+                                          _users[index].imageUrl == null
+                                              ? AssetImage("assets/unnamed.png")
+                                              : NetworkImage(
+                                                  _users[index].imageUrl),
+                                      radius: 30,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.02,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Name:   ",
+                                            style: theme.text12bold,
+                                          ),
+                                          Text(
+                                            "${_users[index].name}",
+                                            style: theme.text12grey,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.005,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Email:   ",
+                                            style: theme.text12bold,
+                                          ),
+                                          Container(
+                                            width: width * 0.4,
+                                            child: Text(
+                                              "${_users[index].email}",
+                                              softWrap: true,
+                                              style: theme.text12grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.005,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Phone:   ",
+                                            style: theme.text12bold,
+                                          ),
+                                          Text(
+                                            "${_users[index].phone}",
+                                            style: theme.text12grey,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

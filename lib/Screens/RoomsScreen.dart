@@ -683,38 +683,49 @@ class _RoomsScreenState extends State<RoomsScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: _trendingList.length,
                           itemBuilder: (context, index) {
-                            return Card(
-                              elevation: 10,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Room Name:   ",
-                                          style: theme.text14bold,
-                                        ),
-                                        Text(
-                                          "${_trendingList[index].name}",
-                                          style: theme.text14,
-                                        ),
-                                      ],
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatRoomGrp(
+                                      chatRoomID: _trendingList[index].id,
                                     ),
-                                    // Row(
-                                    //   children: [
-                                    //     Text(
-                                    //       "Room Id:   ",
-                                    //       style: theme.text14bold,
-                                    //     ),
-                                    //     Text(
-                                    //       "${_trendingList[index].id}",
-                                    //       style: theme.text14,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ],
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                elevation: 10,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Room Name:   ",
+                                            style: theme.text14bold,
+                                          ),
+                                          Text(
+                                            "${_trendingList[index].name}",
+                                            style: theme.text14,
+                                          ),
+                                        ],
+                                      ),
+                                      // Row(
+                                      //   children: [
+                                      //     Text(
+                                      //       "Room Id:   ",
+                                      //       style: theme.text14bold,
+                                      //     ),
+                                      //     Text(
+                                      //       "${_trendingList[index].id}",
+                                      //       style: theme.text14,
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -749,38 +760,49 @@ class _RoomsScreenState extends State<RoomsScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: _myRoomList.length,
                           itemBuilder: (context, index) {
-                            return Card(
-                              elevation: 10,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Room Name:   ",
-                                          style: theme.text14bold,
-                                        ),
-                                        Text(
-                                          "${_myRoomList[index].name}",
-                                          style: theme.text14,
-                                        ),
-                                      ],
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatRoomGrp(
+                                      chatRoomID: _myRoomList[index].id,
                                     ),
-                                    // Row(
-                                    //   children: [
-                                    //     Text(
-                                    //       "Room Id:   ",
-                                    //       style: theme.text14bold,
-                                    //     ),
-                                    //     Text(
-                                    //       "${_myRoomList[index].id}",
-                                    //       style: theme.text14,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ],
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                elevation: 10,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Room Name:   ",
+                                            style: theme.text14bold,
+                                          ),
+                                          Text(
+                                            "${_myRoomList[index].name}",
+                                            style: theme.text14,
+                                          ),
+                                        ],
+                                      ),
+                                      // Row(
+                                      //   children: [
+                                      //     Text(
+                                      //       "Room Id:   ",
+                                      //       style: theme.text14bold,
+                                      //     ),
+                                      //     Text(
+                                      //       "${_myRoomList[index].id}",
+                                      //       style: theme.text14,
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
