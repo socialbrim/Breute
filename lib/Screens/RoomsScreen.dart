@@ -451,6 +451,84 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     SizedBox(
                       height: height * .025,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              bottomSheet();
+                            },
+                            child: Card(
+                              elevation: 7,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  50,
+                                ),
+                              ),
+                              color: theme.colorPrimary,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 15.0,
+                                  horizontal: 15,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      MdiIcons.accountPlus,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      ' Create',
+                                      style: theme.text16boldWhite,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: width * .02,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              bottomSheettoJoin();
+                            },
+                            child: Card(
+                              elevation: 7,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  50,
+                                ),
+                              ),
+                              color: theme.colorPrimary,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 15.0,
+                                  horizontal: 23,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      MdiIcons.plus,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      'Join',
+                                      style: theme.text16boldWhite,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * .02,
+                    ),
                     // Card(
                     //   margin: EdgeInsets.symmetric(horizontal: 20),
                     //   elevation: 10,
@@ -505,36 +583,77 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     SizedBox(
                       height: height * .02,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      height: height * .25,
-                      width: width * .9,
-                      child: ListView.builder(
-                        itemCount: _scheduleMyList.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ChatRoomGrp(
-                                    chatRoomID: _scheduleMyList[index].id,
+                    Card(
+                      elevation: 20,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        height: _scheduleMyList.length * height * .1,
+                        width: width * .9,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _scheduleMyList.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatRoomGrp(
+                                      chatRoomID: _scheduleMyList[index].id,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                elevation: 10,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Room Name:   ",
+                                            style: theme.text14bold,
+                                          ),
+                                          Text(
+                                            "${_scheduleMyList[index].name}",
+                                            style: theme.text14,
+                                          ),
+                                        ],
+                                      ),
+                                      // Row(
+                                      //   children: [
+                                      //     Text(
+                                      //       "Room Id:   ",
+                                      //       style: theme.text14bold,
+                                      //     ),
+                                      //     Text(
+                                      //       "${_scheduleMyList[index].id}",
+                                      //       style: theme.text14,
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Time:   ",
+                                            style: theme.text14bold,
+                                          ),
+                                          Text(
+                                            pmOrAm(
+                                                "${_scheduleMyList[index].scheduleTime}"),
+                                            style: theme.text14,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                            tileColor: theme.colorBackgroundGray,
-                            leading: Text(
-                              '>',
-                              style: theme.text14boldPimary,
-                            ),
-                            title: Text('${_scheduleMyList[index].name}'),
-                            trailing: Text(
-                                pmOrAm(_scheduleMyList[index].scheduleTime)),
-                          );
-                        },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -554,98 +673,123 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     SizedBox(
                       height: height * .02,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      height: height * .25,
-                      width: width * .9,
-                      child: ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Text(
-                              '>',
-                              style: theme.text14boldPimary,
-                            ),
-                            title: Text('Trending Rooms'),
-                          );
-                        },
+                    Card(
+                      elevation: 20,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        height: _trendingList.length * height * .07,
+                        width: width * .9,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _trendingList.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              elevation: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Room Name:   ",
+                                          style: theme.text14bold,
+                                        ),
+                                        Text(
+                                          "${_trendingList[index].name}",
+                                          style: theme.text14,
+                                        ),
+                                      ],
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     Text(
+                                    //       "Room Id:   ",
+                                    //       style: theme.text14bold,
+                                    //     ),
+                                    //     Text(
+                                    //       "${_trendingList[index].id}",
+                                    //       style: theme.text14,
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: height * .02,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            bottomSheet();
-                          },
-                          child: Card(
-                            elevation: 7,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                50,
-                              ),
-                            ),
-                            color: theme.colorPrimary,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 15.0,
-                                horizontal: 15,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    MdiIcons.accountPlus,
-                                  ),
-                                  Text(
-                                    ' Create',
-                                    style: theme.text16boldWhite,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
                         SizedBox(
-                          width: width * .02,
+                          width: width * .06,
                         ),
-                        InkWell(
-                          onTap: () {
-                            bottomSheettoJoin();
-                          },
-                          child: Card(
-                            elevation: 7,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                50,
-                              ),
-                            ),
-                            color: theme.colorPrimary,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 15.0,
-                                horizontal: 23,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    MdiIcons.plus,
-                                  ),
-                                  Text(
-                                    'Join',
-                                    style: theme.text16boldWhite,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        Text(
+                          'My Rooms',
+                          style: theme.text20bold,
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: height * .02,
+                    ),
+                    Card(
+                      elevation: 20,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        height: _myRoomList.length * height * .07,
+                        width: width * .9,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _myRoomList.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              elevation: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Room Name:   ",
+                                          style: theme.text14bold,
+                                        ),
+                                        Text(
+                                          "${_myRoomList[index].name}",
+                                          style: theme.text14,
+                                        ),
+                                      ],
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     Text(
+                                    //       "Room Id:   ",
+                                    //       style: theme.text14bold,
+                                    //     ),
+                                    //     Text(
+                                    //       "${_myRoomList[index].id}",
+                                    //       style: theme.text14,
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * .1,
                     ),
                   ],
                 ),
@@ -832,8 +976,12 @@ class _RoomsScreenState extends State<RoomsScreen> {
   }
 
   String pmOrAm(String time) {
+    if (time == null) {
+      return "";
+    }
     final data = time.split(":");
-    var val = int.parse(data[0].trim());
+    var val = int.parse(data[0]);
+    var min = int.parse(data[1]);
     var pmORAm = "AM";
     if (val > 12) {
       val = val - 12;
@@ -843,7 +991,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
     } else if (val == 12) {
       pmORAm = "PM";
     }
-    var min = int.parse(data[1].trim());
     String zero;
     String aZero;
     val < 12
