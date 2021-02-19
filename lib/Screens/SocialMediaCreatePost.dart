@@ -5,8 +5,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'dart:io';
 import 'package:parentpreneur/Screens/SocialMediaHomeScreen.dart';
 
-import '../models/creatPost.dart';
 import './SocialMediaCreateCaption.dart';
+import 'package:images_picker/images_picker.dart';
+
 import '../main.dart';
 
 class SocialMediaCreatePost extends StatefulWidget {
@@ -19,42 +20,67 @@ class SocialMediaCreatePost extends StatefulWidget {
 }
 
 class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
-  List<FileModel> files = [];
-  FileModel selectedModel;
   String image;
-  bool _isLoading = false;
-  // ignore: unused_field
-  List<File> _files = [];
+  File fileImage;
 
-  @override
-  void initState() {
-    super.initState();
-    // getImagesPath();
+  Future<void> picker() async {
+    // ignore: unused_local_variable
+    File document;
+    var vals;
+    // ignore: unused_local_variable
+    var _imagesetting = false;
+
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Choose Image"),
+        content: Text("Please choose an Image"),
+        actions: <Widget>[
+          RaisedButton.icon(
+            icon: Icon(Icons.camera),
+            label: Text("camera"),
+            onPressed: () async {
+              // ignore: deprecated_member_use
+              vals = await ImagesPicker.openCamera(
+                pickType: PickType.image,
+                cropOpt: CropOption(
+                  cropType: CropType.rect,
+                ),
+              );
+              setState(() {
+                _imagesetting = true;
+              });
+              Navigator.of(ctx).pop(true);
+            },
+          ),
+          RaisedButton.icon(
+            icon: Icon(Icons.image),
+            label: Text("gallery"),
+            onPressed: () async {
+              // ignore: deprecated_member_use
+              vals = await ImagesPicker.pick(
+                cropOpt: CropOption(
+                  cropType: CropType.rect,
+                ),
+                count: 1,
+                pickType: PickType.image,
+              );
+              setState(() {
+                _imagesetting = true;
+              });
+              Navigator.of(ctx).pop(true);
+            },
+          ),
+        ],
+      ),
+    );
+    setState(() {
+      if (vals == null) {
+        return;
+      }
+      fileImage = File(vals.first.thumbPath);
+    });
   }
-
-  // getImagesPath() async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   try {
-  //     var imagePath = await StoragePath.imagesPath;
-  //     var images = jsonDecode(imagePath) as List;
-  //     files = images.map<FileModel>((e) => FileModel.fromJson(e)).toList();
-  //     if (files != null && files.length > 0)
-  //       setState(() {
-  //         selectedModel = files[0];
-  //         image = files[0].files[0];
-  //         // fetchData();
-  //         _isLoading = false;
-  //       });
-  //   } catch (e) {
-  //     print(e);
-  //     print("-------------------------");
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,36 +96,17 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
               ),
             ),
           ),
-          // title: Container(
-          //   width: MediaQuery.of(context).size.width * .4,
-          //   child: DropdownButtonHideUnderline(
-          //     child: DropdownButton<FileModel>(
-          //       items: getItems(),
-          //       isExpanded: true,
-          //       onChanged: (FileModel d) {
-          //         assert(d.files.length > 0);
-          //         image = d.files[0];
-          //         setState(() {
-          //           selectedModel = d;
-          //         });
-          //       },
-          //       value: selectedModel,
-          //     ),
-          //   ),
-          // ),
           actions: [
             InkWell(
               onTap: () async {
-                // final data = await ImagesPicker.pick();
-                // print(data.first.path);
-
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SocialMediaCreateCaption(
-                      image: image, // image,
+                if (image != null)
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SocialMediaCreateCaption(
+                        image: image, // image,
+                      ),
                     ),
-                  ),
-                );
+                  );
               },
               child: Container(
                 alignment: Alignment.center,
@@ -112,88 +119,34 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              // Container(
-              //   height: MediaQuery.of(context).size.height * 0.42,
-              //   child: image != null
-              //       ? Image.file(File(image),
-              //           height: MediaQuery.of(context).size.height * 0.45,
-              //           width: MediaQuery.of(context).size.width)
-              //       : Container(),
-              // ),
-              // Divider(),
-              // selectedModel == null ||
-              //         selectedModel.files == null ||
-              //         selectedModel.files.length < 1
-              //     ? Container(
-              //         child: Text("Center"),
-              //       )
-              //     : Container(
-              //         height: MediaQuery.of(context).size.height * 0.38,
-              //         child: GridView.builder(
-              //             gridDelegate:
-              //                 SliverGridDelegateWithFixedCrossAxisCount(
-              //                     crossAxisCount: 4,
-              //                     crossAxisSpacing: 4,
-              //                     mainAxisSpacing: 4),
-              //             itemBuilder: (_, i) {
-              //               var file = selectedModel.files[i];
-
-              //               return GestureDetector(
-              //                 child: Image.file(
-              //                   File(file),
-              //                   fit: BoxFit.cover,
-              //                 ),
-              //                 onTap: () {
-              //                   setState(() {
-              //                     image = file; //_files[i].path;
-              //                   });
-              //                 },
-              //               );
-              //             },
-              //             itemCount: selectedModel.files.length),
-              //       )
-            ],
-          ),
-        ),
+        body: fileImage == null
+            ? Center(
+                child: InkWell(
+                  onTap: () {
+                    picker();
+                  },
+                  child: Text(
+                    "Pick an Image",
+                    style: theme.text14bold,
+                  ),
+                ),
+              )
+            : Center(
+                child: InkWell(
+                  onTap: () {
+                    picker();
+                  },
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    child: Image.file(
+                      fileImage,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
       ),
     );
-  }
-
-  // Future<File> compressNow(File _imageFile) async {
-  //   print("FILE SIZE BEFORE: " + _imageFile.lengthSync().toString());
-  //   await CompressImage.compress(
-  //       imageSrc: _imageFile.path,
-  //       desiredQuality: 50); //desiredQuality ranges from 0 to 100
-  //   print("FILE SIZE  AFTER: " + _imageFile.lengthSync().toString());
-  //   return _imageFile;
-  //   // compressimage: ^0.1.1
-  // }
-
-  // void fetchData() async {
-  //   for (var i = 0; i < selectedModel.files.length; i++) {
-  //     File file = await compressNow(File(selectedModel.files[i]));
-  //     _files.add(file);
-  //   }
-  //   setState(() {
-  //     _isLoading = false;
-  //   });
-  // }
-
-  List<DropdownMenuItem> getItems() {
-    return files == null
-        ? []
-        : files
-                .map((e) => DropdownMenuItem(
-                      child: Text(
-                        e.folder,
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      value: e,
-                    ))
-                .toList() ??
-            [];
   }
 }
