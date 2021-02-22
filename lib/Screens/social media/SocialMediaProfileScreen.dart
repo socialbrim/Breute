@@ -48,6 +48,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
         imageUrl: mapped['imageURL'],
         name: mapped['userName'],
         phone: mapped['phone'],
+        bio: mapped["bio"],
       );
       final socailMediaLife = await FirebaseDatabase.instance
           .reference()
@@ -100,6 +101,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
         imageUrl: mapped['imageURL'],
         name: mapped['userName'],
         phone: mapped['phone'],
+        bio: mapped["bio"],
       );
 
       final isFriend = await FirebaseDatabase.instance
