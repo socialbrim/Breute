@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:parentpreneur/Providers/feedProvider.dart';
 import 'package:provider/provider.dart';
-import '../models/PostModel.dart';
-import '../main.dart';
+import '../../models/PostModel.dart';
+import '../../main.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../Providers/User.dart';
+import '../../Providers/User.dart';
 
 // ignore: must_be_immutable
 class SocialMediaCommentScreen extends StatefulWidget {

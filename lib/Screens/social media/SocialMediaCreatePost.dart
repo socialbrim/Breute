@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Screens/social%20media/SocialMediaHomeScreen.dart';
 
 import 'dart:io';
-import 'package:parentpreneur/Screens/SocialMediaHomeScreen.dart';
+import 'package:parentpreneur/main.dart';
 
 import './SocialMediaCreateCaption.dart';
 import 'package:images_picker/images_picker.dart';
-
-import '../main.dart';
 
 class SocialMediaCreatePost extends StatefulWidget {
   SocialMediaCreatePost({Key key, this.title}) : super(key: key);
