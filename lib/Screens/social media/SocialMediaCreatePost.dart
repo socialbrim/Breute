@@ -87,14 +87,15 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
       child: Scaffold(
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(MdiIcons.close),
-            onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => SocialMediaHomeScreen(),
-              ),
-            ),
-          ),
+          // leading: IconButton(
+          //   icon: Icon(MdiIcons.close),
+          //   onPressed: () => Navigator.of(context).pushReplacement(
+          //     MaterialPageRoute(
+          //       builder: (context) => SocialMediaHomeScreen(),
+          //     ),
+          //   ),
+          // ),
+          automaticallyImplyLeading: false,
           actions: [
             InkWell(
               onTap: () async {
