@@ -12,8 +12,8 @@ class AppThemeData extends ChangeNotifier {
   Color colorGrey = Color.fromARGB(255, 209, 210, 205);
 
   // Color colorPrimary = Color(0xff009688);
-  Color colorPrimary = HexColor('3CB5FA');
-  Color colorCompanion = HexColor('F968C1');
+  Color colorPrimary = HexColor('52a199');
+  Color colorCompanion = HexColor('0f7e86');
   Color colorCompanion2 = Color(0xffffbb43);
   Color colorCompanion3 = Color(0xffb6e9d1);
   Color colorCompanion4 = HexColor("EB2C7F");
