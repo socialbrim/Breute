@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: _theme,
-            title: 'Parentpreneur App',
+            title: 'Breute',
             home: SplashScreen(),
           );
         },

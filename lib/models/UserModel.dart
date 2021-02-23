@@ -5,6 +5,7 @@ class UserInformation {
   String email;
   String phone;
   String imageUrl;
+  String bio;
   String id;
   bool isPhone;
   PlanName planDetails;
@@ -16,5 +17,6 @@ class UserInformation {
     this.phone,
     this.isPhone,
     this.planDetails,
+    this.bio,
   });
 }

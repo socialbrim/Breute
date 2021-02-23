@@ -3,12 +3,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
+import 'package:parentpreneur/Screens/editProfile.dart';
 import 'package:parentpreneur/models/PostModel.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
-import 'editProfile.dart';
+import 'package:parentpreneur/main.dart';
 import './SocialMediaPostScreen.dart';
 
 class SocialMediaProfileScreen extends StatefulWidget {
@@ -48,6 +48,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
         imageUrl: mapped['imageURL'],
         name: mapped['userName'],
         phone: mapped['phone'],
+        bio: mapped["bio"],
       );
       final socailMediaLife = await FirebaseDatabase.instance
           .reference()
@@ -100,6 +101,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
         imageUrl: mapped['imageURL'],
         name: mapped['userName'],
         phone: mapped['phone'],
+        bio: mapped["bio"],
       );
 
       final isFriend = await FirebaseDatabase.instance

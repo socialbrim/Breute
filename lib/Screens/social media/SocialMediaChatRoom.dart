@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parentpreneur/Providers/User.dart';
-import 'package:parentpreneur/Screens/SocialMediaProfileScreen.dart';
+import 'package:parentpreneur/Screens/social media/SocialMediaProfileScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 
 import 'package:provider/provider.dart';
-import '../main.dart';
+import 'package:parentpreneur/main.dart';
 
 // ignore: must_be_immutable
 class SocialMediaChat extends StatefulWidget {

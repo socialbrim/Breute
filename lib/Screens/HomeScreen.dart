@@ -253,6 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .once();
         print(mappedPlan.value);
         final mappeddata = mappedPlan.value as Map;
+
         mappeddata.forEach((key, value) {
           planInfo = new PlanName(
             amount: value['amount'],
@@ -261,6 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
             name: value['Name'],
           );
         });
+
         Provider.of<MyPlanProvider>(context, listen: false).setPlan(planInfo);
         UserInformation userData = new UserInformation(
           email: mapped['emial'],

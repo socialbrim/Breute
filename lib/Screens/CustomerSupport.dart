@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Screens/social%20media/SocialMediaHomeScreen.dart';
 import '../main.dart';
 import 'ChatScreen.dart';
-import './SocialMediaHomeScreen.dart';
+
 import './RoomsScreen.dart';
 
 // ignore: must_be_immutable

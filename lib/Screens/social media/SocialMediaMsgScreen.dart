@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:parentpreneur/Screens/SocialMediaChatRoom.dart';
+import 'package:parentpreneur/Screens/social%20media/SocialMediaChatRoom.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
 class SocialMediaMsgScreen extends StatefulWidget {
   @override

@@ -8,11 +8,12 @@ import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import './SocialMediaMsgScreen.dart';
 import 'SocialMediaCommentScreen.dart';
-import '../Screens/SearchScreen.dart';
-import '../main.dart';
-import '../models/PostModel.dart';
+import '../social media/SearchScreen.dart';
+
+import 'package:parentpreneur/models/PostModel.dart';
 import 'package:provider/provider.dart';
-import '../Providers/feedProvider.dart';
+import 'package:parentpreneur/main.dart';
+import 'package:parentpreneur/Providers/feedProvider.dart';
 
 class SocialMediaFeedScreen extends StatefulWidget {
   @override

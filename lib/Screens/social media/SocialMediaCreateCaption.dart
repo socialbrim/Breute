@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:parentpreneur/Providers/User.dart';
 
-import '../Providers/socialmedialBarindex.dart';
+import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,7 +11,7 @@ import 'dart:math' as Math;
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as Im;
 import 'package:provider/provider.dart';
-import '../main.dart';
+import 'package:parentpreneur/main.dart';
 
 // ignore: must_be_immutable
 class SocialMediaCreateCaption extends StatefulWidget {

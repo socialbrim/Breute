@@ -205,7 +205,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   appBar: AppBar(
                     elevation: 6,
                     title: CircleAvatar(
-                      child: Image.asset('assets/Logo.png'),
+                      child: Image.asset('assets/4.png'),
                     ),
                     centerTitle: false,
                   ),

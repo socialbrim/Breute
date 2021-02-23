@@ -116,6 +116,7 @@ class _EditProfileState extends State<EditProfile> {
         "emial": email.text,
         "phone": phone.text,
         "imageURL": vals,
+        "bio": bio.text,
       });
 
       FirebaseDatabase.instance
@@ -127,6 +128,7 @@ class _EditProfileState extends State<EditProfile> {
         "emial": email.text,
         "phone": phone.text,
         "imageURL": vals,
+        "bio": bio.text,
       });
 
       setState(() {
@@ -154,6 +156,7 @@ class _EditProfileState extends State<EditProfile> {
       "userName": name.text,
       "emial": email.text,
       "phone": phone.text,
+      "bio": bio.text,
     });
 
     FirebaseDatabase.instance
@@ -165,6 +168,7 @@ class _EditProfileState extends State<EditProfile> {
       "emial": email.text,
       "phone": phone.text,
       "imageURL": data.imageUrl,
+      "bio": bio.text,
     });
 
     setState(() {
@@ -177,6 +181,7 @@ class _EditProfileState extends State<EditProfile> {
       imageUrl: data.imageUrl,
       name: name.text,
       phone: phone.text,
+      bio: bio.text,
       isPhone: data.isPhone,
     );
     Provider.of<UserProvider>(context, listen: false).setUser(changes);
@@ -186,6 +191,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController name = TextEditingController();
+  TextEditingController bio = TextEditingController();
   // bool _isLogedInWithGoogle = false;
   UserInformation data;
   @override
@@ -197,6 +203,7 @@ class _EditProfileState extends State<EditProfile> {
     name.text = dta.name;
     phone.text = dta.phone;
     imageNetwork = dta.imageUrl;
+    bio.text = dta.bio;
 
     super.initState();
   }
@@ -378,6 +385,51 @@ class _EditProfileState extends State<EditProfile> {
                       border: InputBorder.none,
                       icon: Icon(
                         MdiIcons.phone,
+                        color: theme.colorCompanion,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.025,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    // vertical: 5,
+                  ),
+                  // height: height * 0.06,
+                  width: width * 0.78,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: theme.colorCompanion,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextFormField(
+                    // initialValue: name,
+                    controller: bio,
+
+                    keyboardType: TextInputType.name,
+                    style: theme.text16,
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return "Enter in Field";
+                      } else
+                        return null;
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Bio",
+                      hintStyle: TextStyle(
+                        color: theme.colorPrimary,
+                      ),
+                      border: InputBorder.none,
+                      icon: Icon(
+                        MdiIcons.bio,
                         color: theme.colorCompanion,
                       ),
                     ),

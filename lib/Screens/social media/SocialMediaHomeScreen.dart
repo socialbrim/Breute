@@ -3,10 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
-import '../Providers/socialmedialBarindex.dart';
-import '../main.dart';
+import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
+
 import './SocialMediaCreatePost.dart';
 import './SocialMediaFeedScreen.dart';
+import 'package:parentpreneur/main.dart';
 import './SocialMediaProfileScreen.dart';
 
 class SocialMediaHomeScreen extends StatefulWidget {
