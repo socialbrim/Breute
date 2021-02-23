@@ -37,45 +37,60 @@ class _EditProfileState extends State<EditProfile> {
     await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text("Choose Image"),
-        content: Text("Please choose an Image"),
-        actions: <Widget>[
-          RaisedButton.icon(
-            icon: Icon(Icons.camera),
-            label: Text("camera"),
-            onPressed: () async {
-              // ignore: deprecated_member_use
-              vals = await ImagesPicker.openCamera(
-                pickType: PickType.image,
-                cropOpt: CropOption(
-                  cropType: CropType.rect,
-                ),
-              );
-              setState(() {
-                _imagesetting = true;
-              });
-              Navigator.of(ctx).pop(true);
-            },
+        content: Container(
+          height: 120,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Text("Please choose an Image"),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  RaisedButton.icon(
+                    icon: Icon(Icons.camera),
+                    label: Text("camera"),
+                    onPressed: () async {
+                      // ignore: deprecated_member_use
+                      vals = await ImagesPicker.openCamera(
+                        pickType: PickType.image,
+                        cropOpt: CropOption(
+                          cropType: CropType.rect,
+                        ),
+                      );
+                      setState(() {
+                        _imagesetting = true;
+                      });
+                      Navigator.of(ctx).pop(true);
+                    },
+                  ),
+                  RaisedButton.icon(
+                    icon: Icon(Icons.image),
+                    label: Text("gallery"),
+                    onPressed: () async {
+                      // ignore: deprecated_member_use
+                      vals = await ImagesPicker.pick(
+                        cropOpt: CropOption(
+                          cropType: CropType.rect,
+                        ),
+                        count: 1,
+                        pickType: PickType.image,
+                      );
+                      setState(() {
+                        _imagesetting = true;
+                      });
+                      Navigator.of(ctx).pop(true);
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
-          RaisedButton.icon(
-            icon: Icon(Icons.image),
-            label: Text("gallery"),
-            onPressed: () async {
-              // ignore: deprecated_member_use
-              vals = await ImagesPicker.pick(
-                cropOpt: CropOption(
-                  cropType: CropType.rect,
-                ),
-                count: 1,
-                pickType: PickType.image,
-              );
-              setState(() {
-                _imagesetting = true;
-              });
-              Navigator.of(ctx).pop(true);
-            },
-          ),
-        ],
+        ),
       ),
     );
     setState(() {

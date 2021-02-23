@@ -60,43 +60,43 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   SizedBox(
                     height: height * .03,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Support(),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      elevation: 20,
-                      margin: EdgeInsets.symmetric(horizontal: 50),
-                      child: Center(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                          child: Column(
-                            children: [
-                              Icon(
-                                MdiIcons.messageTextOutline,
-                                color: theme.colorCompanion,
-                                size: 45,
-                              ),
-                              Center(
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Text(
-                                    'Chat with All',
-                                    style: theme.text16bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => Support(),
+                  //       ),
+                  //     );
+                  //   },
+                  //   child: Card(
+                  //     elevation: 20,
+                  //     margin: EdgeInsets.symmetric(horizontal: 50),
+                  //     child: Center(
+                  //       child: Padding(
+                  //         padding:
+                  //             EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  //         child: Column(
+                  //           children: [
+                  //             Icon(
+                  //               MdiIcons.messageTextOutline,
+                  //               color: theme.colorCompanion,
+                  //               size: 45,
+                  //             ),
+                  //             Center(
+                  //               child: Container(
+                  //                 padding: EdgeInsets.all(8),
+                  //                 child: Text(
+                  //                   'Chat with All',
+                  //                   style: theme.text16bold,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: height * .025,
                   ),
@@ -139,7 +139,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 10),
                                     child: Text(
-                                      'Connect with your Friends',
+                                      'Connect With Friends',
                                       style: theme.text16bold,
                                     ),
                                   ),
