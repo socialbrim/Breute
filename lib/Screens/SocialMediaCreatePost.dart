@@ -79,6 +79,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
         return;
       }
       fileImage = File(vals.first.thumbPath);
+      image = vals.first.thumbPath;
     });
   }
 
@@ -137,8 +138,8 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                     picker();
                   },
                   child: Container(
-                    height: 200,
-                    width: 200,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.height * 0.5,
                     child: Image.file(
                       fileImage,
                       fit: BoxFit.cover,
