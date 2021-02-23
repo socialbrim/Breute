@@ -484,7 +484,7 @@ class _AllMealsState extends State<AllMeals> {
                                       AspectRatio(
                                         aspectRatio: 16 / 9,
                                         child: BetterPlayer.network(
-                                          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                                          "${_filterdlist[index].vidURL}",
                                           betterPlayerConfiguration:
                                               BetterPlayerConfiguration(
                                             // autoPlay: true,

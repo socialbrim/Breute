@@ -120,6 +120,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
       setState(() {
         _isLoading = false;
       });
+      print(_myRoomList);
     } catch (e) {
       Fluttertoast.showToast(
           msg: "Something went wront to fetch Schedule List");

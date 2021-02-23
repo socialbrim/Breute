@@ -101,7 +101,7 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                           AspectRatio(
                             aspectRatio: 16 / 9,
                             child: BetterPlayer.network(
-                              "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                              "${_list[index].vidLink}",
                               betterPlayerConfiguration:
                                   BetterPlayerConfiguration(
                                 // autoPlay: true,
@@ -138,12 +138,18 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      Text(
-                                        _list[index].name.toLowerCase(),
-                                        style: GoogleFonts.inter(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
+                                      Container(
+                                        width: width * 0.6,
+                                        // height: height * 0.05,
+                                        child: Text(
+                                          _list[index].name.toLowerCase(),
+                                          overflow: TextOverflow.fade,
+                                          softWrap: false,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ],
