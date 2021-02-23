@@ -7,7 +7,6 @@ import 'package:parentpreneur/Screens/editProfile.dart';
 import 'package:parentpreneur/models/PostModel.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:provider/provider.dart';
-
 import 'package:parentpreneur/main.dart';
 import './SocialMediaPostScreen.dart';
 
@@ -127,7 +126,8 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
           if (key != "emial" &&
               key != "imageURL" &&
               key != "phone" &&
-              key != "userName") {
+              key != "userName" &&
+              key != "bio") {
             _list.add(
               PostModel(
                 caption: value['caption'],

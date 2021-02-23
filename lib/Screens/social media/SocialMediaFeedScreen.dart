@@ -46,7 +46,8 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
             if (key != "emial" &&
                 key != "imageURL" &&
                 key != "phone" &&
-                key != "userName") {
+                key != "userName" &&
+                key != "bio") {
               _list.add(
                 PostModel(
                   caption: value['caption'],
