@@ -137,7 +137,7 @@ class _MealScreenState extends State<MealScreen> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'All Meals',
+                              'Meal Recipes',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,

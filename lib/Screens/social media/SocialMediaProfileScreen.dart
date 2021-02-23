@@ -41,7 +41,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
           .child(widget.uid)
           .once();
       final mapped = personaldata.value as Map;
-
+      print(mapped["bio"]);
       userData = UserInformation(
         email: mapped['emial'] == null ? "" : mapped['emial'],
         id: widget.uid,
@@ -61,7 +61,8 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
           if (key != "emial" &&
               key != "imageURL" &&
               key != "phone" &&
-              key != "userName") {
+              key != "userName" &&
+              key != "bio") {
             _list.add(
               PostModel(
                 caption: value['caption'],
@@ -180,7 +181,9 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
               key: _scaffoldKey,
               backgroundColor: theme.colorBackground,
               appBar: AppBar(
-                title: Text(userData.name.toUpperCase()),
+                title: Text(userData.name == null
+                    ? "Unknown"
+                    : '${userData.name.toUpperCase()}'),
               ),
               body: SingleChildScrollView(
                 child: Column(
@@ -227,7 +230,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                               horizontal: 25,
                             ),
                             child: Text(
-                              'Here, Bio will be displayed.',
+                              userData.name == null ? "" : '${userData.bio}',
                               textAlign: TextAlign.center,
                             ),
                           ),

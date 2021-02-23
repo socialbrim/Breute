@@ -296,7 +296,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                           ),
                                           Container(
                                             width: width,
-                                            // height: height * .4,
+                                            height: height * .4,
                                             child: Image.network(
                                               '${_list[index].postURL}',
                                               fit: BoxFit.cover,
@@ -479,7 +479,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                               ),
                             ),
                       SizedBox(
-                        height: height * .02,
+                        height: height * .06,
                       ),
                     ],
                   ),
