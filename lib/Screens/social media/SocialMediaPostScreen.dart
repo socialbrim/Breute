@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Screens/social%20media/SocialMediaCommentScreen.dart';
 import 'package:parentpreneur/models/PostModel.dart';
 
 import 'package:parentpreneur/main.dart';

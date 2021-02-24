@@ -320,7 +320,34 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                       ),
                                     ),
                           SizedBox(
-                            height: height * .05,
+                            height: height * .02,
+                          ),
+                          Container(
+                            // padding: EdgeInsets.all(20),
+                            width: width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  MdiIcons.share,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  width: width * 0.05,
+                                ),
+                                Text(
+                                  "Share",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * .02,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

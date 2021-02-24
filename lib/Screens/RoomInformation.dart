@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../main.dart';
@@ -125,7 +126,7 @@ class _RoomInformationState extends State<RoomInformation> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  if (pass != null)
+                  if (pass != "")
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
@@ -145,7 +146,7 @@ class _RoomInformationState extends State<RoomInformation> {
                     height: height * 0.02,
                   ),
                   Text(
-                    "Users",
+                    "${_users.length}  " + "Participants",
                     style: theme.text16bold,
                   ),
                   SizedBox(
@@ -155,7 +156,7 @@ class _RoomInformationState extends State<RoomInformation> {
                     elevation: 20,
                     child: Container(
                       padding: EdgeInsets.all(8),
-                      height: _users.length * height * .15,
+                      height: _users.length * height * .16,
                       width: width * .9,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
@@ -231,6 +232,29 @@ class _RoomInformationState extends State<RoomInformation> {
                                           ),
                                         ],
                                       ),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      if (adminID == _users[index].id)
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 2),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.green,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Text(
+                                            "Admin",
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        )
                                     ],
                                   ),
                                 ],
@@ -241,6 +265,34 @@ class _RoomInformationState extends State<RoomInformation> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      width: width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            MdiIcons.logout,
+                            color: Colors.redAccent,
+                          ),
+                          SizedBox(
+                            width: width * 0.05,
+                          ),
+                          Text(
+                            "Leave Room",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
