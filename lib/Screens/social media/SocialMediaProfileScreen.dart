@@ -8,6 +8,7 @@ import 'package:parentpreneur/models/PostModel.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:provider/provider.dart';
 import 'package:parentpreneur/main.dart';
+import 'package:share/share.dart';
 import './SocialMediaPostScreen.dart';
 
 class SocialMediaProfileScreen extends StatefulWidget {
@@ -29,9 +30,18 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
   UserInformation userData;
   List<PostModel> _list = [];
   bool _isLoading = true;
-  // int lengthofFollowing = 0;
+  int lengthofFollowing = 0;
+  int followers = 0;
 
   void profileFetch() async {
+    final followingLength = await FirebaseDatabase.instance
+        .reference()
+        .child("MyFriends")
+        .child(widget.uid)
+        .once();
+    if (followingLength.value != null) {
+      lengthofFollowing = followingLength.value.length;
+    }
     if (widget.isme) {
       //..
       final personaldata = await FirebaseDatabase.instance
@@ -325,25 +335,31 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                           Container(
                             // padding: EdgeInsets.all(20),
                             width: width,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  MdiIcons.share,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: width * 0.05,
-                                ),
-                                Text(
-                                  "Share",
-                                  style: TextStyle(
-                                    fontSize: 18,
+                            child: InkWell(
+                              onTap: () {
+                                Share.share(
+                                    'check out my profile on Breute App Join now with the app link : xyz');
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    MdiIcons.share,
                                     color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Text(
+                                    "Share",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -380,7 +396,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                     height: height * .01,
                                   ),
                                   Text(
-                                    '350',
+                                    '2',
                                     style: theme.text18bold,
                                   ),
                                 ],
@@ -398,7 +414,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                     height: height * .01,
                                   ),
                                   Text(
-                                    '29',
+                                    '$lengthofFollowing',
                                     style: theme.text18bold,
                                   ),
                                 ],

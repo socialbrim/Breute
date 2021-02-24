@@ -32,7 +32,7 @@ class _RoomInformationState extends State<RoomInformation> {
         .once();
     final map = data.value as Map;
     for (MapEntry entry in map.entries) {
-      print("${entry.key} ${entry.value}");
+      print(entry.value);
       if (entry.value == "User") {
         final mapped = await FirebaseDatabase.instance
             .reference()
@@ -49,16 +49,20 @@ class _RoomInformationState extends State<RoomInformation> {
           isPhone: mapped.value['isPhone'],
         );
         _users.add(userData);
-        print("done------");
       } else if (entry.value == "Admin") {
+        print("entering--------------------------------");
+
         final mapped = await FirebaseDatabase.instance
             .reference()
             .child("User Information")
             .child(entry.key)
             .once();
+        print(mapped.value);
+        print("entering--------------------------------");
         currentUserTypeAdmin =
             mapped.value['uid'] == FirebaseAuth.instance.currentUser.uid;
         adminID = mapped.value['uid'];
+
         UserInformation userData = new UserInformation(
           email: mapped.value['emial'],
           id: mapped.value['uid'],
@@ -68,17 +72,17 @@ class _RoomInformationState extends State<RoomInformation> {
           isPhone: mapped.value['isPhone'],
         );
         _users.add(userData);
-        print("done");
       } else {
         //.....
         id = map['roomIDtoEnter'];
         grpName = map['roomName'];
         pass = map['password'];
       }
-      print(_users.length);
     }
     setState(() {
       _isLoading = false;
+      print(adminID);
+      print(FirebaseAuth.instance.currentUser.uid);
     });
   }
 
@@ -95,6 +99,56 @@ class _RoomInformationState extends State<RoomInformation> {
     return Scaffold(
       appBar: AppBar(
         title: Text("$grpName"),
+        actions: [
+          if (FirebaseAuth.instance.currentUser.uid == adminID)
+            IconButton(
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text("Are You Sure?"),
+                    content: Text("You Want to Delete Group"),
+                    actions: [
+                      FlatButton(
+                        onPressed: () {
+                          FirebaseDatabase.instance
+                              .reference()
+                              .child("GroupChatRoom")
+                              .child(widget.roomID)
+                              .remove();
+                          FirebaseDatabase.instance
+                              .reference()
+                              .child("Roomsinformation")
+                              .child(widget.roomID)
+                              .child(FirebaseAuth.instance.currentUser.uid)
+                              .remove();
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "No",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
+            ),
+        ],
       ),
       body: _isLoading
           ? Center(
@@ -268,28 +322,67 @@ class _RoomInformationState extends State<RoomInformation> {
                   SizedBox(
                     height: height * 0.05,
                   ),
-                  Card(
-                    child: Container(
-                      padding: EdgeInsets.all(20),
-                      width: width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            MdiIcons.logout,
-                            color: Colors.redAccent,
-                          ),
-                          SizedBox(
-                            width: width * 0.05,
-                          ),
-                          Text(
-                            "Leave Room",
-                            style: TextStyle(
-                              fontSize: 18,
+                  InkWell(
+                    onTap: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Text("Are You Sure?"),
+                          content: Text("You Want to leave"),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                FirebaseDatabase.instance
+                                    .reference()
+                                    .child("Roomsinformation")
+                                    .child(widget.roomID)
+                                    .child(
+                                        FirebaseAuth.instance.currentUser.uid)
+                                    .remove();
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                "Yes",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                "No",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Card(
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        width: width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              MdiIcons.logout,
                               color: Colors.redAccent,
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              width: width * 0.05,
+                            ),
+                            Text(
+                              "Leave Room",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )

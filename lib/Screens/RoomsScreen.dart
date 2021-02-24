@@ -8,6 +8,7 @@ import '../models/UserModel.dart';
 import '../Providers/User.dart';
 import 'package:provider/provider.dart';
 import './RoomChat.dart';
+import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../models/RoomModel.dart';
 
@@ -21,7 +22,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
   int choosenPlan = 0;
   bool ispublished = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TimeOfDay _scheduleTime;
+
   TextEditingController _name = TextEditingController();
   TextEditingController _pass = TextEditingController();
   List<RoomModel> _trendingList = [];
@@ -123,7 +124,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
       print(_myRoomList);
     } catch (e) {
       Fluttertoast.showToast(
-          msg: "Something went wront to fetch Schedule List");
+          msg: "Something went wrong to fetch Schedule List");
       setState(() {
         _isLoading = false;
       });
@@ -162,6 +163,46 @@ class _RoomsScreenState extends State<RoomsScreen> {
     }
   }
 
+  DateTime _scheduleDate = DateTime.now();
+  TimeOfDay _scheduleTime;
+  Future<void> scheduling() async {
+    final date = await showDatePicker(
+      context: context,
+      firstDate: DateTime.now(),
+      initialDate: DateTime.now(),
+      lastDate: DateTime.now().add(
+        Duration(days: 2),
+      ),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 12, minute: 00),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
+    setState(() {
+      if (date != null) {
+        _scheduleDate = date;
+      }
+      if (time != null) {
+        _scheduleTime = time;
+        scheduleinSTR = "${_scheduleTime.hour}:${_scheduleTime.minute}";
+        print(scheduleinSTR);
+      }
+    });
+  }
+
+  String scheduleinSTR;
   void bottomSheet() {
     _scaffoldKey.currentState.showBottomSheet(
       (context) => StatefulBuilder(
@@ -253,73 +294,54 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 SizedBox(
                   height: height * .01,
                 ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: width * .04,
-                    ),
-                    Container(
-                      width: 50,
-                      height: 50,
-                      child: Checkbox(
-                        value: ispublished,
-                        activeColor: theme.colorPrimary,
-                        onChanged: (val) {
-                          setState(() {
-                            ispublished = val;
-                          });
-                        },
-                      ),
-                    ),
-                    Text(
-                      'Schedule ',
-                      style: GoogleFonts.workSans(
-                          fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      width: width * .02,
-                    ),
-                    ispublished == true
-                        ? GestureDetector(
-                            onTap: () async {
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay(hour: 12, minute: 00),
-                                builder: (context, child) {
-                                  return Theme(
-                                    data: ThemeData.dark(),
-                                    child: child,
-                                  );
-                                },
-                              );
+                CheckboxListTile(
+                  activeColor: Colors.black,
+                  checkColor: Colors.white,
+                  value: ispublished,
+                  title: Text("Want to schedule Room"),
+                  onChanged: (val) async {
+                    if (val &&
+                        (_scheduleDate == null || _scheduleTime == null)) {
+                      await scheduling();
+                    }
 
-                              setState(() {
-                                if (time != null) {
-                                  _scheduleTime = time;
-                                }
-                              });
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: height * 0.04,
-                                width: width * 0.3,
-                                color: theme.colorPrimary,
-                                child: Text(
-                                  _scheduleTime == null
-                                      ? 'Set Time'
-                                      : pmOrAm(
-                                          "${_scheduleTime.hour} : ${_scheduleTime.minute}"),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.text14boldWhite,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                  ],
+                    setState(() {
+                      if (_scheduleDate == null && _scheduleTime == null) {
+                        ispublished = false;
+                      } else {
+                        ispublished = val;
+                      }
+                    });
+                  },
                 ),
+                if (ispublished)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                          "Scheduled for ${DateFormat.d().format(_scheduleDate).toString()}th ${DateFormat.MMMM().format(_scheduleDate).toString().substring(0, 3)} at ${pmOrAm(scheduleinSTR)}"),
+                      GestureDetector(
+                        onTap: () {
+                          scheduling();
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: height * 0.05,
+                            width: width * 0.25,
+                            color: theme.colorPrimary,
+                            child: Text(
+                              'Change',
+                              // textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.text14boldWhite,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 SizedBox(
                   height: height * .01,
                 ),

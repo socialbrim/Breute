@@ -416,6 +416,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           SocialMediaCommentScreen(
+                                                        isCommentHome: false,
                                                         post: _list[index],
                                                       ),
                                                     ),

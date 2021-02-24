@@ -3,10 +3,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Providers/feedProvider.dart';
 import 'package:parentpreneur/Screens/social%20media/SocialMediaCommentScreen.dart';
 import 'package:parentpreneur/models/PostModel.dart';
 
 import 'package:parentpreneur/main.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class SocialMediaPostScreen extends StatefulWidget {
@@ -172,16 +174,21 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(
-                            //     builder: (context) => SocialMediaCommentScreen(
-                            //       post: widget.postModel,
-                            //     ),
-                            //   ),
-                            // );
+                            Provider.of<FeedProvider>(context, listen: false)
+                                .commentHome = widget.postModel;
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => SocialMediaCommentScreen(
+                                  post: widget.postModel,
+                                  isCommentHome: true,
+                                ),
+                              ),
+                            );
                           },
                           child: Text(
-                            '19 Comments',
+                            widget.postModel.comments == null
+                                ? "0 Comments"
+                                : '${widget.postModel.comments.length} Comments',
                             style: theme.text14,
                           ),
                         ),

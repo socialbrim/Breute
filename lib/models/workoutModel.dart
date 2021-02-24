@@ -1,3 +1,5 @@
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
 class WorkoutModel {
   String name;
   String des;
@@ -5,12 +7,13 @@ class WorkoutModel {
   String vidLink;
   String id;
   DateTime date;
-  WorkoutModel({
-    this.date,
-    this.des,
-    this.id,
-    this.imageURL,
-    this.name,
-    this.vidLink,
-  });
+  YoutubePlayerController controller;
+  WorkoutModel(
+      {this.date,
+      this.des,
+      this.id,
+      this.imageURL,
+      this.name,
+      this.vidLink,
+      this.controller});
 }

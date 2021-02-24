@@ -10,6 +10,7 @@ import '../main.dart';
 import 'package:provider/provider.dart';
 import '../Screens/UpgradePlanScreen.dart';
 import '../Providers/MyPlanProvider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ProTipForWorkOutScreen extends StatefulWidget {
   @override
@@ -57,6 +58,15 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
               imageURL: value['ImageURL'],
               name: value['Name'],
               vidLink: value['VideoLink'],
+              controller: YoutubePlayerController(
+                initialVideoId:
+                    // 'iLnmTe5Q2Qw',
+                    YoutubePlayer.convertUrlToId("${value['VideoLink']}"),
+                flags: YoutubePlayerFlags(
+                  isLive: true,
+                  mute: true,
+                ),
+              ),
             ),
           );
         });
@@ -100,13 +110,9 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                         children: [
                           AspectRatio(
                             aspectRatio: 16 / 9,
-                            child: BetterPlayer.network(
-                              "${_list[index].vidLink}",
-                              betterPlayerConfiguration:
-                                  BetterPlayerConfiguration(
-                                // autoPlay: true,
-                                aspectRatio: 16 / 9,
-                              ),
+                            child: YoutubePlayer(
+                              controller: _list[index].controller,
+                              showVideoProgressIndicator: true,
                             ),
                           ),
                           SizedBox(

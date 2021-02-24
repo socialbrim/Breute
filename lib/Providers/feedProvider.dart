@@ -3,11 +3,11 @@ import '../models/PostModel.dart';
 
 class FeedProvider with ChangeNotifier {
   List<PostModel> _list = [];
-
+  PostModel commentHome;
   set setList(List data) {
     _list = [];
     _list = data;
-    print(_list.length);
+
     notifyListeners();
   }
 
@@ -21,7 +21,10 @@ class FeedProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  PostModel getFiltered(String id) {
+  PostModel getFiltered(String id, bool isPostHome) {
+    if (isPostHome) {
+      return commentHome;
+    }
     int index = _list.indexWhere((element) => element.postID == id);
     return _list[index];
   }

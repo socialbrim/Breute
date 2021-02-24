@@ -62,9 +62,9 @@ dependencies:
   like_button: ^1.0.4 
   storage_path: ^0.2.0
   image:
- 
-  
-  
+  share: ^0.6.5+4
+  youtube_player_flutter: ^7.0.0+7
+  firebase_messaging: ^7.0.3
 
 dev_dependencies:
   flutter_test:

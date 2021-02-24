@@ -11,8 +11,10 @@ import '../../Providers/User.dart';
 // ignore: must_be_immutable
 class SocialMediaCommentScreen extends StatefulWidget {
   PostModel post;
+  bool isCommentHome;
   SocialMediaCommentScreen({
     this.post,
+    this.isCommentHome,
   });
   @override
   _SocialMediaCommentScreenState createState() =>
@@ -25,7 +27,8 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
 
   @override
   void didChangeDependencies() {
-    data = Provider.of<FeedProvider>(context).getFiltered(widget.post.postID);
+    data = Provider.of<FeedProvider>(context)
+        .getFiltered(widget.post.postID, widget.isCommentHome);
     super.didChangeDependencies();
   }
 
@@ -212,9 +215,13 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                               postID: widget.post.postID,
                               postURL: widget.post.postURL,
                               uid: widget.post.uid);
-
-                          Provider.of<FeedProvider>(context, listen: false)
-                              .setChangeInFeed(widget.post.postID, change);
+                          if (widget.isCommentHome) {
+                            Provider.of<FeedProvider>(context, listen: false)
+                                .commentHome = change;
+                          } else {
+                            Provider.of<FeedProvider>(context, listen: false)
+                                .setChangeInFeed(widget.post.postID, change);
+                          }
                           FirebaseDatabase.instance
                               .reference()
                               .child("Social Media Data")

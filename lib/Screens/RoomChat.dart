@@ -10,6 +10,7 @@ import 'package:profanity_filter/profanity_filter.dart';
 import './RoomInformation.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import '../Screens/social media/SocialMediaProfileScreen.dart';
 
 // ignore: must_be_immutable
 class ChatRoomGrp extends StatefulWidget {
@@ -127,6 +128,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                       imageURL: list[index].imageURL,
                       name: list[index].nameOfCustomer,
                       id: list[index].messageID,
+                      uid: list[index].uid,
                       likes: list[index].likes == null
                           ? 0
                           : double.parse(list[index].likes),
@@ -231,8 +233,9 @@ class MessageTile extends StatelessWidget {
   final String id;
   double likes;
   String chatRoomID;
-
+  String uid;
   MessageTile({
+    this.uid,
     this.isSendByMe,
     this.message,
     this.imageURL,
@@ -318,11 +321,26 @@ class MessageTile extends StatelessWidget {
                             SizedBox(
                               width: width * 0.03,
                             ),
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: imageURL == null
-                                  ? AssetImage("assets/unnamed.png")
-                                  : NetworkImage(imageURL),
+                            InkWell(
+                              onTap: () {
+                                //...
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SocialMediaProfileScreen(
+                                      isme: uid ==
+                                          FirebaseAuth.instance.currentUser.uid,
+                                      uid: uid,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: imageURL == null
+                                    ? AssetImage("assets/unnamed.png")
+                                    : NetworkImage(imageURL),
+                              ),
                             ),
                           ],
                         )
@@ -330,11 +348,26 @@ class MessageTile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: imageURL == null
-                                  ? AssetImage("assets/unnamed.png")
-                                  : NetworkImage(imageURL),
+                            InkWell(
+                              onTap: () {
+                                print(id);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SocialMediaProfileScreen(
+                                      isme: uid ==
+                                          FirebaseAuth.instance.currentUser.uid,
+                                      uid: uid,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: imageURL == null
+                                    ? AssetImage("assets/unnamed.png")
+                                    : NetworkImage(imageURL),
+                              ),
                             ),
                             SizedBox(
                               width: width * 0.03,
