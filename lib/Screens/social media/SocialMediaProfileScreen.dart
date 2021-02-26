@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:parentpreneur/main.dart';
 import 'package:share/share.dart';
 import './SocialMediaPostScreen.dart';
+import 'SearchScreen.dart';
+import 'SocialMediaMsgScreen.dart';
 
 class SocialMediaProfileScreen extends StatefulWidget {
   @required
@@ -191,9 +193,32 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
               key: _scaffoldKey,
               backgroundColor: theme.colorBackground,
               appBar: AppBar(
-                title: Text(userData.name == null
-                    ? "Unknown"
-                    : '${userData.name.toUpperCase()}'),
+                automaticallyImplyLeading: false,
+                title: Text(
+                  'Profile',
+                ),
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SearchScreen(),
+                      ));
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      MdiIcons.facebookMessenger,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SocialMediaMsgScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
               body: SingleChildScrollView(
                 child: Column(
@@ -492,13 +517,15 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     SocialMediaPostScreen(
-                                                  postModel: _list[index],
+                                                  postModel: _list[
+                                                      (_list.length - 1) -
+                                                          index],
                                                 ),
                                               ),
                                             );
                                           },
                                           child: Image.network(
-                                            '${_list[index].postURL}',
+                                            '${_list[(_list.length - 1) - index].postURL}',
                                             fit: BoxFit.cover,
                                           ),
                                         ),

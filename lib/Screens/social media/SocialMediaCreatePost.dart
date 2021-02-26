@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:io';
 import 'package:parentpreneur/main.dart';
 import './SocialMediaCreateCaption.dart';
 import 'package:images_picker/images_picker.dart';
+
+import 'SearchScreen.dart';
+import 'SocialMediaMsgScreen.dart';
 
 class SocialMediaCreatePost extends StatefulWidget {
   SocialMediaCreatePost({Key key, this.title}) : super(key: key);
@@ -77,70 +81,142 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
     });
   }
 
+  bool checkedValue = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorBackground,
+        // appBar: AppBar(
+        //   // leading: IconButton(
+        //   //   icon: Icon(MdiIcons.close),
+        //   //   onPressed: () => Navigator.of(context).pushReplacement(
+        //   //     MaterialPageRoute(
+        //   //       builder: (context) => SocialMediaHomeScreen(),
+        //   //     ),
+        //   //   ),
+        //   // ),
+        //   automaticallyImplyLeading: false,
+        //   actions: [
+        //     InkWell(
+        //       onTap: () async {
+        //         if (image != null)
+        //           Navigator.of(context).push(
+        //             MaterialPageRoute(
+        //               builder: (context) => SocialMediaCreateCaption(
+        //                 image: image, // image,
+        //               ),
+        //             ),
+        //           );
+        //       },
+        //       child: Container(
+        //         alignment: Alignment.center,
+        //         width: MediaQuery.of(context).size.width * .2,
+        //         child: Text(
+        //           'Next >',
+        //           style: theme.text16Primary,
+        //         ),
+        //       ),
+        //     )
+        //   ],
+        // ),
         appBar: AppBar(
-          // leading: IconButton(
-          //   icon: Icon(MdiIcons.close),
-          //   onPressed: () => Navigator.of(context).pushReplacement(
-          //     MaterialPageRoute(
-          //       builder: (context) => SocialMediaHomeScreen(),
-          //     ),
-          //   ),
-          // ),
           automaticallyImplyLeading: false,
+          title: Text(
+            'Create Post',
+          ),
           actions: [
-            InkWell(
-              onTap: () async {
-                if (image != null)
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SocialMediaCreateCaption(
-                        image: image, // image,
-                      ),
-                    ),
-                  );
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SearchScreen(),
+                ));
               },
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * .2,
-                child: Text(
-                  'Next >',
-                  style: theme.text16Primary,
-                ),
+            ),
+            IconButton(
+              icon: Icon(
+                MdiIcons.facebookMessenger,
               ),
-            )
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SocialMediaMsgScreen(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
         body: fileImage == null
             ? Center(
-                child: InkWell(
-                  onTap: () {
+                child: RaisedButton(
+                  color: theme.colorPrimary,
+                  onPressed: () {
                     picker();
                   },
                   child: Text(
-                    "Pick an Image",
-                    style: theme.text14bold,
+                    "Upload an Image",
+                    style: theme.text14boldWhite,
                   ),
                 ),
               )
-            : Center(
-                child: InkWell(
-                  onTap: () {
-                    picker();
-                  },
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    width: MediaQuery.of(context).size.height * 0.5,
-                    child: Image.file(
-                      fileImage,
-                      fit: BoxFit.cover,
+            : Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        picker();
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        width: MediaQuery.of(context).size.width * 1,
+                        child: Image.file(
+                          fileImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  CheckboxListTile(
+                    title: Text(
+                        "By uploading images you agree to Breaute's terms of use and privacy statement."),
+                    value: checkedValue,
+                    checkColor: theme.colorBackground,
+                    activeColor: theme.colorPrimary,
+                    onChanged: (newValue) {
+                      setState(() {
+                        checkedValue = newValue;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity
+                        .leading, //  <-- leading Checkbox
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                  if (checkedValue)
+                    Center(
+                      child: RaisedButton(
+                        color: theme.colorPrimary,
+                        onPressed: () {
+                          if (image != null)
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => SocialMediaCreateCaption(
+                                  image: image, // image,
+                                ),
+                              ),
+                            );
+                        },
+                        child: Text(
+                          "Next",
+                          style: theme.text14boldWhite,
+                        ),
+                      ),
+                    )
+                ],
               ),
       ),
     );

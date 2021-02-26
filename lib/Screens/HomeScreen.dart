@@ -315,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: barIndex == 0 ? theme.colorCompanion : Colors.black,
                   ),
                   Icon(
-                    MdiIcons.fruitCherries,
+                    MdiIcons.leaf,
                     color: barIndex == 1 ? theme.colorCompanion : Colors.black,
                   ),
                   Icon(

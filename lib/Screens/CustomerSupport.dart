@@ -47,7 +47,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                     child: Container(
                       height: height * 0.2,
                       child: Image.asset(
-                        'assets/#358_it_support_flatline.png',
+                        'assets/3.png',
                       ),
                     ),
                   ),
@@ -119,8 +119,8 @@ class _CustomerSupportState extends State<CustomerSupport> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                             colors: [
-                              HexColor('FED8F7'),
-                              HexColor('C4DDFE'),
+                              HexColor('52a199'),
+                              HexColor('0f7e86'),
                             ],
                           ),
                         ),
@@ -131,7 +131,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                               children: [
                                 Icon(
                                   MdiIcons.accountMultiple,
-                                  color: theme.colorCompanion,
+                                  color: theme.colorBackground,
                                   size: 45,
                                 ),
                                 Center(
@@ -140,7 +140,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                         horizontal: 0, vertical: 10),
                                     child: Text(
                                       'Connect With Friends',
-                                      style: theme.text16bold,
+                                      style: theme.text16boldWhite,
                                     ),
                                   ),
                                 ),
@@ -173,8 +173,8 @@ class _CustomerSupportState extends State<CustomerSupport> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                             colors: [
-                              HexColor('C4DDFE'),
-                              HexColor('FED8F7'),
+                              HexColor('52a199'),
+                              HexColor('0f7e86'),
                             ],
                           ),
                         ),
@@ -185,7 +185,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                               children: [
                                 Icon(
                                   MdiIcons.accountMultiplePlus,
-                                  color: theme.colorCompanion,
+                                  color: theme.colorBackground,
                                   size: 45,
                                 ),
                                 Center(
@@ -194,7 +194,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                         horizontal: 0, vertical: 10),
                                     child: Text(
                                       'Rooms',
-                                      style: theme.text16bold,
+                                      style: theme.text16boldWhite,
                                     ),
                                   ),
                                 ),

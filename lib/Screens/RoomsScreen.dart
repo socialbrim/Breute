@@ -790,7 +790,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                       elevation: 20,
                       child: Container(
                         padding: EdgeInsets.all(8),
-                        height: _myRoomList.length * height * .07,
+                        height: _myRoomList.length * height * .08,
                         width: width * .9,
                         child: _myRoomList.isEmpty
                             ? Center(
