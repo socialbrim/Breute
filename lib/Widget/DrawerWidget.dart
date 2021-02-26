@@ -6,6 +6,7 @@ import 'package:parentpreneur/Config/theme.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/Createmealscreen.dart';
 import 'package:parentpreneur/Screens/ProTipForWorkoutScreen.dart';
+import 'package:parentpreneur/Screens/SettingScreen.dart';
 import 'package:parentpreneur/auth/LoginScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 
@@ -222,17 +223,22 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      setState(() {
-                        _isModChanging = true;
-                      });
-                      Provider.of<AppThemeData>(context, listen: false)
-                          .changeDarkMode();
-                      theme.changeDarkMode();
-                      Future.delayed(Duration(seconds: 2)).then((value) {
-                        setState(() {
-                          _isModChanging = false;
-                        });
-                      });
+                      // setState(() {
+                      //   _isModChanging = true;
+                      // });
+                      // Provider.of<AppThemeData>(context, listen: false)
+                      //     .changeDarkMode();
+                      // theme.changeDarkMode();
+                      // Future.delayed(Duration(seconds: 2)).then((value) {
+                      //   setState(() {
+                      //     _isModChanging = false;
+                      //   });
+                      // });
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SettingScreen(),
+                        ),
+                      );
                     },
                     child: Row(
                       children: [
@@ -240,7 +246,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           width: width * 0.04,
                         ),
                         Icon(
-                          MdiIcons.themeLightDark,
+                          MdiIcons.tools,
                           color: theme.colorPrimary,
                           size: 30,
                         ),
@@ -249,7 +255,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ),
                         Container(
                           child: Text(
-                            theme.darkMode ? 'Light Theme' : "Dark Theme",
+                            // theme.darkMode ? 'Light Theme' : "Dark Theme",
+                            "Settings",
                             style: theme.text16bold,
                           ),
                         ),

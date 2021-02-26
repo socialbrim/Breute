@@ -420,7 +420,7 @@ class _PlansState extends State<Plans> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: HexColor('ffccbc'),
+                  color: theme.colorPrimary,
                 ),
                 width: width,
                 height: height * 0.25,
@@ -437,7 +437,7 @@ class _PlansState extends State<Plans> {
                         'SELECT A PLAN',
                         style: GoogleFonts.roboto(
                           fontSize: 22,
-                          color: HexColor('852508'),
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.start,
@@ -452,7 +452,7 @@ class _PlansState extends State<Plans> {
                         'and go premium',
                         style: GoogleFonts.roboto(
                           fontSize: 16,
-                          color: HexColor('a13311'),
+                          color: Colors.white,
                         ),
                         textAlign: TextAlign.start,
                       ),
@@ -461,7 +461,7 @@ class _PlansState extends State<Plans> {
                       width: width * 0.8,
                       alignment: Alignment.topRight,
                       child: Image.asset(
-                        'assets/Logo.png',
+                        'assets/2.png',
                         height: height * 0.14,
                       ),
                     )
