@@ -6,7 +6,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:parentpreneur/Providers/feedProvider.dart';
 import 'package:parentpreneur/Screens/social%20media/SocialMediaCommentScreen.dart';
 import 'package:parentpreneur/models/PostModel.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../Providers/socialmedialBarindex.dart';
 import 'package:parentpreneur/main.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +36,8 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
     return _isreturn;
   }
 
+  bool _isLoadin = false;
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -53,7 +56,26 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                     MdiIcons.delete,
                     size: 28,
                   ),
-                  onPressed: () {}),
+                  onPressed: () async {
+                    //...
+                    setState(() {
+                      _isLoadin = true;
+                    });
+                    await Future.delayed(Duration(seconds: 1));
+                    await FirebaseDatabase.instance
+                        .reference()
+                        .child("Social Media Data")
+                        .child(FirebaseAuth.instance.currentUser.uid)
+                        .child(widget.postModel.postID)
+                        .remove();
+                    Fluttertoast.showToast(msg: "Post is Deleted successfully");
+                    Navigator.of(context).pop();
+                    Provider.of<BarIndexChange>(context, listen: false)
+                        .setBarindex(0);
+                    setState(() {
+                      _isLoadin = false;
+                    });
+                  }),
             )
           ],
         ),

@@ -66,6 +66,7 @@ dependencies:
   youtube_player_flutter: ^7.0.0+7
   firebase_messaging: ^7.0.3
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

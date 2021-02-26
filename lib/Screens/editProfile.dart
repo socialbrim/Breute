@@ -431,12 +431,12 @@ class _EditProfileState extends State<EditProfile> {
 
                     keyboardType: TextInputType.name,
                     style: theme.text16,
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Enter in Field";
-                      } else
-                        return null;
-                    },
+                    // validator: (val) {
+                    //   if (val.isEmpty) {
+                    //     return "Enter in Field";
+                    //   } else
+                    //     return null;
+                    // },
                     decoration: InputDecoration(
                       hintText: "Bio",
                       hintStyle: TextStyle(

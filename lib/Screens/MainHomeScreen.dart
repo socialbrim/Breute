@@ -56,7 +56,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       );
       _betterPlayerController = BetterPlayerController(
         BetterPlayerConfiguration(
-          autoPlay: false,
+          autoPlay: true,
         ),
         betterPlayerDataSource: betterPlayerDataSource,
       );

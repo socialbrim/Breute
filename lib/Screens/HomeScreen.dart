@@ -44,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     fetchUserInfo();
-
     //... notifications
 
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -265,14 +264,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
         Provider.of<MyPlanProvider>(context, listen: false).setPlan(planInfo);
         UserInformation userData = new UserInformation(
-          email: mapped['emial'],
-          id: mapped['uid'],
-          imageUrl: mapped['imageURL'],
-          name: mapped['userName'],
-          phone: mapped['phone'],
-          isPhone: mapped['isPhone'],
-          planDetails: planInfo,
-        );
+            email: mapped['emial'],
+            id: mapped['uid'],
+            imageUrl: mapped['imageURL'],
+            name: mapped['userName'],
+            phone: mapped['phone'],
+            isPhone: mapped['isPhone'],
+            planDetails: planInfo,
+            bio: mapped['bio']);
         Provider.of<UserProvider>(context, listen: false).setUser(userData);
         setState(() {
           _isLoading = false;

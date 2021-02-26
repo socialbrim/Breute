@@ -15,8 +15,9 @@ import 'otp.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String phoneno;
+  final String fcmtoken;
 
-  OtpVerificationScreen({this.phoneno});
+  OtpVerificationScreen({this.phoneno, this.fcmtoken});
 
   @override
   _OtpVerificationScreenState createState() => _OtpVerificationScreenState();
@@ -54,7 +55,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           'uid': value.user.uid,
           "isPhone": true,
           "phone": value.user.phoneNumber,
-          "PlanName": "Peer Contributor"
+          "PlanName": "Peer Contributor",
+          "fcmtoken": widget.fcmtoken,
         });
         setState(() {
           _isLoading = false;
@@ -109,7 +111,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             'uid': value.user.uid,
             "phone": value.user.phoneNumber,
             "isPhone": true,
-            "PlanName": "Peer Contributor"
+            "PlanName": "Peer Contributor",
+            "fcmtoken": widget.fcmtoken,
           });
           setState(() {
             _isLoading = false;

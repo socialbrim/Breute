@@ -12,6 +12,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../Screens/HomeScreen.dart';
 import '../main.dart';
 import 'otpverificationscreen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -27,13 +28,40 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isGoogleLogging = false;
   bool _isFacebookLoggin = false;
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(vsync: this);
+    // _firebaseMessaging.configure(
+    //   onMessage: (Map<String, dynamic> message) async {
+    //     print("onMessage: $message");
+    //   },
+    //   onLaunch: (Map<String, dynamic> message) async {
+    //     print("onLaunch: $message");
+    //   },
+    //   onResume: (Map<String, dynamic> message) async {
+    //     print("onResume: $message");
+    //   },
+    // );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      setState(() {
+        this.tokenid = token;
+        print("Push Messaging token: $token");
+      });
+    });
   }
 
+  String tokenid;
   @override
   void dispose() {
     _controller.dispose();
@@ -64,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen>
             "emial": userData['email'],
             "imageURL": userData['picture']['data']['url'],
             "PlanName": "Peer Contributor",
+            "fcmtoken": tokenid,
           });
           Navigator.of(context).popUntil((route) => route.isFirst);
           Navigator.of(context).pushReplacement(
@@ -124,6 +153,7 @@ class _LoginScreenState extends State<LoginScreen>
         "emial": googleUser.email,
         "imageURL": googleUser.photoUrl,
         "PlanName": "Peer Contributor",
+        "fcmtoken": tokenid,
       });
 
       if (user != null) {
@@ -269,6 +299,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   MaterialPageRoute(
                                     builder: (context) => OtpVerificationScreen(
                                       phoneno: "$countrycode${phone.text}",
+                                      fcmtoken: tokenid,
                                     ),
                                   ),
                                 );
