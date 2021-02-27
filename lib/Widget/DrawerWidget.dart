@@ -329,20 +329,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ),
         ),
-        if (_isModChanging)
-          Center(
-            child: Container(
-              height: 100,
-              width: 100,
-              padding: EdgeInsets.all(25),
-              color: theme.darkMode
-                  ? Colors.white.withOpacity(0.85)
-                  : Colors.black.withOpacity(0.85),
-              child: CircularProgressIndicator(
-                backgroundColor: theme.darkMode ? Colors.white : Colors.black,
-              ),
-            ),
-          )
       ],
     );
   }

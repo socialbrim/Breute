@@ -9,8 +9,10 @@ class UserInformation {
   String id;
   bool isPhone;
   PlanName planDetails;
+  bool isVerified;
   UserInformation({
     this.email,
+    this.isVerified,
     this.id,
     this.imageUrl,
     this.name,

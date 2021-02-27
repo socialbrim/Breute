@@ -24,6 +24,10 @@ class SocialMediaCommentScreen extends StatefulWidget {
 class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
   TextEditingController comment = new TextEditingController();
   PostModel data;
+  bool isReply = false;
+  String replyID;
+  String replyName;
+  var focusNode = FocusNode();
 
   @override
   void didChangeDependencies() {
@@ -45,42 +49,112 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
           padding: EdgeInsets.symmetric(
             vertical: 10,
           ),
-          child: Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              SizedBox(
-                width: width * .05,
-              ),
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: value['imageURL'] == null
-                    ? AssetImage('assets/unnamed.png')
-                    : NetworkImage(value['imageURL']),
-              ),
-              SizedBox(
-                width: width * .05,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    value['name'] == null ? 'Unknown' : value['name'],
-                    style: theme.text14bold,
+                  SizedBox(
+                    width: width * .05,
                   ),
-                  Container(
-                    width: width * .7,
-                    child: Text(
-                      value['comment'],
-                      style: theme.text14,
-                      textAlign: TextAlign.start,
-                    ),
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: value['imageURL'] == null
+                        ? AssetImage('assets/unnamed.png')
+                        : NetworkImage(value['imageURL']),
+                  ),
+                  SizedBox(
+                    width: width * .05,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        value['name'] == null ? 'Unknown' : value['name'],
+                        style: theme.text14bold,
+                      ),
+                      Container(
+                        width: width * .7,
+                        child: Text(
+                          value['comment'],
+                          style: theme.text14,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              FlatButton(
+                onPressed: () {
+                  setState(() {
+                    isReply = true;
+                    replyID = key;
+                    replyName =
+                        value['name'] == null ? 'Unknown' : value['name'];
+                    comment.text = "@$replyName";
+                    FocusScope.of(context).requestFocus(focusNode);
+                  });
+                },
+                child: Text("reply"),
+              ),
+              Container(
+                height: value['reply'] == null
+                    ? 10
+                    : (value['reply'] as Map).length * 60.0,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: ListView(
+                        children: reply(value['reply']) == null
+                            ? []
+                            : reply(value['reply']),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(),
             ],
           ),
         ));
       });
     }
+    return _list;
+  }
+
+  List<Widget> reply(Map data) {
+    List<Widget> _list = [];
+    if (data == null) {
+      return null;
+    }
+    print(data.length);
+    data.forEach((key, value) {
+      _list.add(
+        Container(
+          height: 75,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                value['name'] == null ? "Unknown" : value['name'],
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                value['comment'] == null ? "" : value['comment'],
+                softWrap: true,
+              ),
+            ],
+          ),
+        ),
+      );
+    });
     return _list;
   }
 
@@ -172,23 +246,97 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: TextFormField(
+                  focusNode: focusNode,
                   decoration: InputDecoration(
+                    suffix: IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        if (isReply) {
+                          setState(() {
+                            isReply = false;
+                          });
+                          FocusScope.of(context).unfocus();
+                        } else {
+                          FocusScope.of(context).unfocus();
+                        }
+                        setState(() {
+                          comment.clear();
+                        });
+                      },
+                    ),
                     prefix: IconButton(
                       onPressed: () {
+                        if (isReply) {
+                          final user =
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .userInformation;
+
+                          Map data = {};
+                          if (widget.post.comments != null) {
+                            data = widget.post.comments;
+                          }
+
+                          data[replyID].putIfAbsent("reply", () => {});
+                          if (data[replyID]["reply"].containsKey(
+                              FirebaseAuth.instance.currentUser.uid)) {
+                            data[replyID]["reply"]
+                                .remove(FirebaseAuth.instance.currentUser.uid);
+                          }
+                          data[replyID]["reply"]
+                              .putIfAbsent("${user.id}", () => {});
+                          data[replyID]["reply"]['${user.id}']
+                              .putIfAbsent("comment", () => comment.text);
+                          data[replyID]["reply"]['${user.id}']
+                              .putIfAbsent("imageURL", () => user.imageUrl);
+                          data[replyID]["reply"]['${user.id}']
+                              .putIfAbsent("name", () => user.name);
+                          print(data);
+                          PostModel change = PostModel(
+                              caption: widget.post.caption,
+                              comments: data,
+                              dateTime: widget.post.dateTime,
+                              imageURl: widget.post.imageURl,
+                              likeIDs: widget.post.likeIDs,
+                              likes: widget.post.likes,
+                              name: widget.post.name,
+                              postID: widget.post.postID,
+                              postURL: widget.post.postURL,
+                              uid: widget.post.uid);
+                          if (widget.isCommentHome) {
+                            Provider.of<FeedProvider>(context, listen: false)
+                                .commentHome = change;
+                          } else {
+                            Provider.of<FeedProvider>(context, listen: false)
+                                .setChangeInFeed(widget.post.postID, change);
+                          }
+
+                          FirebaseDatabase.instance
+                              .reference()
+                              .child("Social Media Data")
+                              .child(widget.post.uid)
+                              .child(widget.post.postID)
+                              .child("comments")
+                              .child(replyID)
+                              .child("reply")
+                              .update({
+                            FirebaseAuth.instance.currentUser.uid: {
+                              "comment": comment.text,
+                              "imageURL": user.imageUrl,
+                              "name": user.name,
+                            }
+                          });
+                          FocusScope.of(context).unfocus();
+                          comment.clear();
+                          return;
+                        }
+
                         try {
                           final user =
                               Provider.of<UserProvider>(context, listen: false)
                                   .userInformation;
-                          Map<String, Map<String, String>> data = {};
+                          Map data = {};
                           if (widget.post.comments != null) {
-                            // print(widget.post.comments);
-                            widget.post.comments.forEach((key, value) {
-                              data.putIfAbsent(key, () => {});
-                              final vals = value as Map;
-                              vals.forEach((k, v) {
-                                data[key].putIfAbsent(k, () => v);
-                              });
-                            });
+                            data = widget.post.comments;
                           }
 
                           if (data.containsKey(

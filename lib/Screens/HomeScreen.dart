@@ -271,7 +271,9 @@ class _HomeScreenState extends State<HomeScreen> {
             phone: mapped['phone'],
             isPhone: mapped['isPhone'],
             planDetails: planInfo,
-            bio: mapped['bio']);
+            bio: mapped['bio'],
+            isVerified:
+                mapped['verified'] == null ? false : mapped['verified']);
         Provider.of<UserProvider>(context, listen: false).setUser(userData);
         setState(() {
           _isLoading = false;

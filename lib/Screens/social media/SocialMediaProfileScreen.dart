@@ -59,6 +59,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
         imageUrl: mapped['imageURL'],
         name: mapped['userName'],
         phone: mapped['phone'],
+        isVerified: mapped['verified'] == null ? false : mapped['verified'],
         bio: mapped["bio"],
       );
       final socailMediaLife = await FirebaseDatabase.instance
@@ -114,6 +115,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
         name: mapped['userName'],
         phone: mapped['phone'],
         bio: mapped["bio"],
+        isVerified: mapped['verified'] == null ? false : mapped['verified'],
       );
 
       final isFriend = await FirebaseDatabase.instance
@@ -256,6 +258,15 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                               style: theme.text20boldPrimary,
                             ),
                           ),
+                          if (userData.isVerified)
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: height * .01,
+                                ),
+                                Icon(Icons.check),
+                              ],
+                            ),
                           SizedBox(
                             height: height * .01,
                           ),
