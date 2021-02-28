@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -68,8 +68,47 @@ class _HomeScreenState extends State<HomeScreen> {
       sendDinnerNotifications();
     });
     //... notifications end
-
+    //....
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("working===============================================");
+        print("onMessage: $message");
+        simpleNotification(message);
+        print("working===============================================");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("working===============================================");
+        print("onMessage: $message");
+        simpleNotification(message);
+        print("working===============================================");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("working===============================================");
+        print("onMessage: $message");
+        simpleNotification(message);
+        print("working===============================================");
+      },
+    );
     super.initState();
+  }
+
+  Future<void> simpleNotification(Map message) async {
+    await flutterLocalNotificationsPlugin.show(
+      1,
+      '${message['notification']['title']}',
+      '${message['notification']['body']}',
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'daily notification channel id',
+          'daily notification channel name',
+          'daily notification description',
+          importance: Importance.high,
+          enableVibration: true,
+        ),
+      ),
+      payload: "comments",
+    );
   }
 
   Future<void> fetchSchedule() async {

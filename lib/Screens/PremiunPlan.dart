@@ -5,6 +5,9 @@ import 'package:parentpreneur/Screens/Payments.dart';
 import '../main.dart';
 import '../models/PlanDetail.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:provider/provider.dart';
+import '../Providers/MyPlanProvider.dart';
+import '../models/PlanDetail.dart';
 
 class Plans extends StatefulWidget {
   @override
@@ -375,8 +378,10 @@ class _PlansState extends State<Plans> {
     );
   }
 
+  PlanName plan;
   @override
   void initState() {
+    plan = Provider.of<MyPlanProvider>(context, listen: false).plan;
     fetchPlans();
     super.initState();
   }
@@ -389,7 +394,7 @@ class _PlansState extends State<Plans> {
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
           title: Text(
-            "Premium Plans",
+            "Plans",
           ),
         ),
         bottomNavigationBar: Container(
@@ -412,118 +417,152 @@ class _PlansState extends State<Plans> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: theme.colorPrimary,
-                ),
-                width: width,
-                height: height * 0.25,
-                child: Column(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        top: 30,
-                      ),
-                      child: Text(
-                        'SELECT A PLAN',
-                        style: GoogleFonts.roboto(
-                          fontSize: 22,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.start,
+                    Text(
+                      "Current Plan",
+                      style: GoogleFonts.roboto(
+                        fontSize: 22,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        top: 10,
-                      ),
-                      child: Text(
-                        'and go premium',
-                        style: GoogleFonts.roboto(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    Container(
-                      width: width * 0.8,
-                      alignment: Alignment.topRight,
-                      child: Image.asset(
-                        'assets/2.png',
-                        height: height * 0.14,
-                      ),
-                    )
                   ],
                 ),
               ),
-            ),
-            SizedBox(
-              height: height * 0.02,
-            ),
-            Container(
-              height: height * 0.5,
-              child: ListView.builder(
-                itemCount: _list.length,
-                itemBuilder: (context, index) => Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: theme.colorBackground,
-                      border: Border.all(color: theme.colorDefaultText),
-                      borderRadius: BorderRadius.circular(15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${plan.name}",
+                      style: GoogleFonts.roboto(
+                        fontSize: 22,
+                        color: Colors.black,
+                        // fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    child: RadioListTile(
-                        title: Text(
-                          "${_list[index].name.toUpperCase()}",
-                          style: theme.text16,
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: theme.colorPrimary,
+                  ),
+                  width: width,
+                  height: height * 0.25,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          top: 30,
                         ),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              "\$ ${_list[index].amount}",
-                              style: theme.text16bold,
-                            ),
-                            SizedBox(
-                              width: width * 0.2,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                showDial(_list[index]);
-                              },
-                              child: Container(
-                                child: Text(
-                                  'Know More >',
-                                  style: theme.text14primary,
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          'SELECT A PLAN',
+                          style: GoogleFonts.roboto(
+                            fontSize: 22,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.start,
                         ),
-                        activeColor: theme.colorPrimary,
-                        value: index,
-                        groupValue: choosenPlan,
-                        onChanged: (val) {
-                          setState(() {
-                            choosenPlan = val;
-                          });
-                        }),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          top: 10,
+                        ),
+                        child: Text(
+                          'and go premium',
+                          style: GoogleFonts.roboto(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      Container(
+                        width: width * 0.8,
+                        alignment: Alignment.topRight,
+                        child: Image.asset(
+                          'assets/2.png',
+                          height: height * 0.14,
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Container(
+                height: height * 0.5,
+                child: ListView.builder(
+                  itemCount: _list.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: theme.colorBackground,
+                        border: Border.all(color: theme.colorDefaultText),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: RadioListTile(
+                          title: Text(
+                            "${_list[index].name.toUpperCase()}",
+                            style: theme.text16,
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Text(
+                                "\$ ${_list[index].amount}",
+                                style: theme.text16bold,
+                              ),
+                              SizedBox(
+                                width: width * 0.2,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showDial(_list[index]);
+                                },
+                                child: Container(
+                                  child: Text(
+                                    'Know More >',
+                                    style: theme.text14primary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          activeColor: theme.colorPrimary,
+                          value: index,
+                          groupValue: choosenPlan,
+                          onChanged: (val) {
+                            setState(() {
+                              choosenPlan = val;
+                            });
+                          }),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }

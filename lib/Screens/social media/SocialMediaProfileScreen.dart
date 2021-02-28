@@ -432,7 +432,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                     height: height * .01,
                                   ),
                                   Text(
-                                    '2',
+                                    '1',
                                     style: theme.text18bold,
                                   ),
                                 ],
