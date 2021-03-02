@@ -24,7 +24,7 @@ class _MealScreenState extends State<MealScreen> {
       child: Scaffold(
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
-          title: Text('Meals'),
+          title: Text('Health & Wellness'),
         ),
         drawer: DrawerWidget(),
         body: SingleChildScrollView(
@@ -137,7 +137,7 @@ class _MealScreenState extends State<MealScreen> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'Meal Recipes',
+                              'Recipes',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -186,7 +186,7 @@ class _MealScreenState extends State<MealScreen> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'Pro Tips for Workout',
+                              'Fitness',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -233,7 +233,7 @@ class _MealScreenState extends State<MealScreen> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'Today\'s Meal',
+                              'Today\'s Menu',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -280,7 +280,7 @@ class _MealScreenState extends State<MealScreen> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'Schedule Meals',
+                              'Set Reminders ',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -328,7 +328,7 @@ class _MealScreenState extends State<MealScreen> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'Create a Meal',
+                              'Add Recipe',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,

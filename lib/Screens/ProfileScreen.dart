@@ -216,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Edit Premium Plans',
+                        'Upgrade Membership',
                         // textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         style: theme.text16boldWhite,

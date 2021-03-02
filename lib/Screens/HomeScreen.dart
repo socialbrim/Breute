@@ -63,9 +63,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     flutterLocalNotificationsPlugin.cancelAll();
     fetchSchedule().then((value) {
-      sendMorningsNotifications();
-      sendLunchNotifications();
-      sendDinnerNotifications();
+      if (_isScheduled) {
+        sendMorningsNotifications();
+        sendLunchNotifications();
+        sendDinnerNotifications();
+      }
     });
     //... notifications end
     //....
@@ -111,6 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  bool _isScheduled = false;
+
   Future<void> fetchSchedule() async {
     final data = await FirebaseDatabase.instance
         .reference()
@@ -133,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
             : mySch.value['Eve']['Time'];
       }
     } else {
+      _isScheduled = true;
       morningTime = data.value['Morning'] == null
           ? "8:15"
           : data.value['Morning']['Time'];

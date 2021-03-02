@@ -64,7 +64,8 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                     YoutubePlayer.convertUrlToId("${value['VideoLink']}"),
                 flags: YoutubePlayerFlags(
                   isLive: true,
-                  mute: true,
+                  mute: false,
+                  autoPlay: false,
                 ),
               ),
             ),

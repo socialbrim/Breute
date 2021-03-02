@@ -185,9 +185,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    totalsteps = 5000;
+    totalsteps = 10000;
 
-    totalcalories = 5000;
+    totalcalories = 10000;
 
     return _isLoading
         ? Scaffold(

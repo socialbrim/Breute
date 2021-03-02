@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:parentpreneur/Config/theme.dart';
+import '../Screens/social media/SocialMediaProfileScreen.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/Createmealscreen.dart';
 import 'package:parentpreneur/Screens/ProTipForWorkoutScreen.dart';
@@ -47,43 +47,53 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          backgroundImage: userData.imageUrl == null
-                              ? AssetImage("assets/unnamed.png")
-                              : NetworkImage(userData.imageUrl),
-                          radius: 36,
-                        ),
-                        SizedBox(
-                          width: width * 0.08,
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              width: width * 0.42,
-                              child: Text(
-                                userData.name == null
-                                    ? "Edit your Profile"
-                                    : userData.name.toUpperCase(),
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.text18boldPrimary,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SocialMediaProfileScreen(
+                            isme: true,
+                            uid: FirebaseAuth.instance.currentUser.uid,
+                          ),
+                        ));
+                      },
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            backgroundImage: userData.imageUrl == null
+                                ? AssetImage("assets/unnamed.png")
+                                : NetworkImage(userData.imageUrl),
+                            radius: 36,
+                          ),
+                          SizedBox(
+                            width: width * 0.08,
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                width: width * 0.42,
+                                child: Text(
+                                  userData.name == null
+                                      ? "Edit your Profile"
+                                      : userData.name.toUpperCase(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.text18boldPrimary,
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: width * 0.42,
-                              child: Text(
-                                userData.phone == null
-                                    ? "No Number"
-                                    : userData.phone,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.text12grey,
+                              Container(
+                                width: width * 0.42,
+                                child: Text(
+                                  userData.phone == null
+                                      ? "No Number"
+                                      : userData.phone,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.text12grey,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Divider(
