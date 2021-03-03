@@ -3,9 +3,11 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Screens/social%20media/SocialMediaHomeScreen.dart';
 import '../main.dart';
-import 'ChatScreen.dart';
-
 import './RoomsScreen.dart';
+import 'package:provider/provider.dart';
+import '../Providers/User.dart';
+import '../models/UserModel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class CustomerSupport extends StatefulWidget {
@@ -14,6 +16,13 @@ class CustomerSupport extends StatefulWidget {
 }
 
 class _CustomerSupportState extends State<CustomerSupport> {
+  UserInformation user;
+  @override
+  void didChangeDependencies() {
+    user = Provider.of<UserProvider>(context).userInformation;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -100,6 +109,16 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      print(user);
+                      print(user.bio);
+                      if (user.bio == null ||
+                          user.name == null ||
+                          user.phone == null ||
+                          user.email == null) {
+                        Fluttertoast.showToast(
+                            msg: "Please complete Your profile to continue");
+                        return;
+                      }
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => SocialMediaHomeScreen(),
@@ -154,6 +173,15 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      if (user.bio == null ||
+                          user.name == null ||
+                          user.phone == null ||
+                          user.email == null) {
+                        Fluttertoast.showToast(
+                            msg: "Please complete Your profile to continue");
+                        return;
+                      }
+
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => RoomsScreen(),
