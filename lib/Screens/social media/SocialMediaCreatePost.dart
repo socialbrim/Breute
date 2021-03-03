@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:io';
 import 'package:parentpreneur/main.dart';
+import '../privacyPolicyScreen.dart';
 import './SocialMediaCreateCaption.dart';
 import 'package:images_picker/images_picker.dart';
 
@@ -194,6 +195,27 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                     },
                     controlAffinity: ListTileControlAffinity
                         .leading, //  <-- leading Checkbox
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PrivacyPolicyScreen(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 73,
+                        ),
+                        Text(
+                          "Click here to see privacy policy",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   if (checkedValue)

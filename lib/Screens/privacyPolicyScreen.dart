@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../main.dart';
+
 class PrivacyPolicyScreen extends StatefulWidget {
   @override
   _PrivacyPolicyScreenState createState() => _PrivacyPolicyScreenState();
@@ -38,7 +40,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: HexColor('FA163F'),
+              color: theme.colorPrimary,
             ),
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -46,7 +48,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
             "Privacy Policy",
             style: GoogleFonts.poppins(
               fontSize: 18,
-              color: HexColor('091540'),
+              color: theme.colorPrimary,
             ),
           ),
         ),
@@ -61,7 +63,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                   child: Text(
                     "Privacy Policy",
                     style: GoogleFonts.poppins(
-                      color: HexColor('FA163F'),
+                      color: theme.colorPrimary,
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
                     ),

@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../main.dart';
+
 class TermsofUseScreen extends StatefulWidget {
   @override
   _TermsofUseScreenState createState() => _TermsofUseScreenState();
@@ -40,7 +42,7 @@ class _TermsofUseScreenState extends State<TermsofUseScreen> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: HexColor('FA163F'),
+              color: theme.colorPrimary,
             ),
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -48,7 +50,7 @@ class _TermsofUseScreenState extends State<TermsofUseScreen> {
             "Terms & Conditions",
             style: GoogleFonts.poppins(
               fontSize: 18,
-              color: HexColor('091540'),
+              color: theme.colorPrimary,
             ),
           ),
         ),
@@ -63,7 +65,7 @@ class _TermsofUseScreenState extends State<TermsofUseScreen> {
                   child: Text(
                     "Terms of use",
                     style: GoogleFonts.poppins(
-                      color: HexColor('091540'),
+                      color: theme.colorPrimary,
                       fontSize: 22,
                     ),
                   ),
