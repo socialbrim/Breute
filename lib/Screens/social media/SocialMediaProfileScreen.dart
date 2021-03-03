@@ -472,14 +472,28 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                     ),
                     _list.isEmpty && widget.isme
                         ? Center(
-                            child: InkWell(
-                                onTap: () {
-                                  Provider.of<BarIndexChange>(context,
-                                          listen: false)
-                                      .setBarindex(1);
-                                },
-                                child: Text(
-                                    "Create Post Now!\nClick here to create!")),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: height * .04,
+                                ),
+                                FloatingActionButton(
+                                  onPressed: () {
+                                    Provider.of<BarIndexChange>(context,
+                                            listen: false)
+                                        .setBarindex(1);
+                                  },
+                                  child: Icon(MdiIcons.plus),
+                                ),
+                                SizedBox(
+                                  height: height * .02,
+                                ),
+                                Text(
+                                  "Add new Post !",
+                                  style: theme.text14bold,
+                                ),
+                              ],
+                            ),
                           )
                         : _list.isEmpty && !widget.isme
                             ? Container(

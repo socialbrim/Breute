@@ -145,7 +145,6 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
     return SafeArea(
       child: Scaffold(
           // bottomNavigationBar:
-          // backgroundColor: Colors.blue[900],
           backgroundColor: theme.colorBackground,
           appBar: AppBar(
             // title: Text('Chat'),
@@ -183,7 +182,7 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                     // mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * .77,
+                        width: MediaQuery.of(context).size.width * .75,
                         child: Padding(
                           padding: EdgeInsets.only(
                             left: 15,
@@ -265,8 +264,8 @@ class MessageTile extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.only(
-          left: isSendByMe ? MediaQuery.of(context).size.width * .2 : 24,
-          right: isSendByMe ? 24 : MediaQuery.of(context).size.width * .2),
+          left: isSendByMe ? MediaQuery.of(context).size.width * .2 : 20,
+          right: isSendByMe ? 20 : MediaQuery.of(context).size.width * .2),
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: InkWell(

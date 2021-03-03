@@ -39,77 +39,6 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
         appBar: AppBar(
           title: Text('Caption'),
         ),
-        bottomNavigationBar: _isLoading
-            ? Container(
-                height: 50,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.black,
-                  ),
-                ),
-              )
-            : RaisedButton(
-                child: Text("Upload Post"),
-                onPressed: () async {
-                  if (caption == null || caption == "") {
-                    Fluttertoast.showToast(msg: "Please enter correct Caption");
-                    return;
-                  }
-                  final user = Provider.of<UserProvider>(context, listen: false)
-                      .userInformation;
-                  if (user.name == null) {
-                    Fluttertoast.showToast(
-                        msg: "Please complete your profile first");
-                    return;
-                  }
-                  try {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    File file = File(widget.image);
-                    final compFile = await compressImage(file);
-                    final key = FirebaseDatabase.instance
-                        .reference()
-                        .child("Social Media Data")
-                        .child(FirebaseAuth.instance.currentUser.uid)
-                        .push()
-                        .key;
-                    final ref = FirebaseStorage.instance
-                        .ref()
-                        .child("CustomerSocialMedial")
-                        .child("${FirebaseAuth.instance.currentUser.uid}")
-                        .child("$key" + ".jpg");
-                    await ref.putFile(compFile);
-                    final vals = await ref.getDownloadURL();
-                    FirebaseDatabase.instance
-                        .reference()
-                        .child("Social Media Data")
-                        .child(FirebaseAuth.instance.currentUser.uid)
-                        .child(key)
-                        .update({
-                      "image": vals,
-                      "caption": caption,
-                      "dateTime": DateTime.now().toIso8601String(),
-                    });
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    Fluttertoast.showToast(msg: "Post uploaded successfully");
-
-                    Navigator.of(context).pop();
-                    Provider.of<BarIndexChange>(context, listen: false)
-                        .setBarindex(0);
-                  } catch (e) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                    Fluttertoast.showToast(msg: "Something went wrong");
-                    Navigator.of(context).pop();
-                    Provider.of<BarIndexChange>(context, listen: false)
-                        .setBarindex(0);
-                  }
-                },
-              ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -160,7 +89,7 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 10,
-                    vertical: 10,
+                    vertical: 6,
                   ),
                   // height: height * .3,
                   width: width * .8,
@@ -180,7 +109,87 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
                     ),
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: height * .02),
+              _isLoading
+                  ? Container(
+                      height: 50,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.black,
+                        ),
+                      ),
+                    )
+                  : RaisedButton(
+                      color: theme.colorPrimary,
+                      elevation: 8,
+                      child: Text(
+                        "Upload Post",
+                        style: theme.text14boldWhite,
+                      ),
+                      onPressed: () async {
+                        if (caption == null || caption == "") {
+                          Fluttertoast.showToast(
+                              msg: "Please enter correct Caption");
+                          return;
+                        }
+                        final user =
+                            Provider.of<UserProvider>(context, listen: false)
+                                .userInformation;
+                        if (user.name == null) {
+                          Fluttertoast.showToast(
+                              msg: "Please complete your profile first");
+                          return;
+                        }
+                        try {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          File file = File(widget.image);
+                          final compFile = await compressImage(file);
+                          final key = FirebaseDatabase.instance
+                              .reference()
+                              .child("Social Media Data")
+                              .child(FirebaseAuth.instance.currentUser.uid)
+                              .push()
+                              .key;
+                          final ref = FirebaseStorage.instance
+                              .ref()
+                              .child("CustomerSocialMedial")
+                              .child("${FirebaseAuth.instance.currentUser.uid}")
+                              .child("$key" + ".jpg");
+                          await ref.putFile(compFile);
+                          final vals = await ref.getDownloadURL();
+                          FirebaseDatabase.instance
+                              .reference()
+                              .child("Social Media Data")
+                              .child(FirebaseAuth.instance.currentUser.uid)
+                              .child(key)
+                              .update({
+                            "image": vals,
+                            "caption": caption,
+                            "dateTime": DateTime.now().toIso8601String(),
+                          });
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Fluttertoast.showToast(
+                              msg: "Post uploaded successfully");
+
+                          Navigator.of(context).pop();
+                          Provider.of<BarIndexChange>(context, listen: false)
+                              .setBarindex(0);
+                        } catch (e) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          Fluttertoast.showToast(msg: "Something went wrong");
+                          Navigator.of(context).pop();
+                          Provider.of<BarIndexChange>(context, listen: false)
+                              .setBarindex(0);
+                        }
+                      },
+                    ),
             ],
           ),
         ),

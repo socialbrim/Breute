@@ -240,7 +240,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                               ),
                             )
                           : Container(
-                              height: height * .59 * _list.length,
+                              height: height * .608 * _list.length,
                               child: ListView.builder(
                                 cacheExtent: 9999,
                                 physics: NeverScrollableScrollPhysics(),
@@ -492,7 +492,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                               ),
                             ),
                       SizedBox(
-                        height: height * .06,
+                        height: height * .02,
                       ),
                     ],
                   ),

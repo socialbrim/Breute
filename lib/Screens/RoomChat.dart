@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
@@ -275,136 +276,219 @@ class MessageTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Stack(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: theme.colorCompanion2,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                      bottomLeft:
-                          isSendByMe ? Radius.circular(15) : Radius.circular(0),
-                      bottomRight: isSendByMe
-                          ? Radius.circular(0)
-                          : Radius.circular(15)),
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 12),
-                  child: isSendByMe
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  name == null ? "Anonymous" : '$name',
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Container(
-                                  width: width * 0.5,
-                                  child: Text(
-                                    message,
-                                    textAlign: isSendByMe
-                                        ? TextAlign.left
-                                        : TextAlign.left,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: width * 0.03,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                //...
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SocialMediaProfileScreen(
-                                      isme: uid ==
-                                          FirebaseAuth.instance.currentUser.uid,
-                                      uid: uid,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: CircleAvatar(
-                                radius: 20,
-                                backgroundImage: imageURL == null
-                                    ? AssetImage("assets/unnamed.png")
-                                    : NetworkImage(imageURL),
-                              ),
-                            ),
-                          ],
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                print(id);
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SocialMediaProfileScreen(
-                                      isme: uid ==
-                                          FirebaseAuth.instance.currentUser.uid,
-                                      uid: uid,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: CircleAvatar(
-                                radius: 20,
-                                backgroundImage: imageURL == null
-                                    ? AssetImage("assets/unnamed.png")
-                                    : NetworkImage(imageURL),
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.03,
-                            ),
-                            Column(
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: theme.colorCompanion2,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                          bottomLeft: isSendByMe
+                              ? Radius.circular(15)
+                              : Radius.circular(0),
+                          bottomRight: isSendByMe
+                              ? Radius.circular(0)
+                              : Radius.circular(15)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: 15, left: 15, bottom: 10, top: 12),
+                      child: isSendByMe
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  name == null ? "Anonymous" : "$name",
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Container(
-                                  width: width * 0.5,
-                                  child: Text(
-                                    message,
-                                    textAlign: isSendByMe
-                                        ? TextAlign.right
-                                        : TextAlign.left,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: Colors.white,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      name == null ? "Anonymous" : '$name',
+                                      style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    softWrap: true,
+                                    Container(
+                                      width: width * 0.5,
+                                      child: Text(
+                                        message,
+                                        textAlign: isSendByMe
+                                            ? TextAlign.left
+                                            : TextAlign.left,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: width * 0.03,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    //...
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SocialMediaProfileScreen(
+                                          isme: uid ==
+                                              FirebaseAuth
+                                                  .instance.currentUser.uid,
+                                          uid: uid,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: imageURL == null
+                                        ? AssetImage("assets/unnamed.png")
+                                        : NetworkImage(imageURL),
                                   ),
                                 ),
                               ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    print(id);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SocialMediaProfileScreen(
+                                          isme: uid ==
+                                              FirebaseAuth
+                                                  .instance.currentUser.uid,
+                                          uid: uid,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: imageURL == null
+                                        ? AssetImage("assets/unnamed.png")
+                                        : NetworkImage(imageURL),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.03,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      name == null ? "Anonymous" : "$name",
+                                      style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Container(
+                                      width: width * 0.5,
+                                      child: Text(
+                                        message,
+                                        textAlign: isSendByMe
+                                            ? TextAlign.right
+                                            : TextAlign.left,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                        ),
+                                        softWrap: true,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                ),
+                    ),
+                  ),
+                  Align(
+                    alignment: !isSendByMe
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 7),
+                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: theme.colorCompanion3,
+                      ),
+                      height: height * .038,
+                      width: !isSendByMe ? width * .22 : width * .12,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          !isSendByMe
+                              ? Positioned(
+                                  top: 0,
+                                  right: 5,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      report(context);
+                                    },
+                                    child: Icon(
+                                      MdiIcons.flag,
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                          SizedBox(
+                            width: !isSendByMe ? width * .015 : width * 0,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              FirebaseDatabase.instance
+                                  .reference()
+                                  .child("GroupChatRoom")
+                                  .child("$chatRoomID")
+                                  .child(id)
+                                  .update({
+                                "Like": (likes + 1).toString(),
+                              });
+                            },
+                            child: loveIcon(likes),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: likes == 0 ? Container() : loveIcon(likes),
-              )
+              // Positioned(
+              //   bottom: 0,
+              //   right: 0,
+              //   // child: GestureDetector(
+              //   //   onTap: () {
+              //   //     FirebaseDatabase.instance
+              //   //         .reference()
+              //   //         .child("GroupChatRoom")
+              //   //         .child("$chatRoomID")
+              //   //         .child(id)
+              //   //         .update({
+              //   //       "Like": (likes + 1).toString(),
+              //   //     });
+              //   //   },
+              //   //   child: loveIcon(likes),
+              //   // ),
+              // ),
+              // !isSendByMe
+              //     ? Positioned(
+              //         top: 0,
+              //         right: 5,
+              //         child: GestureDetector(
+              //           onTap: () {
+              //             report(context);
+              //           },
+              //           child: Icon(
+              //             MdiIcons.flag,
+              //           ),
+              //         ),
+              //       )
+              //     : Container(),
             ],
           ),
         ),
@@ -428,6 +512,7 @@ class MessageTile extends StatelessWidget {
         ),
         content: TextFormField(
           controller: _ctrl,
+          decoration: InputDecoration(hintText: 'Type here'),
         ),
         actions: [
           FlatButton(
@@ -470,12 +555,18 @@ class MessageTile extends StatelessWidget {
 
   Widget loveIcon(double count) {
     return Container(
-      width: 50,
+      // width: 40,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             Icons.favorite,
-            color: Colors.red,
+            color:
+                // ?
+                Colors.red
+            // : Colors.grey
+            ,
+            size: 20,
           ),
           Text(count.toInt().toString())
         ],

@@ -43,6 +43,9 @@ class _CustomerSupportState extends State<CustomerSupport> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: height * .04,
+                  ),
                   Center(
                     child: Container(
                       height: height * 0.2,
@@ -51,12 +54,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       ),
                     ),
                   ),
-                  Center(
-                    child: Text(
-                      'Community Chat',
-                      style: theme.text18bold,
-                    ),
-                  ),
+
                   SizedBox(
                     height: height * .03,
                   ),

@@ -220,7 +220,27 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: height * 0.04,
+                          height: height * .01,
+                        ),
+                        Container(
+                          width: width,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                          ),
+                          child: Text(
+                            'Completing an extra 10,000 steps each day typically burns about 2000 to 3500 extra calories each week. One pound of body fat equals 3500 calories, so depending on your weight and workout intensity, you could lose about one pound per week simply by completing an extra 10,000 steps each day.',
+                            textAlign: TextAlign.center,
+                            style: theme.text14,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Divider(
+                            thickness: 1,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.0,
                         ),
                         Container(
                           height: height * 0.25,
