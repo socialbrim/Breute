@@ -423,16 +423,12 @@ class MessageTile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           !isSendByMe
-                              ? Positioned(
-                                  top: 0,
-                                  right: 5,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      report(context);
-                                    },
-                                    child: Icon(
-                                      MdiIcons.flag,
-                                    ),
+                              ? GestureDetector(
+                                  onTap: () {
+                                    report(context);
+                                  },
+                                  child: Icon(
+                                    MdiIcons.flag,
                                   ),
                                 )
                               : Container(),
