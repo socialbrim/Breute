@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -287,6 +288,16 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                                     : '${_list[index].name}',
                                                 style: theme.text14bold,
                                               ),
+                                              Expanded(
+                                                child: Container(),
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.flag),
+                                                onPressed: () {
+                                                  //.....
+                                                  report(context, _list[index]);
+                                                },
+                                              )
                                             ],
                                           ),
                                           SizedBox(
@@ -487,6 +498,61 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                   ),
                 )),
           );
+  }
+
+  TextEditingController _ctrl = new TextEditingController();
+
+  void report(BuildContext context, PostModel post) async {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          "Report Against ${post.name == null ? "Anonymous" : post.name}",
+          style: theme.text14boldPimary,
+        ),
+        content: TextFormField(
+          controller: _ctrl,
+        ),
+        actions: [
+          FlatButton(
+            child: Text(
+              "Cancel",
+              style: theme.text12bold,
+            ),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+          FlatButton(
+            child: Text(
+              "Submit",
+              style: theme.text12bold,
+            ),
+            onPressed: () {
+              //...
+              if (_ctrl.text == null || _ctrl.text == "") {
+                Fluttertoast.showToast(msg: "Enter in field");
+                return;
+              }
+              FirebaseDatabase.instance
+                  .reference()
+                  .child("ReportsForPost")
+                  .child(post.uid)
+                  .child(post.postID)
+                  .child(FirebaseAuth.instance.currentUser.uid)
+                  .update({
+                "ReportBy": FirebaseAuth.instance.currentUser.uid,
+                "Report": _ctrl.text,
+              });
+              Fluttertoast.showToast(
+                  msg:
+                      "Reported against ${post.name == null ? "Anonymous" : post.name}");
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked, PostModel data) async {

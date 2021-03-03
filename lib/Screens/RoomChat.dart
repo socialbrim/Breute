@@ -452,9 +452,7 @@ class MessageTile extends StatelessWidget {
               }
               FirebaseDatabase.instance
                   .reference()
-                  .child("GroupChatRoom")
-                  .child(id)
-                  .child("Report")
+                  .child("Reports")
                   .child(FirebaseAuth.instance.currentUser.uid)
                   .update({
                 "ReportBy": FirebaseAuth.instance.currentUser.uid,

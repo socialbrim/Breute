@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Screens/TOUscreen.dart';
 import '../Screens/social media/SocialMediaProfileScreen.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/Createmealscreen.dart';
@@ -277,7 +278,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     height: height * 0.02,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => TermsofUseScreen(),
+                        ),
+                      );
+                    },
                     child: Row(
                       children: [
                         SizedBox(

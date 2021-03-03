@@ -49,34 +49,36 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
         appBar: AppBar(
           title: Text('Post'),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: IconButton(
-                  icon: Icon(
-                    MdiIcons.delete,
-                    size: 28,
-                  ),
-                  onPressed: () async {
-                    //...
-                    setState(() {
-                      _isLoadin = true;
-                    });
-                    await Future.delayed(Duration(seconds: 1));
-                    await FirebaseDatabase.instance
-                        .reference()
-                        .child("Social Media Data")
-                        .child(FirebaseAuth.instance.currentUser.uid)
-                        .child(widget.postModel.postID)
-                        .remove();
-                    Fluttertoast.showToast(msg: "Post is Deleted successfully");
-                    Navigator.of(context).pop();
-                    Provider.of<BarIndexChange>(context, listen: false)
-                        .setBarindex(0);
-                    setState(() {
-                      _isLoadin = false;
-                    });
-                  }),
-            )
+            if (FirebaseAuth.instance.currentUser.uid == widget.postModel.uid)
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: IconButton(
+                    icon: Icon(
+                      MdiIcons.delete,
+                      size: 28,
+                    ),
+                    onPressed: () async {
+                      //...
+                      setState(() {
+                        _isLoadin = true;
+                      });
+                      await Future.delayed(Duration(seconds: 1));
+                      await FirebaseDatabase.instance
+                          .reference()
+                          .child("Social Media Data")
+                          .child(FirebaseAuth.instance.currentUser.uid)
+                          .child(widget.postModel.postID)
+                          .remove();
+                      Fluttertoast.showToast(
+                          msg: "Post is Deleted successfully");
+                      Navigator.of(context).pop();
+                      Provider.of<BarIndexChange>(context, listen: false)
+                          .setBarindex(0);
+                      setState(() {
+                        _isLoadin = false;
+                      });
+                    }),
+              )
           ],
         ),
         body: SingleChildScrollView(
