@@ -133,7 +133,7 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
               controller: _searchCtrl,
               cursorColor: theme.colorPrimary,
               decoration: InputDecoration(
-                hintText: "Search Meal",
+                hintText: "Search Fitness Tip.",
                 hintStyle: theme.text14,
                 border: InputBorder.none,
                 prefix: IconButton(

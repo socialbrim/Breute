@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../Screens/privacyPolicyScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Screens/TOUscreen.dart';
@@ -10,9 +10,7 @@ import 'package:parentpreneur/Screens/ProTipForWorkoutScreen.dart';
 import 'package:parentpreneur/Screens/SettingScreen.dart';
 import 'package:parentpreneur/auth/LoginScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
-
 import 'package:provider/provider.dart';
-
 import '../Screens/ScheduleMeal.dart';
 import '../main.dart';
 
@@ -234,17 +232,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // setState(() {
-                      //   _isModChanging = true;
-                      // });
-                      // Provider.of<AppThemeData>(context, listen: false)
-                      //     .changeDarkMode();
-                      // theme.changeDarkMode();
-                      // Future.delayed(Duration(seconds: 2)).then((value) {
-                      //   setState(() {
-                      //     _isModChanging = false;
-                      //   });
-                      // });
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => SettingScreen(),
@@ -266,7 +253,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ),
                         Container(
                           child: Text(
-                            // theme.darkMode ? 'Light Theme' : "Dark Theme",
                             "Settings",
                             style: theme.text16bold,
                           ),
@@ -301,6 +287,39 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         Container(
                           child: Text(
                             'Terms of service',
+                            style: theme.text16bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PrivacyPolicyScreen(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.04,
+                        ),
+                        Icon(
+                          MdiIcons.shield,
+                          color: theme.colorPrimary,
+                          size: 30,
+                        ),
+                        SizedBox(
+                          width: width * 0.07,
+                        ),
+                        Container(
+                          child: Text(
+                            'Privacy Policy',
                             style: theme.text16bold,
                           ),
                         ),
