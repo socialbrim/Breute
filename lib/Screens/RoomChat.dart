@@ -1,9 +1,14 @@
+import 'dart:io';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:medcorder_audio/medcorder_audio.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
@@ -88,6 +93,11 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
 
   UserInformation userInfo;
   initState() {
+    audioModule.setCallBack((dynamic data) {
+      _onEvent(data);
+    });
+    _initSettings();
+
     roomInformation();
     userInfo =
         Provider.of<UserProvider>(context, listen: false).userInformation;
@@ -171,7 +181,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                   // mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * .75,
+                      width: MediaQuery.of(context).size.width * .69,
                       child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -215,7 +225,21 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                               Icons.send,
                               color: theme.colorBackground,
                             ),
-                    )
+                    ),
+                    InkWell(
+                      onTap: () {
+                        _startRecord();
+                      },
+                      onDoubleTap: () {
+                        _stopRecord();
+                        filesaveToServer();
+                      },
+                      onLongPress: () {},
+                      child: Icon(
+                        Icons.mic,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -223,10 +247,121 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
           )),
     );
   }
+
+  //..... audio chat system started
+
+  MedcorderAudio audioModule = new MedcorderAudio();
+
+  bool canRecord = false;
+  double recordPower = 0.0;
+  double recordPosition = 0.0;
+  bool isRecord = false;
+  bool isPlay = false;
+  double playPosition = 0.0;
+  String file = "";
+  var filePATH = "";
+
+  Future _initSettings() async {
+    final String result = await audioModule.checkMicrophonePermissions();
+    if (result == 'OK') {
+      await audioModule.setAudioSettings();
+      setState(() {
+        canRecord = true;
+      });
+    }
+    return;
+  }
+
+  Future _startRecord() async {
+    try {
+      DateTime time = new DateTime.now();
+      setState(() {
+        file = time.millisecondsSinceEpoch.toString();
+      });
+      final String result = await audioModule.startRecord(file);
+      setState(() {
+        isRecord = true;
+      });
+      print('startRecord: ' + result);
+    } catch (e) {
+      file = "";
+      print('startRecord: fail');
+    }
+  }
+
+  Future _stopRecord() async {
+    try {
+      final String result = await audioModule.stopRecord();
+      print('stopRecord: ' + result);
+      setState(() {
+        isRecord = false;
+      });
+    } catch (e) {
+      print('stopRecord: fail');
+      setState(() {
+        isRecord = false;
+      });
+    }
+  }
+
+  void _onEvent(dynamic event) {
+    print("-----------------------------------------");
+    print(event);
+    print("-----------------------------------------");
+    filePATH = event['url'];
+    if (event['code'] == 'recording') {
+      double power = event['peakPowerForChannel'];
+      setState(() {
+        recordPower = (60.0 - power.abs().floor()).abs();
+        recordPosition = event['currentTime'];
+      });
+    }
+    if (event['code'] == 'playing') {
+      String url = event['url'];
+      setState(() {
+        playPosition = event['currentTime'];
+        isPlay = true;
+      });
+    }
+    if (event['code'] == 'audioPlayerDidFinishPlaying') {
+      setState(() {
+        playPosition = 0.0;
+        isPlay = false;
+      });
+    }
+  }
+
+  filesaveToServer() async {
+    final fileName = new File(filePATH);
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child("CHatsAudio")
+        .child(FirebaseAuth.instance.currentUser.uid)
+        .child("${DateTime.now()}" + ".mp3");
+    await ref.putFile(fileName);
+
+    final vals = await ref.getDownloadURL();
+    print(vals);
+
+    final reff = FirebaseDatabase.instance
+        .reference()
+        .child("GroupChatRoom")
+        .child("${widget.chatRoomID}");
+    final key = reff.push().key;
+    reff.child(key).update({
+      'message': vals,
+      "uid": userInfo.id,
+      "timeStamp": DateTime.now().toIso8601String(),
+      'Name': userInfo.name,
+      "DpURL": userInfo.imageUrl,
+    });
+  }
+
+  //.... aduio chat finished
 }
 
 // ignore: must_be_immutable
-class MessageTile extends StatelessWidget {
+class MessageTile extends StatefulWidget {
   final bool isSendByMe;
   final String message;
   final String imageURL;
@@ -247,6 +382,11 @@ class MessageTile extends StatelessWidget {
   });
 
   @override
+  _MessageTileState createState() => _MessageTileState();
+}
+
+class _MessageTileState extends State<MessageTile> {
+  @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     var height = MediaQuery.of(context).size.height;
@@ -254,19 +394,21 @@ class MessageTile extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.only(
-          left: isSendByMe ? MediaQuery.of(context).size.width * .2 : 24,
-          right: isSendByMe ? 24 : MediaQuery.of(context).size.width * .2),
+          left: widget.isSendByMe ? MediaQuery.of(context).size.width * .2 : 24,
+          right:
+              widget.isSendByMe ? 24 : MediaQuery.of(context).size.width * .2),
       width: MediaQuery.of(context).size.width,
-      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      alignment:
+          widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: InkWell(
         onDoubleTap: () {
           FirebaseDatabase.instance
               .reference()
               .child("GroupChatRoom")
-              .child("$chatRoomID")
-              .child(id)
+              .child("${widget.chatRoomID}")
+              .child(widget.id)
               .update({
-            "Like": (likes + 1).toString(),
+            "Like": (widget.likes + 1).toString(),
           });
         },
         onLongPress: () {
@@ -284,17 +426,17 @@ class MessageTile extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15),
-                          bottomLeft: isSendByMe
+                          bottomLeft: widget.isSendByMe
                               ? Radius.circular(15)
                               : Radius.circular(0),
-                          bottomRight: isSendByMe
+                          bottomRight: widget.isSendByMe
                               ? Radius.circular(0)
                               : Radius.circular(15)),
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
                           right: 15, left: 15, bottom: 10, top: 12),
-                      child: isSendByMe
+                      child: widget.isSendByMe
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,23 +445,43 @@ class MessageTile extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      name == null ? "Anonymous" : '$name',
+                                      widget.name == null
+                                          ? "Anonymous"
+                                          : '${widget.name}',
                                       style: GoogleFonts.roboto(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Container(
-                                      width: width * 0.5,
-                                      child: Text(
-                                        message,
-                                        textAlign: isSendByMe
-                                            ? TextAlign.left
-                                            : TextAlign.left,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
+                                    widget.message.contains(".mp3")
+                                        ? IconButton(
+                                            icon: isPlaying
+                                                ? Icon(Icons.pause)
+                                                : Icon(Icons.play_arrow),
+                                            onPressed: () {
+                                              if (isPlaying) {
+                                                setState(() {
+                                                  isPlaying = false;
+                                                  pauseAudio();
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  isPlaying = true;
+                                                });
+                                                play(widget.message);
+                                              }
+                                            })
+                                        : Container(
+                                            width: width * 0.5,
+                                            child: Text(
+                                              widget.message,
+                                              textAlign: widget.isSendByMe
+                                                  ? TextAlign.left
+                                                  : TextAlign.left,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
                                   ],
                                 ),
                                 SizedBox(
@@ -332,19 +494,19 @@ class MessageTile extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             SocialMediaProfileScreen(
-                                          isme: uid ==
+                                          isme: widget.uid ==
                                               FirebaseAuth
                                                   .instance.currentUser.uid,
-                                          uid: uid,
+                                          uid: widget.uid,
                                         ),
                                       ),
                                     );
                                   },
                                   child: CircleAvatar(
                                     radius: 20,
-                                    backgroundImage: imageURL == null
+                                    backgroundImage: widget.imageURL == null
                                         ? AssetImage("assets/unnamed.png")
-                                        : NetworkImage(imageURL),
+                                        : NetworkImage(widget.imageURL),
                                   ),
                                 ),
                               ],
@@ -355,24 +517,24 @@ class MessageTile extends StatelessWidget {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    print(id);
+                                    print(widget.id);
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             SocialMediaProfileScreen(
-                                          isme: uid ==
+                                          isme: widget.uid ==
                                               FirebaseAuth
                                                   .instance.currentUser.uid,
-                                          uid: uid,
+                                          uid: widget.uid,
                                         ),
                                       ),
                                     );
                                   },
                                   child: CircleAvatar(
                                     radius: 20,
-                                    backgroundImage: imageURL == null
+                                    backgroundImage: widget.imageURL == null
                                         ? AssetImage("assets/unnamed.png")
-                                        : NetworkImage(imageURL),
+                                        : NetworkImage(widget.imageURL),
                                   ),
                                 ),
                                 SizedBox(
@@ -382,15 +544,17 @@ class MessageTile extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      name == null ? "Anonymous" : "$name",
+                                      widget.name == null
+                                          ? "Anonymous"
+                                          : "${widget.name}",
                                       style: GoogleFonts.roboto(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Container(
                                       width: width * 0.5,
                                       child: Text(
-                                        message,
-                                        textAlign: isSendByMe
+                                        widget.message,
+                                        textAlign: widget.isSendByMe
                                             ? TextAlign.right
                                             : TextAlign.left,
                                         style: GoogleFonts.poppins(
@@ -407,7 +571,7 @@ class MessageTile extends StatelessWidget {
                     ),
                   ),
                   Align(
-                    alignment: !isSendByMe
+                    alignment: !widget.isSendByMe
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     child: Container(
@@ -418,11 +582,11 @@ class MessageTile extends StatelessWidget {
                         color: theme.colorCompanion3,
                       ),
                       height: height * .038,
-                      width: !isSendByMe ? width * .22 : width * .12,
+                      width: !widget.isSendByMe ? width * .22 : width * .12,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          !isSendByMe
+                          !widget.isSendByMe
                               ? GestureDetector(
                                   onTap: () {
                                     report(context);
@@ -433,20 +597,21 @@ class MessageTile extends StatelessWidget {
                                 )
                               : Container(),
                           SizedBox(
-                            width: !isSendByMe ? width * .015 : width * 0,
+                            width:
+                                !widget.isSendByMe ? width * .015 : width * 0,
                           ),
                           GestureDetector(
                             onTap: () {
                               FirebaseDatabase.instance
                                   .reference()
                                   .child("GroupChatRoom")
-                                  .child("$chatRoomID")
-                                  .child(id)
+                                  .child("${widget.chatRoomID}")
+                                  .child(widget.id)
                                   .update({
-                                "Like": (likes + 1).toString(),
+                                "Like": (widget.likes + 1).toString(),
                               });
                             },
-                            child: loveIcon(likes),
+                            child: loveIcon(widget.likes),
                           ),
                         ],
                       ),
@@ -492,10 +657,25 @@ class MessageTile extends StatelessWidget {
     );
   }
 
+  bool isPlaying = false;
+
+  AudioPlayer audioPlayer = AudioPlayer();
+  static String privURL = "";
+  play(String url) async {
+    int result = await audioPlayer.play(url);
+    if (result == 1) {
+      // success
+    }
+  }
+
+  pauseAudio() async {
+    await audioPlayer.pause();
+  }
+
   TextEditingController _ctrl = new TextEditingController();
 
   void report(BuildContext context) async {
-    if (name == "Admin") {
+    if (widget.name == "Admin") {
       Fluttertoast.showToast(msg: "Cannot report against admin");
       return;
     }
@@ -503,7 +683,7 @@ class MessageTile extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(
-          "Report Against ${name == null ? "Anonymous" : name}",
+          "Report Against ${widget.name == null ? "Anonymous" : widget.name}",
           style: theme.text14boldPimary,
         ),
         content: TextFormField(
@@ -540,7 +720,8 @@ class MessageTile extends StatelessWidget {
                 "Report": _ctrl.text,
               });
               Fluttertoast.showToast(
-                  msg: "Reported against ${name == null ? "Anonymous" : name}");
+                  msg:
+                      "Reported against ${widget.name == null ? "Anonymous" : widget.name}");
               Navigator.of(ctx).pop();
             },
           )

@@ -65,6 +65,8 @@ dependencies:
   share: ^0.6.5+4
   youtube_player_flutter: ^7.0.0+7
   firebase_messaging: ^7.0.3
+  medcorder_audio: ^0.0.6
+  audioplayers: ^0.17.4
 
 
 dev_dependencies:
