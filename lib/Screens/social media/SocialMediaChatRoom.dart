@@ -275,9 +275,8 @@ class MessageTile extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: isSendByMe
-                      ? theme.colorCompanion3
-                      : theme.colorCompanion2,
+                  color:
+                      isSendByMe ? theme.colorCompanion3 : theme.colorCompanion,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),

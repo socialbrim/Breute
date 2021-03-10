@@ -176,12 +176,12 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                 child: chatMessageList(),
               ),
               Container(
-                color: theme.colorPrimary,
+                color: theme.colorCompanion,
                 child: Row(
                   // mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * .69,
+                      width: MediaQuery.of(context).size.width * .68,
                       child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -204,8 +204,11 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                         ),
                       ),
                     ),
-                    RawMaterialButton(
-                      onPressed: () {
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * .02,
+                    ),
+                    InkWell(
+                      onTap: () {
                         if (messageController.text == null ||
                             messageController.text == "") {
                           Fluttertoast.showToast(
@@ -225,6 +228,9 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                               Icons.send,
                               color: theme.colorBackground,
                             ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * .05,
                     ),
                     InkWell(
                       onTap: () {
@@ -422,7 +428,7 @@ class _MessageTileState extends State<MessageTile> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: theme.colorCompanion2,
+                      color: theme.colorPrimary,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15),

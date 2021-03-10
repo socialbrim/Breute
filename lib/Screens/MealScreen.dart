@@ -123,7 +123,7 @@ class _MealScreenState extends State<MealScreen> {
                       Container(
                         width: width,
                         child: Image.asset(
-                          'assets/todaymeals.png',
+                          'assets/todaymeals.jpeg',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -172,7 +172,7 @@ class _MealScreenState extends State<MealScreen> {
                       Container(
                         width: width,
                         child: Image.asset(
-                          'assets/workout.png',
+                          'assets/workout.jpeg',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -219,7 +219,7 @@ class _MealScreenState extends State<MealScreen> {
                       Container(
                         width: width,
                         child: Image.asset(
-                          'assets/todaymeals.png',
+                          'assets/todaymeals.jpeg',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -266,7 +266,7 @@ class _MealScreenState extends State<MealScreen> {
                       Container(
                         width: width,
                         child: Image.asset(
-                          'assets/schedule.png',
+                          'assets/schedule.jpeg',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -314,7 +314,7 @@ class _MealScreenState extends State<MealScreen> {
                       Container(
                         width: width,
                         child: Image.asset(
-                          'assets/recipemeal.png',
+                          'assets/todaymeals.jpeg',
                           fit: BoxFit.cover,
                         ),
                       ),
