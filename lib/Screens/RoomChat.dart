@@ -512,74 +512,116 @@ class _MessageTileState extends State<MessageTile> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      widget.name == null
-                                          ? "Anonymous"
-                                          : '${widget.name}',
-                                      style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.bold),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          widget.name == null
+                                              ? "Anonymous"
+                                              : '${widget.name}',
+                                          style: GoogleFonts.roboto(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
                                     ),
-                                    widget.message.contains(".mp3")
-                                        ? IconButton(
-                                            icon: isPlaying
-                                                ? Icon(Icons.pause)
-                                                : Icon(Icons.play_arrow),
-                                            onPressed: () {
-                                              if (isPlaying) {
-                                                setState(() {
-                                                  isPlaying = false;
-                                                  pauseAudio();
-                                                });
-                                              } else {
-                                                setState(() {
-                                                  isPlaying = true;
-                                                });
-                                                play(widget.message);
-                                              }
-                                            })
-                                        : Container(
-                                            width: width * 0.5,
-                                            child: Text(
-                                              widget.message,
-                                              textAlign: widget.isSendByMe
-                                                  ? TextAlign.left
-                                                  : TextAlign.left,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                color: Colors.white,
+                                    Row(
+                                      children: [
+                                        widget.message.contains(".mp3")
+                                            ? GestureDetector(
+                                                child: isPlaying
+                                                    ? Icon(Icons.pause)
+                                                    : Icon(Icons.play_arrow),
+                                                onTap: () {
+                                                  if (isPlaying) {
+                                                    setState(() {
+                                                      isPlaying = false;
+                                                      pauseAudio();
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      isPlaying = true;
+                                                    });
+                                                    play(widget.message);
+                                                  }
+                                                })
+                                            : Container(
+                                                width: width * 0.5,
+                                                child: Text(
+                                                  widget.message,
+                                                  textAlign: widget.isSendByMe
+                                                      ? TextAlign.left
+                                                      : TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
+                                        widget.message.contains(".mp3")
+                                            ? slider()
+                                            : Container(),
+                                      ],
+                                    ),
+                                    // widget.message.contains(".mp3")
+                                    //     ? IconButton(
+                                    //         icon: isPlaying
+                                    //             ? Icon(Icons.pause)
+                                    //             : Icon(Icons.play_arrow),
+                                    //         onPressed: () {
+                                    //           if (isPlaying) {
+                                    //             setState(() {
+                                    //               isPlaying = false;
+                                    //               pauseAudio();
+                                    //             });
+                                    //           } else {
+                                    //             setState(() {
+                                    //               isPlaying = true;
+                                    //             });
+                                    //             play(widget.message);
+                                    //           }
+                                    //         })
+                                    //     : Container(
+                                    //         width: width * 0.5,
+                                    //         child: Text(
+                                    //           widget.message,
+                                    //           textAlign: widget.isSendByMe
+                                    //               ? TextAlign.left
+                                    //               : TextAlign.left,
+                                    //           style: GoogleFonts.poppins(
+                                    //             fontSize: 14,
+                                    //             color: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ),
                                   ],
                                 ),
-                                widget.message.contains(".mp3")
-                                    ? slider()
-                                    : Container(),
-                                SizedBox(
-                                  width: width * 0.03,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    //...
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SocialMediaProfileScreen(
-                                          isme: widget.uid ==
-                                              FirebaseAuth
-                                                  .instance.currentUser.uid,
-                                          uid: widget.uid,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: widget.imageURL == null
-                                        ? AssetImage("assets/unnamed.png")
-                                        : NetworkImage(widget.imageURL),
-                                  ),
-                                ),
+                                // widget.message.contains(".mp3")
+                                //     ? slider()
+                                //     : Container(),
+                                // SizedBox(
+                                //   width: width * 0.03,
+                                // ),
+                                // InkWell(
+                                //   onTap: () {
+                                //     //...
+                                //     Navigator.of(context).push(
+                                //       MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             SocialMediaProfileScreen(
+                                //           isme: widget.uid ==
+                                //               FirebaseAuth
+                                //                   .instance.currentUser.uid,
+                                //           uid: widget.uid,
+                                //         ),
+                                //       ),
+                                //     );
+                                //   },
+                                //   child: CircleAvatar(
+                                //     radius: 20,
+                                //     backgroundImage: widget.imageURL == null
+                                //         ? AssetImage("assets/unnamed.png")
+                                //         : NetworkImage(widget.imageURL),
+                                //   ),
+                                // ),
                               ],
                             )
                           : Row(
@@ -731,19 +773,22 @@ class _MessageTileState extends State<MessageTile> {
   bool isPlaying = false;
 
   Widget slider() {
-    return Slider(
-      activeColor: Colors.blue,
-      inactiveColor: Colors.deepOrangeAccent,
-      value: _position.inSeconds.toDouble(),
-      min: 0.0,
-      max: _duration.inSeconds.toDouble(),
-      onChanged: (double value) {
-        print(value);
-        setState(() {
-          seekToSecond(value.toInt());
-          value = value;
-        });
-      },
+    return Container(
+      width: 210,
+      child: Slider(
+        activeColor: Colors.white,
+        inactiveColor: theme.colorCompanion,
+        value: _position.inSeconds.toDouble(),
+        min: 0.0,
+        max: _duration.inSeconds.toDouble(),
+        onChanged: (double value) {
+          print(value);
+          setState(() {
+            seekToSecond(value.toInt());
+            value = value;
+          });
+        },
+      ),
     );
   }
 
