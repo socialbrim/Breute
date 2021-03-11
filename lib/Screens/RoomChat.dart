@@ -12,6 +12,7 @@ import 'package:medcorder_audio/medcorder_audio.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 import './RoomInformation.dart';
 import 'package:provider/provider.dart';
@@ -233,7 +234,8 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                       width: MediaQuery.of(context).size.width * .05,
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
+                        await checkpermission();
                         _startRecord();
                       },
                       onDoubleTap: () {
@@ -243,7 +245,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                       onLongPress: () {},
                       child: Icon(
                         Icons.mic,
-                        color: Colors.white,
+                        color: _isRecording ? Colors.red : Colors.white,
                       ),
                     ),
                   ],
@@ -255,6 +257,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
   }
 
   //..... audio chat system started
+  bool _isRecording = false;
 
   MedcorderAudio audioModule = new MedcorderAudio();
 
@@ -280,6 +283,9 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
 
   Future _startRecord() async {
     try {
+      setState(() {
+        _isRecording = true;
+      });
       DateTime time = new DateTime.now();
       setState(() {
         file = time.millisecondsSinceEpoch.toString();
@@ -292,17 +298,26 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
     } catch (e) {
       file = "";
       print('startRecord: fail');
+      setState(() {
+        _isRecording = false;
+      });
     }
   }
 
   Future _stopRecord() async {
     try {
+      setState(() {
+        _isRecording = false;
+      });
       final String result = await audioModule.stopRecord();
       print('stopRecord: ' + result);
       setState(() {
         isRecord = false;
       });
     } catch (e) {
+      setState(() {
+        _isRecording = false;
+      });
       print('stopRecord: fail');
       setState(() {
         isRecord = false;
@@ -363,6 +378,21 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
     });
   }
 
+  Future<void> checkpermission() async {
+    var status = await Permission.microphone.status;
+    print(status);
+    if (status.isUndetermined) {
+      final data = await Permission.microphone.request();
+      print(status);
+    }
+    if (status.isGranted) {}
+    if (status.isDenied) {
+      // ignore: unused_local_variable
+      final data = await Permission.microphone.request();
+      print(status);
+    }
+  }
+
   //.... aduio chat finished
 }
 
@@ -392,6 +422,18 @@ class MessageTile extends StatefulWidget {
 }
 
 class _MessageTileState extends State<MessageTile> {
+  @override
+  void initState() {
+    audioPlayer.durationHandler = (d) => setState(() {
+          _duration = d;
+        });
+
+    audioPlayer.positionHandler = (p) => setState(() {
+          _position = p;
+        });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -490,6 +532,9 @@ class _MessageTileState extends State<MessageTile> {
                                           ),
                                   ],
                                 ),
+                                widget.message.contains(".mp3")
+                                    ? slider()
+                                    : Container(),
                                 SizedBox(
                                   width: width * 0.03,
                                 ),
@@ -665,13 +710,39 @@ class _MessageTileState extends State<MessageTile> {
 
   bool isPlaying = false;
 
+  Widget slider() {
+    return Slider(
+      activeColor: Colors.blue,
+      inactiveColor: Colors.deepOrangeAccent,
+      value: _position.inSeconds.toDouble(),
+      min: 0.0,
+      max: _duration.inSeconds.toDouble(),
+      onChanged: (double value) {
+        print(value);
+        setState(() {
+          seekToSecond(value.toInt());
+          value = value;
+        });
+      },
+    );
+  }
+
   AudioPlayer audioPlayer = AudioPlayer();
+  Duration _duration = new Duration();
+  Duration _position = new Duration();
   static String privURL = "";
+  void seekToSecond(int second) {
+    Duration newDuration = Duration(seconds: second);
+
+    audioPlayer.seek(newDuration);
+  }
+
   play(String url) async {
+    audioPlayer.resume();
     int result = await audioPlayer.play(url);
-    if (result == 1) {
-      // success
-    }
+    final data = audioPlayer.onDurationChanged;
+    print(data.first);
+    if (result == 1) {}
   }
 
   pauseAudio() async {

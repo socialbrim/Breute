@@ -324,41 +324,83 @@ class _RoomInformationState extends State<RoomInformation> {
                   ),
                   InkWell(
                     onTap: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: Text("Are You Sure?"),
-                          content: Text("You Want to leave"),
-                          actions: [
-                            FlatButton(
-                              onPressed: () {
-                                FirebaseDatabase.instance
-                                    .reference()
-                                    .child("Roomsinformation")
-                                    .child(widget.roomID)
-                                    .child(
-                                        FirebaseAuth.instance.currentUser.uid)
-                                    .remove();
-                                Navigator.of(context).pop();
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                "Yes",
-                                style: TextStyle(color: Colors.black),
+                      _users != null && _users.length < 2
+                          ? await showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: Text("Are You Sure?"),
+                                content: Text(
+                                    "You Are the last person in group leaving group may delete this room"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      FirebaseDatabase.instance
+                                          .reference()
+                                          .child("GroupChatRoom")
+                                          .child(widget.roomID)
+                                          .remove();
+                                      FirebaseDatabase.instance
+                                          .reference()
+                                          .child("Roomsinformation")
+                                          .child(widget.roomID)
+                                          .child(FirebaseAuth
+                                              .instance.currentUser.uid)
+                                          .remove();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Yes",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "No",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                "No",
-                                style: TextStyle(color: Colors.black),
+                            )
+                          : await showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: Text("Are You Sure?"),
+                                content: Text("You Want to leave"),
+                                actions: [
+                                  FlatButton(
+                                    onPressed: () {
+                                      FirebaseDatabase.instance
+                                          .reference()
+                                          .child("Roomsinformation")
+                                          .child(widget.roomID)
+                                          .child(FirebaseAuth
+                                              .instance.currentUser.uid)
+                                          .remove();
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "Yes",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      "No",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      );
+                            );
                     },
                     child: Card(
                       child: Container(
