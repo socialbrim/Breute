@@ -67,6 +67,8 @@ dependencies:
   firebase_messaging: ^7.0.3
   medcorder_audio: ^0.0.6
   audioplayers: ^0.17.4
+  email_launcher: ^1.0.0
+  
 
 
 dev_dependencies:

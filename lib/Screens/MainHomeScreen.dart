@@ -1,6 +1,9 @@
 import 'package:better_player/better_player.dart';
+import 'package:email_launcher/email_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/models/UserModel.dart';
 import '../Screens/UpgradePlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -185,9 +188,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    totalsteps = 10000;
+    totalsteps = 5000;
 
-    totalcalories = 10000;
+    totalcalories = 5000;
 
     return _isLoading
         ? Scaffold(
@@ -208,6 +211,42 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       child: Image.asset('assets/4.png'),
                     ),
                     centerTitle: false,
+                    actions: [
+                      IconButton(
+                          icon: Icon(MdiIcons.trophyAward),
+                          onPressed: () async {
+                            print(achievedsteps);
+                            if (achievedsteps <= totalsteps) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title:
+                                      Text("Please complete $totalsteps steps"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "OK",
+                                          style: TextStyle(color: Colors.black),
+                                        ))
+                                  ],
+                                ),
+                              );
+                              return;
+                            }
+                            final user = Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .userInformation;
+                            Email email = Email(
+                                to: ['test@gmail.com'],
+                                subject: 'subject',
+                                body:
+                                    '$achievedsteps steps is done by ${user.name} with user id ${user.id} and want to take a reward');
+                            await EmailLauncher.launch(email);
+                          })
+                    ],
                   ),
                   drawer: DrawerWidget(),
                   body: SingleChildScrollView(
