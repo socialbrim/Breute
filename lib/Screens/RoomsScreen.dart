@@ -622,6 +622,16 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: () {
+                                      // final time = TimeOfDay(
+                                      //     hour: int.parse(
+                                      //         _scheduleMyList[index]
+                                      //             .scheduleTime
+                                      //             .split(":")[0]),
+                                      //     minute: int.parse(
+                                      //         _scheduleMyList[index]
+                                      //             .scheduleTime
+                                      //             .split(":")[1]));
+                                      // if(TimeOfDay.now().hour > time )
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) => ChatRoomGrp(

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -243,10 +244,15 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                         filesaveToServer();
                       },
                       onLongPress: () {},
-                      child: Icon(
-                        Icons.mic,
-                        color: _isRecording ? Colors.red : Colors.white,
-                      ),
+                      child: _isSendingMessage
+                          ? SpinKitCircle(
+                              color: Colors.white,
+                              size: 15,
+                            )
+                          : Icon(
+                              Icons.mic,
+                              color: _isRecording ? Colors.red : Colors.white,
+                            ),
                     ),
                   ],
                 ),
@@ -352,30 +358,44 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
     }
   }
 
+  bool _isSendingMessage = false;
   filesaveToServer() async {
-    final fileName = new File(filePATH);
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child("CHatsAudio")
-        .child(FirebaseAuth.instance.currentUser.uid)
-        .child("${DateTime.now()}" + ".mp3");
-    await ref.putFile(fileName);
+    try {
+      setState(() {
+        _isSendingMessage = true;
+      });
+      final fileName = new File(filePATH);
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child("CHatsAudio")
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .child("${DateTime.now()}" + ".mp3");
+      await ref.putFile(fileName);
 
-    final vals = await ref.getDownloadURL();
-    print(vals);
+      final vals = await ref.getDownloadURL();
+      print(vals);
 
-    final reff = FirebaseDatabase.instance
-        .reference()
-        .child("GroupChatRoom")
-        .child("${widget.chatRoomID}");
-    final key = reff.push().key;
-    reff.child(key).update({
-      'message': vals,
-      "uid": userInfo.id,
-      "timeStamp": DateTime.now().toIso8601String(),
-      'Name': userInfo.name,
-      "DpURL": userInfo.imageUrl,
-    });
+      final reff = FirebaseDatabase.instance
+          .reference()
+          .child("GroupChatRoom")
+          .child("${widget.chatRoomID}");
+      final key = reff.push().key;
+      reff.child(key).update({
+        'message': vals,
+        "uid": userInfo.id,
+        "timeStamp": DateTime.now().toIso8601String(),
+        'Name': userInfo.name,
+        "DpURL": userInfo.imageUrl,
+      });
+      setState(() {
+        _isSendingMessage = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isSendingMessage = false;
+      });
+      Fluttertoast.showToast(msg: "Something went wrong");
+    }
   }
 
   Future<void> checkpermission() async {
