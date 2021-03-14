@@ -1,12 +1,19 @@
+import 'dart:io';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medcorder_audio/medcorder_audio.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/social media/SocialMediaProfileScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:profanity_filter/profanity_filter.dart';
 
 import 'package:provider/provider.dart';
@@ -73,6 +80,10 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
 
   UserInformation userInfo;
   initState() {
+    audioModule.setCallBack((dynamic data) {
+      _onEvent(data);
+    });
+    _initSettings();
     userInfo =
         Provider.of<UserProvider>(context, listen: false).userInformation;
     // uid = userInfo.id;
@@ -182,7 +193,7 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                     // mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * .75,
+                        width: MediaQuery.of(context).size.width * .68,
                         child: Padding(
                           padding: EdgeInsets.only(
                             left: 15,
@@ -208,8 +219,11 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                           ),
                         ),
                       ),
-                      RawMaterialButton(
-                        onPressed: () {
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .02,
+                      ),
+                      InkWell(
+                        onTap: () {
                           if (messageController.text == null ||
                               messageController.text == "") {
                             Fluttertoast.showToast(
@@ -222,14 +236,41 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                         child: messageController.text == null ||
                                 messageController.text == ""
                             ? Text(
-                                'Type',
+                                'Send',
                                 style: theme.text16boldWhite,
                               )
                             : Icon(
                                 Icons.send,
                                 color: theme.colorBackground,
                               ),
-                      )
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .05,
+                      ),
+                      GestureDetector(
+                        onLongPressStart: (val) async {
+                          setState(() {
+                            isAudioSystemON = true;
+                          });
+                          await checkpermission();
+                          _startRecord();
+                        },
+                        onLongPressEnd: (val) async {
+                          _stopRecord();
+                          //....
+                          filesaveToServer();
+                        },
+                        child: _isSendingMessage
+                            ? SpinKitCircle(
+                                color: Colors.white,
+                                size: 15,
+                              )
+                            : Icon(
+                                Icons.mic,
+                                color: _isRecording ? Colors.red : Colors.white,
+                                size: _isRecording ? 35 : 25,
+                              ),
+                      ),
                     ],
                   ),
                 ),
@@ -238,10 +279,175 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
           )),
     );
   }
+
+  //audio system
+
+  bool _isRecording = false;
+
+  MedcorderAudio audioModule = new MedcorderAudio();
+
+  bool canRecord = false;
+  double recordPower = 0.0;
+  double recordPosition = 0.0;
+  bool isRecord = false;
+  bool isPlay = false;
+  double playPosition = 0.0;
+  String file = "";
+  var filePATH = "";
+  bool isAudioSystemON = false;
+  Future _initSettings() async {
+    final String result = await audioModule.checkMicrophonePermissions();
+    if (result == 'OK') {
+      await audioModule.setAudioSettings();
+      setState(() {
+        canRecord = true;
+      });
+    }
+    return;
+  }
+
+  Future _startRecord() async {
+    try {
+      setState(() {
+        _isRecording = true;
+      });
+      DateTime time = new DateTime.now();
+      setState(() {
+        file = time.millisecondsSinceEpoch.toString();
+      });
+      final String result = await audioModule.startRecord(file);
+      setState(() {
+        isRecord = true;
+      });
+      print('startRecord: ' + result);
+    } catch (e) {
+      file = "";
+      print('startRecord: fail');
+      setState(() {
+        _isRecording = false;
+      });
+    }
+  }
+
+  Future _stopRecord() async {
+    try {
+      setState(() {
+        _isRecording = false;
+      });
+      final String result = await audioModule.stopRecord();
+      print('stopRecord: ' + result);
+      setState(() {
+        isRecord = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isRecording = false;
+      });
+      print('stopRecord: fail');
+      setState(() {
+        isRecord = false;
+      });
+    }
+  }
+
+  void _onEvent(dynamic event) {
+    filePATH = event['url'];
+    if (event['code'] == 'recording') {
+      double power = event['peakPowerForChannel'];
+      setState(() {
+        recordPower = (60.0 - power.abs().floor()).abs();
+        recordPosition = event['currentTime'];
+      });
+    }
+    if (event['code'] == 'playing') {
+      String url = event['url'];
+      setState(() {
+        playPosition = event['currentTime'];
+        isPlay = true;
+      });
+    }
+    if (event['code'] == 'audioPlayerDidFinishPlaying') {
+      setState(() {
+        playPosition = 0.0;
+        isPlay = false;
+      });
+    }
+  }
+
+  bool _isSendingMessage = false;
+  filesaveToServer() async {
+    try {
+      setState(() {
+        _isSendingMessage = true;
+      });
+      final fileName = new File(filePATH);
+      final refff = FirebaseStorage.instance
+          .ref()
+          .child("CHatsAudio")
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .child("${DateTime.now()}" + ".mp3");
+      await refff.putFile(fileName);
+
+      final vals = await refff.getDownloadURL();
+      final ref =
+          FirebaseDatabase.instance.reference().child("ChatRoomPersonal");
+      final key = ref.push().key;
+      ref
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .child(widget.uid)
+          .child(key)
+          .update({
+        'message': vals,
+        "uid": userInfo.id,
+        "timeStamp": DateTime.now().toIso8601String(),
+        'Name': userInfo.name,
+        "DpURL": userInfo.imageUrl,
+      });
+
+      ref
+          .child(widget.uid)
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .child(key)
+          .update({
+        'message': vals,
+        "uid": userInfo.id,
+        "timeStamp": DateTime.now().toIso8601String(),
+        'Name': userInfo.name,
+        "DpURL": userInfo.imageUrl,
+      });
+
+      setState(() {
+        _isSendingMessage = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isSendingMessage = false;
+      });
+      Fluttertoast.showToast(msg: "Something went wrong");
+    }
+  }
+
+  Future<void> checkpermission() async {
+    var status = await Permission.microphone.status;
+    print(status);
+    if (status.isUndetermined) {
+      final data = await Permission.microphone.request();
+      print(status);
+    }
+    if (status.isGranted) {}
+    if (status.isDenied) {
+      // ignore: unused_local_variable
+      final data = await Permission.microphone.request();
+      print(status);
+    }
+  }
+
+  //audio system
+
 }
 
 // ignore: must_be_immutable
-class MessageTile extends StatelessWidget {
+class MessageTile extends StatefulWidget {
   final bool isSendByMe;
   final String message;
   final String imageURL;
@@ -257,6 +463,70 @@ class MessageTile extends StatelessWidget {
   });
 
   @override
+  _MessageTileState createState() => _MessageTileState();
+}
+
+class _MessageTileState extends State<MessageTile> {
+  @override
+  void initState() {
+    audioPlayer.durationHandler = (d) => setState(() {
+          _duration = d;
+        });
+
+    audioPlayer.positionHandler = (p) => setState(() {
+          _position = p;
+        });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  bool isPlaying = false;
+
+  Widget slider() {
+    return Container(
+      width: 210,
+      child: Slider(
+        activeColor: Colors.white,
+        inactiveColor: theme.colorCompanion,
+        value: _position.inSeconds.toDouble(),
+        min: 0.0,
+        max: _duration.inSeconds.toDouble(),
+        onChanged: (double value) {
+          setState(() {
+            seekToSecond(value.toInt());
+            value = value;
+          });
+        },
+      ),
+    );
+  }
+
+  AudioPlayer audioPlayer = AudioPlayer();
+  Duration _duration = new Duration();
+  Duration _position = new Duration();
+
+  void seekToSecond(int second) {
+    Duration newDuration = Duration(seconds: second);
+
+    audioPlayer.seek(newDuration);
+  }
+
+  play(String url) async {
+    audioPlayer.resume();
+    int result = await audioPlayer.play(url);
+    if (result == 1) {}
+  }
+
+  pauseAudio() async {
+    await audioPlayer.pause();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     var height = MediaQuery.of(context).size.height;
@@ -264,10 +534,12 @@ class MessageTile extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.only(
-          left: isSendByMe ? MediaQuery.of(context).size.width * .2 : 20,
-          right: isSendByMe ? 20 : MediaQuery.of(context).size.width * .2),
+          left: widget.isSendByMe ? MediaQuery.of(context).size.width * .2 : 20,
+          right:
+              widget.isSendByMe ? 20 : MediaQuery.of(context).size.width * .2),
       width: MediaQuery.of(context).size.width,
-      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      alignment:
+          widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: InkWell(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -275,96 +547,105 @@ class MessageTile extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color:
-                      isSendByMe ? theme.colorCompanion3 : theme.colorCompanion,
+                  color: widget.isSendByMe
+                      ? theme.colorCompanion3
+                      : theme.colorCompanion,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),
-                      bottomLeft:
-                          isSendByMe ? Radius.circular(15) : Radius.circular(0),
-                      bottomRight: isSendByMe
+                      bottomLeft: widget.isSendByMe
+                          ? Radius.circular(15)
+                          : Radius.circular(0),
+                      bottomRight: widget.isSendByMe
                           ? Radius.circular(0)
                           : Radius.circular(15)),
                 ),
                 child: Padding(
                   padding:
                       EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 12),
-                  child: isSendByMe
+                  child: widget.isSendByMe
                       ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                // Text(
-                                //   name == null ? "Anonymous" : '$name',
-                                //   style: GoogleFonts.roboto(
-                                //       fontWeight: FontWeight.bold),
-                                // ),
-                                Container(
-                                  width: width * 0.63,
-                                  child: Text(
-                                    message,
-                                    textAlign: isSendByMe
-                                        ? TextAlign.left
-                                        : TextAlign.left,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: Colors.black,
+                            widget.message.contains(".mp3")
+                                ? GestureDetector(
+                                    child: isPlaying
+                                        ? Icon(Icons.pause)
+                                        : Icon(Icons.play_arrow),
+                                    onTap: () {
+                                      if (isPlaying) {
+                                        setState(() {
+                                          isPlaying = false;
+                                          pauseAudio();
+                                        });
+                                      } else {
+                                        setState(() {
+                                          isPlaying = true;
+                                        });
+                                        play(widget.message);
+                                      }
+                                    })
+                                : Container(
+                                    width: width * 0.5,
+                                    child: Text(
+                                      widget.message,
+                                      textAlign: widget.isSendByMe
+                                          ? TextAlign.left
+                                          : TextAlign.left,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: width * 0.03,
-                            ),
-                            // CircleAvatar(
-                            //   radius: 20,
-                            //   backgroundImage: imageURL == null
-                            //       ? AssetImage("assets/unnamed.png")
-                            //       : NetworkImage(imageURL),
-                            // ),
+                            widget.message.contains(".mp3")
+                                ? Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.46,
+                                    child: slider(),
+                                  )
+                                : Container(),
                           ],
                         )
                       : Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // CircleAvatar(
-                            //   radius: 20,
-                            //   backgroundImage: imageURL == null
-                            //       ? AssetImage("assets/unnamed.png")
-                            //       : NetworkImage(imageURL),
-                            // ),
-                            // SizedBox(
-                            //   width: width * 0.03,
-                            // ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Text(
-                                //   name == null ? "Anonymous" : "$name",
-                                //   style: GoogleFonts.roboto(
-                                //       fontWeight: FontWeight.bold),
-                                // ),
-                                Container(
-                                  width: width * 0.63,
-                                  child: Text(
-                                    message,
-                                    textAlign: isSendByMe
-                                        ? TextAlign.right
-                                        : TextAlign.left,
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      color: Colors.white,
+                            widget.message.contains(".mp3")
+                                ? GestureDetector(
+                                    child: isPlaying
+                                        ? Icon(Icons.pause)
+                                        : Icon(Icons.play_arrow),
+                                    onTap: () {
+                                      if (isPlaying) {
+                                        setState(() {
+                                          isPlaying = false;
+                                          pauseAudio();
+                                        });
+                                      } else {
+                                        setState(() {
+                                          isPlaying = true;
+                                        });
+                                        play(widget.message);
+                                      }
+                                    })
+                                : Container(
+                                    width: width * 0.5,
+                                    child: Text(
+                                      widget.message,
+                                      textAlign: widget.isSendByMe
+                                          ? TextAlign.left
+                                          : TextAlign.left,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                    softWrap: true,
                                   ),
-                                ),
-                              ],
-                            ),
+                            widget.message.contains(".mp3")
+                                ? Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.46,
+                                    child: slider(),
+                                  )
+                                : Container(),
                           ],
                         ),
                 ),

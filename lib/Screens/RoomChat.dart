@@ -223,7 +223,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                       child: messageController.text == null ||
                               messageController.text == ""
                           ? Text(
-                              'Type',
+                              'Send',
                               style: theme.text16boldWhite,
                             )
                           : Icon(
@@ -236,12 +236,15 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                     ),
                     GestureDetector(
                       onLongPressStart: (val) async {
+                        setState(() {
+                          isAudioSystemON = true;
+                        });
                         await checkpermission();
                         _startRecord();
                       },
                       onLongPressEnd: (val) async {
                         _stopRecord();
-
+                        //....
                         filesaveToServer();
                       },
                       child: _isSendingMessage
@@ -276,7 +279,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
   double playPosition = 0.0;
   String file = "";
   var filePATH = "";
-
+  bool isAudioSystemON = false;
   Future _initSettings() async {
     final String result = await audioModule.checkMicrophonePermissions();
     if (result == 'OK') {
@@ -333,9 +336,6 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
   }
 
   void _onEvent(dynamic event) {
-    print("-----------------------------------------");
-    print(event);
-    print("-----------------------------------------");
     filePATH = event['url'];
     if (event['code'] == 'recording') {
       double power = event['peakPowerForChannel'];
@@ -767,7 +767,7 @@ class _MessageTileState extends State<MessageTile> {
   AudioPlayer audioPlayer = AudioPlayer();
   Duration _duration = new Duration();
   Duration _position = new Duration();
-  static String privURL = "";
+
   void seekToSecond(int second) {
     Duration newDuration = Duration(seconds: second);
 
