@@ -234,16 +234,16 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .05,
                     ),
-                    InkWell(
-                      onTap: () async {
+                    GestureDetector(
+                      onLongPressStart: (val) async {
                         await checkpermission();
                         _startRecord();
                       },
-                      onDoubleTap: () {
+                      onLongPressEnd: (val) async {
                         _stopRecord();
+
                         filesaveToServer();
                       },
-                      onLongPress: () {},
                       child: _isSendingMessage
                           ? SpinKitCircle(
                               color: Colors.white,
@@ -252,6 +252,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                           : Icon(
                               Icons.mic,
                               color: _isRecording ? Colors.red : Colors.white,
+                              size: _isRecording ? 35 : 25,
                             ),
                     ),
                   ],
@@ -452,6 +453,12 @@ class _MessageTileState extends State<MessageTile> {
           _position = p;
         });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
@@ -748,7 +755,6 @@ class _MessageTileState extends State<MessageTile> {
         min: 0.0,
         max: _duration.inSeconds.toDouble(),
         onChanged: (double value) {
-          print(value);
           setState(() {
             seekToSecond(value.toInt());
             value = value;
@@ -771,8 +777,6 @@ class _MessageTileState extends State<MessageTile> {
   play(String url) async {
     audioPlayer.resume();
     int result = await audioPlayer.play(url);
-    final data = audioPlayer.onDurationChanged;
-    print(data.first);
     if (result == 1) {}
   }
 
