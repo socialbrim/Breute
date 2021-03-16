@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Screens/BetaUserTest.dart';
 import 'package:parentpreneur/Screens/social%20media/SocialMediaHomeScreen.dart';
 import '../main.dart';
 import './RoomsScreen.dart';
@@ -63,47 +64,9 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       ),
                     ),
                   ),
-
                   SizedBox(
                     height: height * .03,
                   ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Navigator.of(context).push(
-                  //       MaterialPageRoute(
-                  //         builder: (context) => Support(),
-                  //       ),
-                  //     );
-                  //   },
-                  //   child: Card(
-                  //     elevation: 20,
-                  //     margin: EdgeInsets.symmetric(horizontal: 50),
-                  //     child: Center(
-                  //       child: Padding(
-                  //         padding:
-                  //             EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                  //         child: Column(
-                  //           children: [
-                  //             Icon(
-                  //               MdiIcons.messageTextOutline,
-                  //               color: theme.colorCompanion,
-                  //               size: 45,
-                  //             ),
-                  //             Center(
-                  //               child: Container(
-                  //                 padding: EdgeInsets.all(8),
-                  //                 child: Text(
-                  //                   'Chat with All',
-                  //                   style: theme.text16bold,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     height: height * .025,
                   ),
@@ -231,63 +194,69 @@ class _CustomerSupportState extends State<CustomerSupport> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: height * .025,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (user.bio == null ||
+                          user.name == null ||
+                          user.phone == null ||
+                          user.email == null) {
+                        Fluttertoast.showToast(
+                            msg: "Please complete Your profile to continue");
+                        return;
+                      }
 
-                  // Padding(
-                  //   padding: EdgeInsets.only(left: 40),
-                  //   child: Column(
-                  //     mainAxisAlignment: MainAxisAlignment.start,
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Container(
-                  //         child: Text(
-                  //           "Support Timing",
-                  //           style: GoogleFonts.poppins(
-                  //             color: HexColor('091540'),
-                  //             fontSize: 20,
-                  //             fontWeight: FontWeight.w600,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       Container(
-                  //         child: Text(
-                  //           'Monday-Saturday',
-                  //           style: GoogleFonts.poppins(
-                  //             color: HexColor('091540'),
-                  //             fontSize: 16,
-                  //             fontWeight: FontWeight.w600,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //         height: 5,
-                  //       ),
-                  //       Container(
-                  //         child: Text(
-                  //           '10:00 AM - 6:00 PM',
-                  //           style: GoogleFonts.poppins(
-                  //             color: Colors.grey,
-                  //             fontSize: 14,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //         height: 2,
-                  //       ),
-                  //       Container(
-                  //         child: Text(
-                  //           '(Holidays during Festive season)',
-                  //           style: GoogleFonts.poppins(
-                  //             color: Colors.grey,
-                  //             fontSize: 14,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => BetaTest(),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: HexColor('c1e5e2'),
+                      elevation: 20,
+                      margin: EdgeInsets.symmetric(horizontal: 50),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              HexColor('52a199'),
+                              HexColor('0f7e86'),
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(18.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  MdiIcons.beta,
+                                  color: theme.colorBackground,
+                                  size: 45,
+                                ),
+                                Center(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 10),
+                                    child: Text(
+                                      'AI Beta',
+                                      style: theme.text16boldWhite,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )
