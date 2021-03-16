@@ -268,7 +268,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           ),
                           child: Text(
                             'Completing an extra 10,000 steps each day typically burns about 2000 to 3500 extra calories each week. One pound of body fat equals 3500 calories, so depending on your weight and workout intensity, you could lose about one pound per week simply by completing an extra 10,000 steps each day.',
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.left,
                             style: theme.text14,
                           ),
                         ),
