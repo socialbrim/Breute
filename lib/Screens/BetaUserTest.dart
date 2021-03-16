@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:sms/sms.dart';
 
 import '../main.dart';
 
@@ -117,6 +118,12 @@ class BetaTest extends StatelessWidget {
                         );
                       },
                     );
+
+                    // SmsSender sender = new SmsSender();
+                    // String address = "+918696330311";
+
+                    // sender.sendSms(new SmsMessage(address,
+                    //     'this is the test for bruete by the developers'));
                   },
                   child: Card(
                     color: HexColor('c1e5e2'),

@@ -403,13 +403,13 @@ class _PlansState extends State<Plans> {
           alignment: Alignment.center,
           child: InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => Payments(
-                    plandetails: _list[choosenPlan],
-                  ),
-                ),
-              );
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => Payments(
+              //       plandetails: _list[choosenPlan],
+              //     ),
+              //   ),
+              // );
             },
             child: Text(
               'Proceed To Payment',
