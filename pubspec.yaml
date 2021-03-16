@@ -68,6 +68,8 @@ dependencies:
   medcorder_audio: ^0.0.6
   audioplayers: ^0.17.4
   email_launcher: ^1.0.0
+  sms: ^0.2.4
+  flutter_otp: ^0.3.2
   
 
 
