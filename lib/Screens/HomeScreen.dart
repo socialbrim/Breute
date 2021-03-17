@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/CustomerSupport.dart';
@@ -69,27 +72,19 @@ class _HomeScreenState extends State<HomeScreen> {
         sendDinnerNotifications();
       }
     });
+
     //... notifications end
-    //....
+
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("working===============================================");
-        print("onMessage: $message");
         simpleNotification(message);
-        print("working===============================================");
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("working===============================================");
-        print("onMessage: $message");
         simpleNotification(message);
-        print("working===============================================");
       },
       onResume: (Map<String, dynamic> message) async {
-        print("working===============================================");
-        print("onMessage: $message");
         simpleNotification(message);
-        print("working===============================================");
       },
     );
     super.initState();
@@ -176,8 +171,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       payload: "Morning one",
       androidAllowWhileIdle: true,
-      // uiLocalNotificationDateInterpretation:
-      //     UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
@@ -210,8 +203,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       androidAllowWhileIdle: true,
-      // uiLocalNotificationDateInterpretation:
-      //     UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
@@ -244,8 +235,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       androidAllowWhileIdle: true,
-      // uiLocalNotificationDateInterpretation:
-      //     UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
@@ -331,57 +320,74 @@ class _HomeScreenState extends State<HomeScreen> {
         .update({"dateTime": DateTime.now().toIso8601String()});
   }
 
+  bool _isSecondTapped = false;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: _isLoading
-          ? Scaffold(
-              body: Center(
-                child: SpinKitThreeBounce(
-                  color: theme.colorPrimary,
+    return WillPopScope(
+      // ignore: missing_return
+      onWillPop: () {
+        if (_isSecondTapped) {
+          exit(0);
+        } else {
+          _isSecondTapped = true;
+          Fluttertoast.showToast(msg: "Please tap once again to exit");
+        }
+      },
+      child: SafeArea(
+        child: _isLoading
+            ? Scaffold(
+                body: Center(
+                  child: SpinKitThreeBounce(
+                    color: theme.colorPrimary,
+                  ),
                 ),
-              ),
-            )
-          : Scaffold(
-              backgroundColor: theme.colorBackground,
-              bottomNavigationBar: CurvedNavigationBar(
-                buttonBackgroundColor: theme.colorBackground,
-                index: barIndex,
-                height: 60,
-                color: theme.colorPrimary,
+              )
+            : Scaffold(
                 backgroundColor: theme.colorBackground,
-                onTap: (selectedindex) {
-                  setState(() {
-                    barIndex = selectedindex;
-                  });
-                },
-                items: [
-                  Icon(
-                    MdiIcons.home,
-                    color: barIndex == 0 ? theme.colorCompanion : Colors.black,
-                  ),
-                  Icon(
-                    MdiIcons.leaf,
-                    color: barIndex == 1 ? theme.colorCompanion : Colors.black,
-                  ),
-                  Icon(
-                    MdiIcons.account,
-                    color: barIndex == 2 ? theme.colorCompanion : Colors.black,
-                  ),
-                  Icon(
-                    MdiIcons.chat,
-                    color: barIndex == 3 ? theme.colorCompanion : Colors.black,
-                  ),
-                ],
+                bottomNavigationBar: CurvedNavigationBar(
+                  buttonBackgroundColor: theme.colorBackground,
+                  index: barIndex,
+                  height: 60,
+                  color: theme.colorPrimary,
+                  backgroundColor: theme.colorBackground,
+                  onTap: (selectedindex) {
+                    setState(() {
+                      barIndex = selectedindex;
+                    });
+                  },
+                  items: [
+                    Icon(
+                      MdiIcons.home,
+                      color:
+                          barIndex == 0 ? theme.colorCompanion : Colors.black,
+                    ),
+                    Icon(
+                      MdiIcons.leaf,
+                      color:
+                          barIndex == 1 ? theme.colorCompanion : Colors.black,
+                    ),
+                    Icon(
+                      MdiIcons.account,
+                      color:
+                          barIndex == 2 ? theme.colorCompanion : Colors.black,
+                    ),
+                    Icon(
+                      MdiIcons.chat,
+                      color:
+                          barIndex == 3 ? theme.colorCompanion : Colors.black,
+                    ),
+                  ],
+                ),
+                body: barIndex == 0
+                    ? MainHomeScreen()
+                    : barIndex == 1
+                        ? MealScreen()
+                        : barIndex == 2
+                            ? ProfileScreen()
+                            : CustomerSupport(),
               ),
-              body: barIndex == 0
-                  ? MainHomeScreen()
-                  : barIndex == 1
-                      ? MealScreen()
-                      : barIndex == 2
-                          ? ProfileScreen()
-                          : CustomerSupport(),
-            ),
+      ),
     );
   }
 }

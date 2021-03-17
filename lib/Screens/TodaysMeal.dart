@@ -8,6 +8,7 @@ import 'package:parentpreneur/Widget/nutritionalFactsShow.dart';
 import 'package:parentpreneur/main.dart';
 import '../models/MealModel.dart';
 import '../Screens/UpgradePlanScreen.dart';
+import './TodaysSelectedMeal.dart';
 
 enum FilterOption {
   BreakFast,
@@ -47,7 +48,7 @@ class _TodaysMealState extends State<TodaysMeal> {
       mapped.forEach((key, value) {
         _list.add(
           MealModel(
-              calories: value['Calories'],
+              calories: value['Calories'].toString(),
               imageURL: value['ImageURL'],
               mealDate: value['MealDate'],
               mealDateInDateFormat: value['MealDateFormat'] == null
@@ -89,6 +90,14 @@ class _TodaysMealState extends State<TodaysMeal> {
               appBar: AppBar(
                 title: Text('Today\'s Meals'),
                 actions: [
+                  IconButton(
+                    onPressed: () async {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => TodaysSelectedMeal(),
+                      ));
+                    },
+                    icon: Icon(Icons.people),
+                  ),
                   IconButton(
                     onPressed: () async {
                       final date = await showDatePicker(

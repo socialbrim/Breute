@@ -216,12 +216,11 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           icon: Icon(MdiIcons.trophyAward),
                           onPressed: () async {
                             print(achievedsteps);
-                            if (achievedsteps <= totalsteps) {
+                            if (achievedsteps <= 10000) {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title:
-                                      Text("Please complete $totalsteps steps"),
+                                  title: Text("Please complete 10,000 steps"),
                                   actions: [
                                     TextButton(
                                         onPressed: () {

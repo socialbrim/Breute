@@ -9,20 +9,13 @@ import 'package:parentpreneur/Widget/nutritionalFactsShow.dart';
 import 'package:parentpreneur/main.dart';
 import '../models/MealModel.dart';
 import 'UpgradePlanScreen.dart';
-import 'dart:math';
 
-enum FilterOption {
-  BreakFast,
-  Lunch,
-  Dinner,
-}
-
-class AllMeals extends StatefulWidget {
+class TodaysSelectedMeal extends StatefulWidget {
   @override
-  _AllMealsState createState() => _AllMealsState();
+  _TodaysSelectedMealState createState() => _TodaysSelectedMealState();
 }
 
-class _AllMealsState extends State<AllMeals> {
+class _TodaysSelectedMealState extends State<TodaysSelectedMeal> {
   bool _showFacts = false;
   List<MealModel> _list = [];
   List<MealModel> _filterdlist = [];
@@ -34,35 +27,50 @@ class _AllMealsState extends State<AllMeals> {
 
   void fetchTodaysMeal(DateTime date) async {
     _list = [];
-    final data =
-        await FirebaseDatabase.instance.reference().child("Meals").once();
+    final data = await FirebaseDatabase.instance
+        .reference()
+        .child("MyScheduledMeal")
+        .child(FirebaseAuth.instance.currentUser.uid)
+        .child(
+          formatDate(
+            date,
+          ),
+        )
+        .once();
 
     if (data.value != null) {
       final mapped = data.value as Map;
-      mapped.forEach((key, value) {
-        final maps = value as Map;
-        maps.forEach((key, value) {
+      mapped.forEach((key, value) async {
+        final changedData = await FirebaseDatabase.instance
+            .reference()
+            .child("Meals")
+            .child(value)
+            .child(key)
+            .once();
+        final mappedData = changedData.value as Map;
+        if (mappedData != null) {
           _list.add(
             MealModel(
-                calories: value['Calories'],
-                imageURL: value['ImageURL'],
-                mealDate: value['MealDate'],
-                mealDateInDateFormat: value['MealDateFormat'] == null
+                calories: mappedData['Calories'].toString(),
+                imageURL: mappedData['ImageURL'],
+                mealDate: mappedData['MealDate'],
+                mealDateInDateFormat: mappedData['MealDateFormat'] == null
                     ? DateTime.now()
-                    : DateTime.parse(value['MealDateFormat']), //MealDateFormat
-                mealDes: value['Description'],
-                mealName: value['Meal Name'],
-                recipe: value['Recipe'],
+                    : DateTime.parse(
+                        mappedData['MealDateFormat']), //MealDateFormat
+                mealDes: mappedData['Description'],
+                mealName: mappedData['Meal Name'],
+                recipe: mappedData['Recipe'],
                 type: key,
-                vidURL: value['Video Link'],
-                nutrients: value['Nutrients']),
+                vidURL: mappedData['Video Link'],
+                nutrients: mappedData['Nutrients']),
           );
+        }
+        setState(() {
+          _filterdlist = _list;
         });
       });
     }
-    setState(() {
-      _filterdlist = _list;
-    });
   }
 
   @override
@@ -75,166 +83,6 @@ class _AllMealsState extends State<AllMeals> {
 
   bool _isAccessable = true;
 
-  ///.... search algo start
-  List<MealModel> _filteredList = [];
-  List<MealModel> get copyList {
-    return [..._list];
-  }
-
-  void searchAlgo() {
-    _filteredList = [];
-    copyList.forEach((element) {
-      if (element.mealName.toLowerCase().contains(query.toLowerCase()) ||
-          element.mealDes.toLowerCase().contains(query.toLowerCase()) ||
-          element.type.toLowerCase().contains(query.toLowerCase()) ||
-          element.nutrients
-              .toString()
-              .toLowerCase()
-              .contains(query.toLowerCase())) {
-        // please Note not only element element ka element
-        _filteredList.add(element);
-      }
-    });
-  }
-
-  TextEditingController _searchCtrl = new TextEditingController();
-  String query;
-  Widget searchWidget() {
-    return Column(
-      children: [
-        Card(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          elevation: 10,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.07,
-            child: TextFormField(
-              onChanged: (val) {
-                setState(
-                  () {
-                    query = val;
-                    if (query.length == 0) {
-                      query = null;
-                      _filteredList = [];
-                    }
-                    if (query != null) {
-                      searchAlgo();
-                    }
-                  },
-                );
-              },
-              controller: _searchCtrl,
-              cursorColor: theme.colorPrimary,
-              decoration: InputDecoration(
-                hintText: "Search Meal",
-                hintStyle: theme.text14,
-                border: InputBorder.none,
-                prefix: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      query = null;
-                      _searchCtrl.text = "";
-                      _filteredList = [];
-                      _filterdlist = [..._list];
-                      FocusScopeNode currentFocus = FocusScope.of(context);
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
-                      }
-                    });
-                  },
-                  icon: Icon(
-                    Icons.clear,
-                    size: 18,
-                  ),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    // navigate with filtered List;
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => SafeArea(
-                          child: Scaffold(
-                            appBar: AppBar(
-                              title:
-                                  Text("${_filteredList.length} Result Found"),
-                            ),
-                            body: _filteredList.isEmpty
-                                ? Center(
-                                    child: Text("No Result Found"),
-                                  )
-                                : ListView.builder(
-                                    itemCount: _filteredList.length,
-                                    itemBuilder: (context, index) => ListTile(
-                                      onTap: () {
-                                        setState(() {
-                                          _filterdlist = [];
-                                          _filterdlist
-                                              .add(_filteredList[index]);
-                                        });
-                                      },
-                                      title: Text(
-                                          "${_filteredList[index].mealName.toUpperCase()}"),
-                                      subtitle: Text(
-                                          "${_filteredList[index].mealDes}"),
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.search,
-                    color: theme.colorDefaultText,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        if (query != null && _filteredList.isEmpty)
-          Container(
-            height: 50,
-            child: Center(
-              child: Text("No Result Found"),
-            ),
-          ),
-        if (_filteredList.isNotEmpty)
-          Container(
-            height: min(_filteredList.length * 75.0, 300),
-            child: ListView.builder(
-              itemCount: _filteredList.length,
-              itemBuilder: (context, index) => Column(
-                children: [
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        _filterdlist = [];
-                        _filterdlist.add(_filteredList[index]);
-                        _filteredList = [];
-
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-                      });
-                    },
-                    title:
-                        Text("${_filteredList[index].mealName.toUpperCase()}"),
-                    subtitle: Text("${_filteredList[index].mealDes}"),
-                  ),
-                  Divider(),
-                ],
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-
-  ///.... search algo end
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -245,89 +93,7 @@ class _AllMealsState extends State<AllMeals> {
             child: Scaffold(
               backgroundColor: theme.colorBackground,
               appBar: AppBar(
-                title: Text('All Recipes'),
-                actions: [
-                  IconButton(
-                    onPressed: () async {
-                      final date = await showDatePicker(
-                        context: context,
-                        lastDate: DateTime.now(),
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now().subtract(
-                          Duration(days: 15),
-                        ),
-                        builder: (context, child) {
-                          return Theme(
-                            data: theme.darkMode
-                                ? ThemeData.dark()
-                                : ThemeData.light(),
-                            child: child,
-                          );
-                        },
-                      );
-
-                      if (date != null) {
-                        fetchTodaysMeal(date);
-                      }
-                    },
-                    icon: Icon(Icons.calendar_today),
-                  ),
-                  PopupMenuButton(
-                    onSelected: (val) {
-                      print(val);
-                      if (val == FilterOption.BreakFast) {
-                        _filterdlist = [];
-                        [..._list].forEach((element) {
-                          //...
-                          if (element.type.contains("BreakFast")) {
-                            //..
-                            _filterdlist.add(element);
-                          }
-                        });
-                        setState(() {});
-                      } else if (val == FilterOption.Lunch) {
-                        _filterdlist = [];
-                        [..._list].forEach((element) {
-                          //...
-                          if (element.type.contains("unch")) {
-                            //..
-                            _filterdlist.add(element);
-                          }
-                        });
-                        setState(() {});
-                      } else if (val == FilterOption.Dinner) {
-                        _filterdlist = [];
-                        [..._list].forEach((element) {
-                          //...
-                          if (element.type.contains("inner")) {
-                            //..
-                            print(element.type);
-                            _filterdlist.add(element);
-                          }
-                        });
-                        setState(() {});
-                      }
-                    },
-                    icon: Icon(
-                      MdiIcons.dotsVertical,
-                      color: theme.colorBackground,
-                    ),
-                    itemBuilder: (_) => [
-                      PopupMenuItem(
-                        child: Text('BreakFast'),
-                        value: FilterOption.BreakFast,
-                      ),
-                      PopupMenuItem(
-                        child: Text('Lunch'),
-                        value: FilterOption.Lunch,
-                      ),
-                      PopupMenuItem(
-                        child: Text('Dinner'),
-                        value: FilterOption.Dinner,
-                      ),
-                    ],
-                  ),
-                ],
+                title: Text('MY Meals'),
               ),
               body: _filterdlist.isEmpty
                   ? Center(
@@ -337,14 +103,10 @@ class _AllMealsState extends State<AllMeals> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: height * 0.03,
-                          ),
-                          searchWidget(),
-                          SizedBox(
                             height: height * 0.01,
                           ),
                           Container(
-                            height: height * 0.8,
+                            height: height * 0.88,
                             child: ListView.builder(
                               itemCount: _filterdlist.length,
                               itemBuilder: (context, index) => Card(
@@ -485,48 +247,13 @@ class _AllMealsState extends State<AllMeals> {
                                       AspectRatio(
                                         aspectRatio: 16 / 9,
                                         child: BetterPlayer.network(
-                                          "${_filterdlist[index].vidURL}",
+                                          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
                                           betterPlayerConfiguration:
                                               BetterPlayerConfiguration(
                                             // autoPlay: true,
                                             aspectRatio: 16 / 9,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.025,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              final selectedDate =
-                                                  await showDatePicker(
-                                                      context: context,
-                                                      initialDate:
-                                                          DateTime.now(),
-                                                      firstDate: DateTime.now(),
-                                                      lastDate: DateTime.now());
-                                              //...
-                                              FirebaseDatabase.instance
-                                                  .reference()
-                                                  .child("MyScheduledMeal")
-                                                  .child(FirebaseAuth
-                                                      .instance.currentUser.uid)
-                                                  .child(formatDate(
-                                                      selectedDate == null
-                                                          ? DateTime.now()
-                                                          : selectedDate))
-                                                  .update({
-                                                "${_filterdlist[index].type}":
-                                                    "${_filterdlist[index].mealDate}"
-                                              });
-                                            },
-                                            child: Text("Add in your schedule"),
-                                          ),
-                                        ],
                                       ),
                                       SizedBox(
                                         height: height * 0.025,
@@ -579,7 +306,7 @@ class _AllMealsState extends State<AllMeals> {
                                         ),
                                       ),
                                       SizedBox(
-                                        height: height * 0.02,
+                                        height: height * .01,
                                       ),
 
                                       _showFacts
@@ -594,9 +321,6 @@ class _AllMealsState extends State<AllMeals> {
                                       // SizedBox(
                                       //   height: height * 0.15,
                                       // )
-                                      SizedBox(
-                                        height: height * 0.02,
-                                      ),
                                     ],
                                   ),
                                 ),

@@ -1052,7 +1052,7 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            'APPLY',
+                            'Submit',
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,

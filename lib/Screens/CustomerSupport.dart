@@ -27,13 +27,12 @@ class _CustomerSupportState extends State<CustomerSupport> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
           title: Text(
-            'Support',
+            'Social',
           ),
         ),
         body: Stack(
@@ -66,9 +65,6 @@ class _CustomerSupportState extends State<CustomerSupport> {
                   ),
                   SizedBox(
                     height: height * .03,
-                  ),
-                  SizedBox(
-                    height: height * .025,
                   ),
                   GestureDetector(
                     onTap: () {

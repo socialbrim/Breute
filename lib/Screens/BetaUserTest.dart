@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:sms/sms.dart';
-
 import '../main.dart';
 
 class BetaTest extends StatelessWidget {
@@ -22,76 +20,7 @@ class BetaTest extends StatelessWidget {
                 Text(
                   "If you would like to participate in our Ai Beta please click below to volunteer",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text("congratulation"),
-                          content: Text("Now are in list of Beta Testing"),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  "OK",
-                                  style: TextStyle(color: Colors.black),
-                                ))
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Card(
-                    color: HexColor('c1e5e2'),
-                    elevation: 20,
-                    margin: EdgeInsets.symmetric(horizontal: 50),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            HexColor('52a199'),
-                            HexColor('0f7e86'),
-                          ],
-                        ),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            children: [
-                              Icon(
-                                MdiIcons.beta,
-                                color: theme.colorBackground,
-                                size: 45,
-                              ),
-                              Center(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 0, vertical: 10),
-                                  child: Text(
-                                    'Participate in AI Beta',
-                                    style: theme.text16boldWhite,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(
                   height: 40,
@@ -102,8 +31,9 @@ class BetaTest extends StatelessWidget {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text("congratulation"),
-                          content: Text("Now are in list of Beta Testing"),
+                          title: Text("Congratulation 👏"),
+                          content: Text(
+                              "You are on the waiting list. We will notify when Beta becomes available.  Thank you."),
                           actions: [
                             TextButton(
                                 onPressed: () {
@@ -111,7 +41,7 @@ class BetaTest extends StatelessWidget {
                                   Navigator.of(context).pop();
                                 },
                                 child: Text(
-                                  "OK",
+                                  "Close",
                                   style: TextStyle(color: Colors.black),
                                 ))
                           ],

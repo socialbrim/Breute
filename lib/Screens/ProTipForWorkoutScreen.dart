@@ -228,6 +228,9 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                 : SingleChildScrollView(
                     child: Column(
                       children: [
+                        SizedBox(
+                          height: height * 0.03,
+                        ),
                         searchWidget(),
                         Container(
                           height: MediaQuery.of(context).size.height * 0.9,
