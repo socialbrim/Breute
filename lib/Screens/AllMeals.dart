@@ -504,11 +504,18 @@ class _AllMealsState extends State<AllMeals> {
                                             onPressed: () async {
                                               final selectedDate =
                                                   await showDatePicker(
-                                                      context: context,
-                                                      initialDate:
-                                                          DateTime.now(),
-                                                      firstDate: DateTime.now(),
-                                                      lastDate: DateTime.now());
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime.now(),
+                                                lastDate: DateTime.now()
+                                                    .add(Duration(days: 5)),
+                                                builder: (context, child) {
+                                                  return Theme(
+                                                    data: ThemeData.dark(),
+                                                    child: child,
+                                                  );
+                                                },
+                                              );
                                               //...
                                               FirebaseDatabase.instance
                                                   .reference()
