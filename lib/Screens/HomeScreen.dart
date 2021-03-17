@@ -327,12 +327,34 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       // ignore: missing_return
       onWillPop: () {
-        if (_isSecondTapped) {
-          exit(0);
-        } else {
-          _isSecondTapped = true;
-          Fluttertoast.showToast(msg: "Please tap once again to exit");
-        }
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Are you sure!"),
+            content: Text(
+                "Closing App Will Stop Fitness Analysis you can minimize it"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("No",
+                    style: TextStyle(
+                      color: Colors.black,
+                    )),
+              ),
+              TextButton(
+                onPressed: () {
+                  exit(0);
+                },
+                child: Text("Yes",
+                    style: TextStyle(
+                      color: Colors.black,
+                    )),
+              )
+            ],
+          ),
+        );
       },
       child: SafeArea(
         child: _isLoading
