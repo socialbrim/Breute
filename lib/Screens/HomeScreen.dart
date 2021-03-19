@@ -332,13 +332,13 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context) => AlertDialog(
             title: Text("Are you sure!"),
             content: Text(
-                "Closing App Will Stop Fitness Analysis you can minimize it"),
+                "Warning! Choosing to close the app will stop the tracking activity.Rather minimize?"),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text("No",
+                child: Text("Yes",
                     style: TextStyle(
                       color: Colors.black,
                     )),
@@ -347,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   exit(0);
                 },
-                child: Text("Yes",
+                child: Text("Close Breure Anyway",
                     style: TextStyle(
                       color: Colors.black,
                     )),

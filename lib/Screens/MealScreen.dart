@@ -24,7 +24,7 @@ class _MealScreenState extends State<MealScreen> {
       child: Scaffold(
         backgroundColor: theme.colorBackground,
         appBar: AppBar(
-          title: Text('Health & Wellness'),
+          title: Text('Wellness'),
         ),
         drawer: DrawerWidget(),
         body: SingleChildScrollView(

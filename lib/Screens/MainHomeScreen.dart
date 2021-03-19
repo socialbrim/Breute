@@ -94,11 +94,11 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     initPlatformState();
     fetchLastSevenDays();
 
-    if (context != null) {
-      Future.delayed(Duration(seconds: 2)).then((value) {
-        read();
-      });
-    }
+    // if (context != null) {
+    //   Future.delayed(Duration(seconds: 2)).then((value) {
+    //     read();
+    //   });
+    // }
   }
 
   void fetchLastSevenDays() {
@@ -159,6 +159,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       });
     }));
   }
+
+  final currentuser = FirebaseAuth.instance.currentUser;
 
   void setStepsToServer() {
     final user = FirebaseAuth.instance.currentUser;
@@ -291,7 +293,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   appBar: AppBar(
                     elevation: 6,
                     title: CircleAvatar(
-                      child: Image.asset('assets/4.png'),
+                      child: currentuser.photoURL == null
+                          ? Image.asset("assets/unnamed.png")
+                          : Image.network(currentuser.photoURL),
                     ),
                     centerTitle: false,
                     actions: [
@@ -303,7 +307,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: Text("Please complete 10,000 steps"),
+                                  title:
+                                      Text("Award unlocked at 10,000 steps."),
                                   actions: [
                                     TextButton(
                                         onPressed: () {
@@ -364,14 +369,187 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           height: height * 0.0,
                         ),
                         Container(
-                          height: height * 0.25,
-                          child: Row(
+                          height: height * 0.5,
+                          child: Column(
                             children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.033,
+                                  ),
+                                  Container(
+                                    width: width * 0.45,
+                                    padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    decoration: BoxDecoration(
+                                      color: theme.colorBackground,
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              'WATER',
+                                              style: GoogleFonts.ptMono(
+                                                color: theme.colorDefaultText,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            achievedsteps < totalsteps
+                                                ? Icon(
+                                                    MdiIcons.trendingDown,
+                                                    color: theme.colorCompanion,
+                                                  )
+                                                : Icon(MdiIcons.trendingUp)
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.02,
+                                        ),
+                                        CircularPercentIndicator(
+                                          radius: height * 0.1,
+                                          lineWidth: 8.0,
+                                          animation: true,
+                                          percent: achievedWater /
+                                              (totalWater < achievedWater
+                                                  ? achievedWater
+                                                  : totalWater),
+                                          circularStrokeCap:
+                                              CircularStrokeCap.round,
+                                          center: Icon(
+                                            MdiIcons.water,
+                                            size: height * 0.05,
+                                            color: theme.colorPrimary,
+                                          ),
+                                          progressColor: theme.colorPrimary,
+                                          backgroundColor: theme.colorGrey,
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.022,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                              text: achievedWater.toString(),
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 20,
+                                                color: theme.colorDefaultText,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: ' / $totalWater',
+                                              style: GoogleFonts.roboto(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ]),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.033,
+                                  ),
+                                  Container(
+                                    width: width * 0.45,
+                                    padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                    decoration: BoxDecoration(
+                                      color: theme.colorBackground,
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              'CALORIES',
+                                              style: GoogleFonts.ptMono(
+                                                color: theme.colorDefaultText,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            achievedcalories < totalcalories
+                                                ? Icon(
+                                                    MdiIcons.trendingDown,
+                                                    color: theme.colorCompanion,
+                                                  )
+                                                : Icon(
+                                                    MdiIcons.trendingUp,
+                                                    color: theme.colorCompanion,
+                                                  )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.02,
+                                        ),
+                                        CircularPercentIndicator(
+                                          radius: height * 0.1,
+                                          lineWidth: 8.0,
+                                          percent: achievedcalories /
+                                              (totalcalories < achievedcalories
+                                                  ? achievedcalories
+                                                  : totalcalories),
+                                          circularStrokeCap:
+                                              CircularStrokeCap.round,
+                                          center: Icon(
+                                            MdiIcons.food,
+                                            size: height * 0.05,
+                                            color: theme.colorPrimary,
+                                          ),
+                                          progressColor: theme.colorPrimary,
+                                          backgroundColor: theme.colorGrey,
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.022,
+                                        ),
+                                        RichText(
+                                          text: TextSpan(children: [
+                                            TextSpan(
+                                              text: achievedcalories
+                                                  .toStringAsFixed(2),
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 20,
+                                                color: theme.colorDefaultText,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: ' / $totalcalories',
+                                              style: GoogleFonts.roboto(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ]),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                               SizedBox(
-                                width: width * 0.033,
+                                height: height * 0.02,
                               ),
                               Container(
-                                width: width * 0.45,
+                                width: width * 0.9,
                                 padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                                 decoration: BoxDecoration(
                                   color: theme.colorBackground,
@@ -449,173 +627,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                width: width * 0.033,
-                              ),
-                              Container(
-                                width: width * 0.45,
-                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                decoration: BoxDecoration(
-                                  color: theme.colorBackground,
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 2,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          'CALORIES',
-                                          style: GoogleFonts.ptMono(
-                                            color: theme.colorDefaultText,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        achievedcalories < totalcalories
-                                            ? Icon(
-                                                MdiIcons.trendingDown,
-                                                color: theme.colorCompanion,
-                                              )
-                                            : Icon(
-                                                MdiIcons.trendingUp,
-                                                color: theme.colorCompanion,
-                                              )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.02,
-                                    ),
-                                    CircularPercentIndicator(
-                                      radius: height * 0.1,
-                                      lineWidth: 8.0,
-                                      percent: achievedcalories /
-                                          (totalcalories < achievedcalories
-                                              ? achievedcalories
-                                              : totalcalories),
-                                      circularStrokeCap:
-                                          CircularStrokeCap.round,
-                                      center: Icon(
-                                        MdiIcons.food,
-                                        size: height * 0.05,
-                                        color: theme.colorPrimary,
-                                      ),
-                                      progressColor: theme.colorPrimary,
-                                      backgroundColor: theme.colorGrey,
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.022,
-                                    ),
-                                    RichText(
-                                      text: TextSpan(children: [
-                                        TextSpan(
-                                          text: achievedcalories
-                                              .toStringAsFixed(2),
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 20,
-                                            color: theme.colorDefaultText,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: ' / $totalcalories',
-                                          style: GoogleFonts.roboto(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ]),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              // SizedBox(
-                              //   width: width * 0.033,
-                              // ),
-                              // Container(
-                              //   width: width * 0.45,
-                              //   padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              //   decoration: BoxDecoration(
-                              //     color: theme.colorBackground,
-                              //     border: Border.all(
-                              //       color: Colors.grey,
-                              //       width: 2,
-                              //     ),
-                              //     borderRadius: BorderRadius.circular(15),
-                              //   ),
-                              //   child: Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.center,
-                              //     children: <Widget>[
-                              //       Row(
-                              //         mainAxisAlignment:
-                              //             MainAxisAlignment.spaceBetween,
-                              //         children: <Widget>[
-                              //           Text(
-                              //             'Water',
-                              //             style: GoogleFonts.ptMono(
-                              //               color: theme.colorDefaultText,
-                              //               fontSize: 15,
-                              //             ),
-                              //           ),
-                              //           achievedsteps < totalsteps
-                              //               ? Icon(
-                              //                   MdiIcons.trendingDown,
-                              //                   color: theme.colorCompanion,
-                              //                 )
-                              //               : Icon(MdiIcons.trendingUp)
-                              //         ],
-                              //       ),
-                              //       SizedBox(
-                              //         height: height * 0.02,
-                              //       ),
-                              //       CircularPercentIndicator(
-                              //         radius: height * 0.1,
-                              //         lineWidth: 8.0,
-                              //         animation: true,
-                              //         percent: achievedWater /
-                              //             (totalWater < achievedWater
-                              //                 ? achievedWater
-                              //                 : totalWater),
-                              //         circularStrokeCap:
-                              //             CircularStrokeCap.round,
-                              //         center: Icon(
-                              //           MdiIcons.shoePrint,
-                              //           size: height * 0.05,
-                              //           color: theme.colorPrimary,
-                              //         ),
-                              //         progressColor: theme.colorPrimary,
-                              //         backgroundColor: theme.colorGrey,
-                              //       ),
-                              //       SizedBox(
-                              //         height: height * 0.022,
-                              //       ),
-                              //       RichText(
-                              //         text: TextSpan(children: [
-                              //           TextSpan(
-                              //             text: achievedWater.toString(),
-                              //             style: GoogleFonts.roboto(
-                              //               fontSize: 20,
-                              //               color: theme.colorDefaultText,
-                              //             ),
-                              //           ),
-                              //           TextSpan(
-                              //             text: ' / $totalWater',
-                              //             style: GoogleFonts.roboto(
-                              //               color: Colors.grey,
-                              //               fontWeight: FontWeight.bold,
-                              //               fontSize: 12,
-                              //             ),
-                              //           ),
-                              //         ]),
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),

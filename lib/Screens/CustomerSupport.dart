@@ -53,7 +53,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: height * .04,
+                    height: height * .01,
                   ),
                   Center(
                     child: Container(

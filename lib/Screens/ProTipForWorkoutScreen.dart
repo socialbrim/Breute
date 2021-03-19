@@ -133,7 +133,7 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
               controller: _searchCtrl,
               cursorColor: theme.colorPrimary,
               decoration: InputDecoration(
-                hintText: "Search Fitness Tip.",
+                hintText: "Search...",
                 hintStyle: theme.text14,
                 border: InputBorder.none,
                 prefix: IconButton(
@@ -217,7 +217,7 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
         : Scaffold(
             backgroundColor: theme.colorBackground,
             appBar: AppBar(
-              title: Text('Pro Tips for Workout'),
+              title: Text('The Gym'),
             ),
             body: _isLoading
                 ? Center(

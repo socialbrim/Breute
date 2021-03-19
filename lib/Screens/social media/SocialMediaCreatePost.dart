@@ -151,17 +151,29 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
           ],
         ),
         body: fileImage == null
-            ? Center(
-                child: RaisedButton(
-                  color: theme.colorPrimary,
-                  onPressed: () {
-                    picker();
-                  },
-                  child: Text(
-                    "Upload an Image",
-                    style: theme.text14boldWhite,
+            ? Column(
+                children: [
+                  Center(
+                    child: Container(
+                      height: 300,
+                      child: Image.asset(
+                        'assets/1.png',
+                      ),
+                    ),
                   ),
-                ),
+                  Center(
+                    child: RaisedButton(
+                      color: theme.colorPrimary,
+                      onPressed: () {
+                        picker();
+                      },
+                      child: Text(
+                        "Upload an Image",
+                        style: theme.text14boldWhite,
+                      ),
+                    ),
+                  ),
+                ],
               )
             : Column(
                 children: [

@@ -177,7 +177,7 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  "assets/chatBG.png",
+                  "assets/chat-background.jpeg",
                 ),
                 fit: BoxFit.cover,
               ),

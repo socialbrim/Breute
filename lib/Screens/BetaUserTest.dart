@@ -18,7 +18,7 @@ class BetaTest extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "If you would like to participate in our Ai Beta please click below to volunteer",
+                  "If you would like to participate in our Ai Beta please click below to volunteer.",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18),
                 ),

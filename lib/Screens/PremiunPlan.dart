@@ -52,7 +52,7 @@ class _PlansState extends State<Plans> {
         actions: [
           FlatButton(
             child: Text(
-              "OK",
+              "Close",
               style: theme.text14primary,
             ),
             onPressed: () => Navigator.of(context).pop(),
@@ -460,7 +460,7 @@ class _PlansState extends State<Plans> {
                     color: theme.colorPrimary,
                   ),
                   width: width,
-                  height: height * 0.25,
+                  height: height * 0.275,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -486,7 +486,7 @@ class _PlansState extends State<Plans> {
                           top: 10,
                         ),
                         child: Text(
-                          'and go premium',
+                          'Get access to premium wellness capabilities.',
                           style: GoogleFonts.roboto(
                             fontSize: 16,
                             color: Colors.white,

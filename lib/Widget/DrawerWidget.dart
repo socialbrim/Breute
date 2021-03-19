@@ -154,7 +154,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ),
                         Container(
                           child: Text(
-                            'Pro Tips for Workout',
+                            'The Gym',
                             style: theme.text16bold,
                           ),
                         ),

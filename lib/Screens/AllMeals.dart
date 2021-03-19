@@ -310,7 +310,7 @@ class _AllMealsState extends State<AllMeals> {
                     },
                     icon: Icon(
                       MdiIcons.dotsVertical,
-                      color: theme.colorBackground,
+                      color: theme.colorPrimary,
                     ),
                     itemBuilder: (_) => [
                       PopupMenuItem(
@@ -500,7 +500,9 @@ class _AllMealsState extends State<AllMeals> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          ElevatedButton(
+                                          // ignore: deprecated_member_use
+                                          RaisedButton(
+                                            color: theme.colorBackground,
                                             onPressed: () async {
                                               final selectedDate =
                                                   await showDatePicker(
@@ -531,7 +533,21 @@ class _AllMealsState extends State<AllMeals> {
                                                     "${_filterdlist[index].mealDate}"
                                               });
                                             },
-                                            child: Text("Add in your schedule"),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  MdiIcons.calendar,
+                                                  color: theme.colorPrimary,
+                                                ),
+                                                SizedBox(
+                                                  width: width * 0.02,
+                                                ),
+                                                Text(
+                                                  "Add to schedule",
+                                                  style: theme.text14boldPimary,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),

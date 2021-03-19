@@ -172,96 +172,106 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
               )
             ],
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: chatMessageList(),
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  "assets/chat-background.jpeg",
+                ),
+                fit: BoxFit.cover,
               ),
-              Container(
-                color: theme.colorCompanion,
-                child: Row(
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * .68,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: TextField(
-                          style: theme.text16Primary,
-                          controller: messageController,
-                          onChanged: (val) {
-                            setState(() {});
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10),
-                            hintText: 'Start Typing....',
-                            hintStyle: theme.text16Primary,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: chatMessageList(),
+                ),
+                Container(
+                  color: theme.colorCompanion,
+                  child: Row(
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * .68,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: TextField(
+                            style: theme.text16Primary,
+                            controller: messageController,
+                            onChanged: (val) {
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(10),
+                              hintText: 'Start Typing....',
+                              hintStyle: theme.text16Primary,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
                             ),
-                            filled: true,
-                            fillColor: Colors.white,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .02,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (messageController.text == null ||
-                            messageController.text == "") {
-                          Fluttertoast.showToast(
-                              msg: "Write some message!",
-                              gravity: ToastGravity.BOTTOM);
-                          return;
-                        }
-                        return sendMessage();
-                      },
-                      child: messageController.text == null ||
-                              messageController.text == ""
-                          ? Text(
-                              'Send',
-                              style: theme.text16boldWhite,
-                            )
-                          : Icon(
-                              Icons.send,
-                              color: theme.colorBackground,
-                            ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * .05,
-                    ),
-                    GestureDetector(
-                      onLongPressStart: (val) async {
-                        setState(() {
-                          isAudioSystemON = true;
-                        });
-                        await checkpermission();
-                        _startRecord();
-                      },
-                      onLongPressEnd: (val) async {
-                        _stopRecord();
-                        //....
-                        filesaveToServer();
-                      },
-                      child: _isSendingMessage
-                          ? SpinKitCircle(
-                              color: Colors.white,
-                              size: 15,
-                            )
-                          : Icon(
-                              Icons.mic,
-                              color: _isRecording ? Colors.red : Colors.white,
-                              size: _isRecording ? 35 : 25,
-                            ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .02,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (messageController.text == null ||
+                              messageController.text == "") {
+                            Fluttertoast.showToast(
+                                msg: "Write some message!",
+                                gravity: ToastGravity.BOTTOM);
+                            return;
+                          }
+                          return sendMessage();
+                        },
+                        child: messageController.text == null ||
+                                messageController.text == ""
+                            ? Text(
+                                'Send',
+                                style: theme.text16boldWhite,
+                              )
+                            : Icon(
+                                Icons.send,
+                                color: theme.colorBackground,
+                              ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .05,
+                      ),
+                      GestureDetector(
+                        onLongPressStart: (val) async {
+                          setState(() {
+                            isAudioSystemON = true;
+                          });
+                          await checkpermission();
+                          _startRecord();
+                        },
+                        onLongPressEnd: (val) async {
+                          _stopRecord();
+                          //....
+                          filesaveToServer();
+                        },
+                        child: _isSendingMessage
+                            ? SpinKitCircle(
+                                color: Colors.white,
+                                size: 15,
+                              )
+                            : Icon(
+                                Icons.mic,
+                                color: _isRecording ? Colors.red : Colors.white,
+                                size: _isRecording ? 35 : 25,
+                              ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )),
     );
   }
@@ -497,7 +507,9 @@ class _MessageTileState extends State<MessageTile> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: theme.colorPrimary,
+                      color: widget.isSendByMe
+                          ? theme.colorPrimary
+                          : theme.colorCompanion,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(15),
                           topRight: Radius.circular(15),
