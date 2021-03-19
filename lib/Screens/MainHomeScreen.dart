@@ -2,6 +2,7 @@ import 'package:better_player/better_player.dart';
 import 'package:email_launcher/email_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fit_kit/fit_kit.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import '../Screens/UpgradePlanScreen.dart';
@@ -28,6 +29,7 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   int totalsteps;
   int achievedsteps = 0;
+  int achievedWater = 0;
   double totalcalories;
   double achievedcalories = 0;
   DateTime _stepDate = DateTime.now();
@@ -74,10 +76,29 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
     checkpermission();
+    final now = DateTime.now();
+    _dates.add(null);
+    for (int i = 7; i >= 0; i--) {
+      _dates.add(DateTime(
+        now.year,
+        now.month,
+        now.day,
+      ).subtract(Duration(days: i)));
+    }
+    _dates.add(null);
+
+    hasPermissions();
+
     super.initState();
     fetchLink();
     initPlatformState();
     fetchLastSevenDays();
+
+    if (context != null) {
+      Future.delayed(Duration(seconds: 2)).then((value) {
+        read();
+      });
+    }
   }
 
   void fetchLastSevenDays() {
@@ -175,13 +196,74 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   void checkpermission() async {
     var status = await Permission.activityRecognition.status;
     print(status);
-    if (status.isUndetermined) {}
+    if (status.isUndetermined) {
+      final data = await Permission.activityRecognition.request();
+      print(status);
+    }
     if (status.isGranted) {}
     if (status.isDenied) {
       // ignore: unused_local_variable
       final data = await Permission.activityRecognition.request();
       print(status);
     }
+  }
+
+  String result = '';
+  Map<DataType, List<FitData>> results = Map();
+  bool permissions;
+
+  RangeValues _dateRange = RangeValues(1, 8);
+  List<DateTime> _dates = List<DateTime>();
+
+  Future<void> read() async {
+    results.clear();
+
+    try {
+      permissions = await FitKit.requestPermissions(DataType.values);
+      if (!permissions) {
+        result = 'requestPermissions: failed';
+      } else {
+        for (DataType type in DataType.values) {
+          try {
+            results[type] = await FitKit.read(
+              type,
+              dateFrom: DateTime.now().subtract(Duration(days: 1)),
+              dateTo: DateTime.now(),
+              limit: null,
+            );
+          } on UnsupportedException catch (e) {
+            results[e.dataType] = [];
+          }
+        }
+
+        result = 'readAll: success';
+        print(results);
+        results.forEach((key, value) {
+          if (key == DataType.ENERGY) {
+            //..
+            value.forEach((element) {
+              achievedWater = int.parse(element.value.toString());
+            });
+          }
+        });
+      }
+    } catch (e) {
+      result = 'readAll: $e';
+    }
+
+    setState(() {});
+  }
+
+  Future<void> hasPermissions() async {
+    try {
+      permissions = await FitKit.hasPermissions(DataType.values);
+    } catch (e) {
+      result = 'hasPermissions: $e';
+    }
+
+    if (!mounted) return;
+
+    setState(() {});
   }
 
   @override
@@ -191,6 +273,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     totalsteps = 5000;
 
     totalcalories = 5000;
+    var totalWater = 5;
 
     return _isLoading
         ? Scaffold(
@@ -451,6 +534,88 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                   ],
                                 ),
                               ),
+                              // SizedBox(
+                              //   width: width * 0.033,
+                              // ),
+                              // Container(
+                              //   width: width * 0.45,
+                              //   padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              //   decoration: BoxDecoration(
+                              //     color: theme.colorBackground,
+                              //     border: Border.all(
+                              //       color: Colors.grey,
+                              //       width: 2,
+                              //     ),
+                              //     borderRadius: BorderRadius.circular(15),
+                              //   ),
+                              //   child: Column(
+                              //     crossAxisAlignment: CrossAxisAlignment.center,
+                              //     children: <Widget>[
+                              //       Row(
+                              //         mainAxisAlignment:
+                              //             MainAxisAlignment.spaceBetween,
+                              //         children: <Widget>[
+                              //           Text(
+                              //             'Water',
+                              //             style: GoogleFonts.ptMono(
+                              //               color: theme.colorDefaultText,
+                              //               fontSize: 15,
+                              //             ),
+                              //           ),
+                              //           achievedsteps < totalsteps
+                              //               ? Icon(
+                              //                   MdiIcons.trendingDown,
+                              //                   color: theme.colorCompanion,
+                              //                 )
+                              //               : Icon(MdiIcons.trendingUp)
+                              //         ],
+                              //       ),
+                              //       SizedBox(
+                              //         height: height * 0.02,
+                              //       ),
+                              //       CircularPercentIndicator(
+                              //         radius: height * 0.1,
+                              //         lineWidth: 8.0,
+                              //         animation: true,
+                              //         percent: achievedWater /
+                              //             (totalWater < achievedWater
+                              //                 ? achievedWater
+                              //                 : totalWater),
+                              //         circularStrokeCap:
+                              //             CircularStrokeCap.round,
+                              //         center: Icon(
+                              //           MdiIcons.shoePrint,
+                              //           size: height * 0.05,
+                              //           color: theme.colorPrimary,
+                              //         ),
+                              //         progressColor: theme.colorPrimary,
+                              //         backgroundColor: theme.colorGrey,
+                              //       ),
+                              //       SizedBox(
+                              //         height: height * 0.022,
+                              //       ),
+                              //       RichText(
+                              //         text: TextSpan(children: [
+                              //           TextSpan(
+                              //             text: achievedWater.toString(),
+                              //             style: GoogleFonts.roboto(
+                              //               fontSize: 20,
+                              //               color: theme.colorDefaultText,
+                              //             ),
+                              //           ),
+                              //           TextSpan(
+                              //             text: ' / $totalWater',
+                              //             style: GoogleFonts.roboto(
+                              //               color: Colors.grey,
+                              //               fontWeight: FontWeight.bold,
+                              //               fontSize: 12,
+                              //             ),
+                              //           ),
+                              //         ]),
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
