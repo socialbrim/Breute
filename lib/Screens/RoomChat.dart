@@ -578,30 +578,30 @@ class _MessageTileState extends State<MessageTile> {
                                         widget.message.contains(".mp3")
                                             ? slider()
                                             : Container(),
-                                        InkWell(
-                                          onTap: () {
-                                            //...
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SocialMediaProfileScreen(
-                                                  isme: widget.uid ==
-                                                      FirebaseAuth.instance
-                                                          .currentUser.uid,
-                                                  uid: widget.uid,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: widget.imageURL ==
-                                                    null
-                                                ? AssetImage(
-                                                    "assets/unnamed.png")
-                                                : NetworkImage(widget.imageURL),
-                                          ),
-                                        ),
+                                        // InkWell(
+                                        //   onTap: () {
+                                        //     //...
+                                        //     Navigator.of(context).push(
+                                        //       MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             SocialMediaProfileScreen(
+                                        //           isme: widget.uid ==
+                                        //               FirebaseAuth.instance
+                                        //                   .currentUser.uid,
+                                        //           uid: widget.uid,
+                                        //         ),
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        //   child: CircleAvatar(
+                                        //     radius: 20,
+                                        //     backgroundImage: widget.imageURL ==
+                                        //             null
+                                        //         ? AssetImage(
+                                        //             "assets/unnamed.png")
+                                        //         : NetworkImage(widget.imageURL),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ],
@@ -628,7 +628,7 @@ class _MessageTileState extends State<MessageTile> {
                                     );
                                   },
                                   child: CircleAvatar(
-                                    radius: 20,
+                                    radius: 18,
                                     backgroundImage: widget.imageURL == null
                                         ? AssetImage("assets/unnamed.png")
                                         : NetworkImage(widget.imageURL),
@@ -687,7 +687,7 @@ class _MessageTileState extends State<MessageTile> {
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.46,
+                                                    0.42,
                                                 child: slider(),
                                               )
                                             : Container(),
