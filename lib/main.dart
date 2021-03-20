@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:parentpreneur/Providers/HomeScreenCtrl.dart';
 import './Providers/feedProvider.dart';
 
 import 'package:provider/provider.dart';
@@ -38,6 +39,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => FeedProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => HomeProvider(),
         ),
       ],
       child: MyApp(),

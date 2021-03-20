@@ -3,6 +3,7 @@ import 'package:email_launcher/email_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fit_kit/fit_kit.dart';
+import 'package:parentpreneur/Providers/HomeScreenCtrl.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import '../Screens/UpgradePlanScreen.dart';
@@ -29,7 +30,7 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   int totalsteps;
   int achievedsteps = 0;
-  int achievedWater = 0;
+  double achievedWater = 0;
   double totalcalories;
   double achievedcalories = 0;
   DateTime _stepDate = DateTime.now();
@@ -46,6 +47,18 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       }
       print(_isAccessable);
     });
+
+    final boolean = Provider.of<HomeProvider>(context).isLoaded;
+
+    if (context != null && !boolean) {
+      Future.delayed(Duration(seconds: 2)).then((value) {
+        print("yeh its working now ---------------------");
+        Provider.of<HomeProvider>(context, listen: false).setBool(true);
+        read();
+      });
+    } else if (boolean) {
+      achievedWater = Provider.of<HomeProvider>(context).savedData;
+    }
     super.didChangeDependencies();
   }
 
@@ -93,12 +106,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     fetchLink();
     initPlatformState();
     fetchLastSevenDays();
-
-    // if (context != null) {
-    //   Future.delayed(Duration(seconds: 2)).then((value) {
-    //     read();
-    //   });
-    // }
   }
 
   void fetchLastSevenDays() {
@@ -239,13 +246,29 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         }
 
         result = 'readAll: success';
-        print(results);
+        // print(results);
         results.forEach((key, value) {
           if (key == DataType.ENERGY) {
             //..
-            value.forEach((element) {
-              achievedWater = int.parse(element.value.toString());
+            print(value);
+            print("---------------------");
+            final vals = value.first.value;
+            print(vals);
+            print("---------------------");
+            final dataconvert = double.parse("${vals.toString()}");
+            setState(() {
+              achievedWater =
+                  double.parse((dataconvert / 1000).toStringAsFixed(2));
+
+              Provider.of<HomeProvider>(context, listen: false).savedData =
+                  achievedWater;
+              print("---------------------");
             });
+            // value.forEach((element) {
+
+            //   print(achievedWater);
+            //   print("---------------------");
+            // });
           }
         });
       }

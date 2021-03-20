@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Screens/Payments.dart';
@@ -402,7 +403,31 @@ class _PlansState extends State<Plans> {
           color: theme.colorPrimary,
           alignment: Alignment.center,
           child: InkWell(
-            onTap: () {
+            onTap: () async {
+              await showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text("Free 1 Month trail Active"),
+                  content: Text(
+                      "${DateTime.now().day > 25 ? DateTime.now().day : 25 - DateTime.now().day} days are left in current plan"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          return;
+                        },
+                        child: Text(
+                          "close",
+                          style: TextStyle(color: Colors.black),
+                        ))
+                  ],
+                ),
+              );
+              Fluttertoast.showToast(
+                msg:
+                    "Still App will procced for testing we will remove this line after your testing",
+                backgroundColor: Colors.red,
+              );
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => Payments(
@@ -412,7 +437,7 @@ class _PlansState extends State<Plans> {
               );
             },
             child: Text(
-              'Proceed To Payment',
+              'Proceed To Contribute',
               style: theme.text20boldWhite,
             ),
           ),
