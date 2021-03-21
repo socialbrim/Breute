@@ -175,41 +175,61 @@ class _PaymentsState extends State<Payments> {
                           height: height * .01,
                         ),
                         InkWell(
-                          onTap: () {
-                            StripePayment.createTokenWithCard(
-                              testCard,
-                            ).then((token) {
-                              // ignore: deprecated_member_use
-                              _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                  content: Text('Received ${token.tokenId}')));
-                              setState(() {
-                                _paymentToken = token;
-                              });
+                          onTap: () async {
+                            // StripePayment.createTokenWithCard(
+                            //   testCard,
+                            // ).then((token) {
+                            //   // ignore: deprecated_member_use
+                            //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            //       content: Text('Received ${token.tokenId}')));
+                            //   setState(() {
+                            //     _paymentToken = token;
+                            //   });
 
-                              //... payment started
+                            //   //... payment started
 
-                              StripePayment.createPaymentMethod(
-                                PaymentMethodRequest(
-                                  card: CreditCard(
-                                    token: _paymentToken.tokenId,
-                                  ),
-                                ),
-                              ).then((paymentMethod) {
-                                print(paymentMethod.billingDetails.phone);
-                                print(paymentMethod.card.brand);
-                                print(paymentMethod.type);
+                            //   StripePayment.createPaymentMethod(
+                            //     PaymentMethodRequest(
+                            //       card: CreditCard(
+                            //         token: _paymentToken.tokenId,
+                            //       ),
+                            //     ),
+                            //   ).then((paymentMethod) {
+                            //     print(paymentMethod.billingDetails.phone);
+                            //     print(paymentMethod.card.brand);
+                            //     print(paymentMethod.type);
 
-                                // ignore: deprecated_member_use
-                                _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                    content:
-                                        Text('Received ${paymentMethod.id}')));
-                                setState(() {
-                                  _paymentMethod = paymentMethod;
-                                });
-                              }).catchError(setError);
+                            //     // ignore: deprecated_member_use
+                            //     _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            //         content:
+                            //             Text('Received ${paymentMethod.id}')));
+                            //     setState(() {
+                            //       _paymentMethod = paymentMethod;
+                            //     });
+                            //   }).catchError(setError);
 
-                              //... payment finished
-                            }).catchError(setError);
+                            //   //... payment finished
+                            // }).catchError(setError);
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Congratulation 👏"),
+                                  content: Text("You upgraded your plan"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "Close",
+                                          style: TextStyle(color: Colors.black),
+                                        ))
+                                  ],
+                                );
+                              },
+                            );
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -229,7 +249,7 @@ class _PaymentsState extends State<Payments> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Text(
-                                  "Pay With Card",
+                                  "Free Access",
                                   style: theme.text16bold,
                                 ),
                               ),

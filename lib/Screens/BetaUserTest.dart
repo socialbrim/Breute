@@ -33,7 +33,7 @@ class BetaTest extends StatelessWidget {
                         return AlertDialog(
                           title: Text("Congratulation 👏"),
                           content: Text(
-                              "You are on the waiting list. We will notify when Beta becomes available.  Thank you."),
+                              "We will notify you when Beta access becomes available."),
                           actions: [
                             TextButton(
                                 onPressed: () {
@@ -48,12 +48,6 @@ class BetaTest extends StatelessWidget {
                         );
                       },
                     );
-
-                    // SmsSender sender = new SmsSender();
-                    // String address = "+918696330311";
-
-                    // sender.sendSms(new SmsMessage(address,
-                    //     'this is the test for bruete by the developers'));
                   },
                   child: Card(
                     color: HexColor('c1e5e2'),

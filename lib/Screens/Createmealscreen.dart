@@ -24,6 +24,10 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
   final _dinnerformKey = GlobalKey<FormState>();
   bool dinnerback = false;
 
+  GlobalKey<FlipCardState> snackscardKey = GlobalKey<FlipCardState>();
+  final _snacksformKey = GlobalKey<FormState>();
+  bool snacksback = false;
+
   bool _isAccessable = false;
 
   @override
@@ -86,6 +90,18 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
                     width: width,
                     breakfastback: dinnerback,
                     breakfastformKey: _dinnerformKey,
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  CreateMealCard(
+                    icon: Icon(MdiIcons.foodForkDrink, color: Colors.white),
+                    category: "Create Snacks",
+                    breakfastcardKey: snackscardKey,
+                    height: height,
+                    width: width,
+                    breakfastback: snacksback,
+                    breakfastformKey: _snacksformKey,
                   ),
                   SizedBox(
                     height: height * 0.03,
