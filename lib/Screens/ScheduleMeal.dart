@@ -179,7 +179,7 @@ class _ScheduleMealState extends State<ScheduleMeal> {
             child: Scaffold(
               backgroundColor: theme.colorBackground,
               appBar: AppBar(
-                title: Text('Schedule your meals'),
+                title: Text('Meal Scheduling'),
               ),
               body: SingleChildScrollView(
                 child: Column(
@@ -206,48 +206,26 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  Icon(
-                                    MdiIcons.arrowDown,
-                                    color: theme.colorBackground,
+                                  InkWell(
+                                    onTap: () {
+                                      schedulingBreakfast();
+                                    },
+                                    child: InkWell(
+                                      child: Text(
+                                        _scheduleTimeofBreakfast == null
+                                            ? 'Set Time'
+                                            : pmOrAm(_scheduleTimeofBreakfast),
+                                        // textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: theme.text14boldWhite,
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              schedulingBreakfast();
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: height * 0.05,
-                                width: width * 0.45,
-                                color: theme.colorPrimary,
-                                child: Text(
-                                  _scheduleTimeofBreakfast == null
-                                      ? 'Set Time'
-                                      : pmOrAm(_scheduleTimeofBreakfast),
-                                  // textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.text14boldWhite,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                     SizedBox(
@@ -277,10 +255,18 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  Icon(
-                                    MdiIcons.arrowDown,
-                                    color: theme.colorBackground,
-                                  )
+                                  InkWell(
+                                      onTap: () {
+                                        schedulingSnacks1();
+                                      },
+                                      child: Text(
+                                        _scheduleTimeofSnacks1 == null
+                                            ? 'Set Time'
+                                            : pmOrAm(_scheduleTimeofSnacks1),
+                                        // textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: theme.text14boldWhite,
+                                      ))
                                 ],
                               ),
                             ],
@@ -288,39 +274,7 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              schedulingSnacks1();
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: height * 0.05,
-                                width: width * 0.45,
-                                color: theme.colorPrimary,
-                                child: Text(
-                                  _scheduleTimeofSnacks1 == null
-                                      ? 'Set Time'
-                                      : pmOrAm(_scheduleTimeofSnacks1),
-                                  // textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.text14boldWhite,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+
                     SizedBox(
                       height: height * 0.02,
                     ),
@@ -353,9 +307,18 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  Icon(
-                                    MdiIcons.arrowDown,
-                                    color: theme.colorBackground,
+                                  InkWell(
+                                    onTap: () {
+                                      schedulingLunch();
+                                    },
+                                    child: Text(
+                                      _scheduleTimeofLunch == null
+                                          ? 'Set Time'
+                                          : pmOrAm(_scheduleTimeofLunch),
+                                      // textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: theme.text14boldWhite,
+                                    ),
                                   )
                                 ],
                               ),
@@ -364,39 +327,7 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              schedulingLunch();
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: height * 0.05,
-                                width: width * 0.45,
-                                color: theme.colorPrimary,
-                                child: Text(
-                                  _scheduleTimeofLunch == null
-                                      ? 'Set Time'
-                                      : pmOrAm(_scheduleTimeofLunch),
-                                  // textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.text14boldWhite,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+
                     SizedBox(
                       height: height * 0.02,
                     ),
@@ -404,7 +335,6 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                       thickness: 1.5,
                       color: theme.colorCompanion,
                     ),
-//...
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Card(
@@ -424,9 +354,18 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  Icon(
-                                    MdiIcons.arrowDown,
-                                    color: theme.colorBackground,
+                                  InkWell(
+                                    onTap: () {
+                                      schedulingSnacks2();
+                                    },
+                                    child: Text(
+                                      _scheduleTimeofSnacks2 == null
+                                          ? 'Set Time'
+                                          : pmOrAm(_scheduleTimeofSnacks2),
+                                      // textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: theme.text14boldWhite,
+                                    ),
                                   )
                                 ],
                               ),
@@ -438,39 +377,7 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              schedulingSnacks2();
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: height * 0.05,
-                                width: width * 0.45,
-                                color: theme.colorPrimary,
-                                child: Text(
-                                  _scheduleTimeofSnacks2 == null
-                                      ? 'Set Time'
-                                      : pmOrAm(_scheduleTimeofSnacks2),
-                                  // textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.text14boldWhite,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
+                    //
                     Divider(
                       thickness: 1.5,
                       color: theme.colorCompanion,
@@ -498,9 +405,18 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  Icon(
-                                    MdiIcons.arrowDown,
-                                    color: theme.colorBackground,
+                                  InkWell(
+                                    onTap: () {
+                                      schedulingDinner();
+                                    },
+                                    child: Text(
+                                      _scheduleTimeofDinner == null
+                                          ? 'Set Time'
+                                          : pmOrAm(_scheduleTimeofDinner),
+                                      // textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: theme.text14boldWhite,
+                                    ),
                                   )
                                 ],
                               ),
@@ -512,36 +428,36 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              schedulingDinner();
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: height * 0.05,
-                                width: width * 0.45,
-                                color: theme.colorPrimary,
-                                child: Text(
-                                  _scheduleTimeofDinner == null
-                                      ? 'Set Time'
-                                      : pmOrAm(_scheduleTimeofDinner),
-                                  // textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.text14boldWhite,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.end,
+                    //     children: [
+                    //       GestureDetector(
+                    //         onTap: () {
+                    //           schedulingDinner();
+                    //         },
+                    //         child: ClipRRect(
+                    //           borderRadius: BorderRadius.circular(20),
+                    //           child: Container(
+                    //             alignment: Alignment.center,
+                    //             height: height * 0.05,
+                    //             width: width * 0.45,
+                    //             color: theme.colorPrimary,
+                    //             child: Text(
+                    //               _scheduleTimeofDinner == null
+                    //                   ? 'Set Time'
+                    //                   : pmOrAm(_scheduleTimeofDinner),
+                    //               // textAlign: TextAlign.center,
+                    //               overflow: TextOverflow.ellipsis,
+                    //               style: theme.text14boldWhite,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(
                       height: height * 0.07,
                     ),

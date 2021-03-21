@@ -22,7 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
   TextEditingController phone = new TextEditingController();
-  var countrycode = "+91";
+  var countrycode = "+1";
   final _formKey = GlobalKey<FormState>();
   AnimationController _controller;
   bool _isGoogleLogging = false;
@@ -34,17 +34,6 @@ class _LoginScreenState extends State<LoginScreen>
   void initState() {
     super.initState();
 
-    // _firebaseMessaging.configure(
-    //   onMessage: (Map<String, dynamic> message) async {
-    //     print("onMessage: $message");
-    //   },
-    //   onLaunch: (Map<String, dynamic> message) async {
-    //     print("onLaunch: $message");
-    //   },
-    //   onResume: (Map<String, dynamic> message) async {
-    //     print("onResume: $message");
-    //   },
-    // );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(
             sound: true, badge: true, alert: true, provisional: true));
@@ -274,7 +263,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       onChanged: (val) {
                                         countrycode = val.dialCode;
                                       },
-                                      initialSelection: 'IN',
+                                      initialSelection: 'US',
                                       showCountryOnly: false,
                                       showOnlyCountryWhenClosed: false,
                                       alignLeft: false,
