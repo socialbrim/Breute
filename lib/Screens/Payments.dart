@@ -17,7 +17,6 @@ class Payments extends StatefulWidget {
 }
 
 class _PaymentsState extends State<Payments> {
-  Token _paymentToken;
   // ignore: unused_field
   PaymentMethod _paymentMethod;
   // ignore: unused_field
@@ -289,7 +288,6 @@ class _PaymentsState extends State<Payments> {
                                 _scaffoldKey.currentState.showSnackBar(SnackBar(
                                     content:
                                         Text('Received ${token.tokenId}')));
-                                _paymentToken = token;
                               });
                             }).catchError(setError);
                           },

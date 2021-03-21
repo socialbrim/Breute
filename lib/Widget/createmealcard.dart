@@ -97,7 +97,7 @@ class _CreateMealCardState extends State<CreateMealCard> {
         title: Text("Choose Image"),
         content: Text("Please choose an Image"),
         actions: <Widget>[
-          RaisedButton.icon(
+          ElevatedButton.icon(
             icon: Icon(Icons.camera),
             label: Text("camera"),
             onPressed: () async {
@@ -114,7 +114,7 @@ class _CreateMealCardState extends State<CreateMealCard> {
               Navigator.of(ctx).pop(true);
             },
           ),
-          RaisedButton.icon(
+          ElevatedButton.icon(
             icon: Icon(Icons.image),
             label: Text("gallery"),
             onPressed: () async {

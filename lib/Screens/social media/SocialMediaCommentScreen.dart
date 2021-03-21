@@ -86,7 +86,7 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                   ),
                 ],
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   setState(() {
                     isReply = true;

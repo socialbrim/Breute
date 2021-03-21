@@ -514,7 +514,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
           controller: _ctrl,
         ),
         actions: [
-          FlatButton(
+          TextButton(
             child: Text(
               "Cancel",
               style: theme.text12bold,
@@ -523,7 +523,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
               Navigator.of(ctx).pop();
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text(
               "Submit",
               style: theme.text12bold,

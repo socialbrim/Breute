@@ -8,6 +8,7 @@ import '../models/PlanDetail.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:provider/provider.dart';
 import '../Providers/MyPlanProvider.dart';
+// ignore: duplicate_import
 import '../models/PlanDetail.dart';
 
 class Plans extends StatefulWidget {
@@ -51,7 +52,7 @@ class _PlansState extends State<Plans> {
       context: context,
       builder: (context) => AlertDialog(
         actions: [
-          FlatButton(
+          TextButton(
             child: Text(
               "Close",
               style: theme.text14primary,

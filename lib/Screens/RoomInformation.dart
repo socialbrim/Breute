@@ -109,7 +109,7 @@ class _RoomInformationState extends State<RoomInformation> {
                     title: Text("Are You Sure?"),
                     content: Text("You Want to Delete Group"),
                     actions: [
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           FirebaseDatabase.instance
                               .reference()
@@ -130,7 +130,7 @@ class _RoomInformationState extends State<RoomInformation> {
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -372,7 +372,7 @@ class _RoomInformationState extends State<RoomInformation> {
                                 title: Text("Are You Sure?"),
                                 content: Text("You Want to leave"),
                                 actions: [
-                                  FlatButton(
+                                  TextButton(
                                     onPressed: () {
                                       FirebaseDatabase.instance
                                           .reference()
@@ -389,7 +389,7 @@ class _RoomInformationState extends State<RoomInformation> {
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ),
-                                  FlatButton(
+                                  TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },

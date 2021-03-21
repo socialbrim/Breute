@@ -21,6 +21,7 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   UserInformation userData;
+  // ignore: unused_field
   bool _isModChanging = false;
   @override
   void didChangeDependencies() {

@@ -120,6 +120,7 @@ class _SocialMediaCreateCaptionState extends State<SocialMediaCreateCaption> {
                         ),
                       ),
                     )
+                  // ignore: deprecated_member_use
                   : RaisedButton(
                       color: theme.colorPrimary,
                       elevation: 8,

@@ -355,7 +355,6 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
       });
     }
     if (event['code'] == 'playing') {
-      String url = event['url'];
       setState(() {
         playPosition = event['currentTime'];
         isPlay = true;
@@ -413,7 +412,6 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
     var status = await Permission.microphone.status;
     print(status);
     if (status.isUndetermined) {
-      final data = await Permission.microphone.request();
       print(status);
     }
     if (status.isGranted) {}
@@ -455,10 +453,12 @@ class MessageTile extends StatefulWidget {
 class _MessageTileState extends State<MessageTile> {
   @override
   void initState() {
+    // ignore: deprecated_member_use
     audioPlayer.durationHandler = (d) => setState(() {
           _duration = d;
         });
 
+    // ignore: deprecated_member_use
     audioPlayer.positionHandler = (p) => setState(() {
           _position = p;
         });
@@ -815,7 +815,7 @@ class _MessageTileState extends State<MessageTile> {
           decoration: InputDecoration(hintText: 'Type here'),
         ),
         actions: [
-          FlatButton(
+          TextButton(
             child: Text(
               "Cancel",
               style: theme.text12bold,
@@ -824,7 +824,7 @@ class _MessageTileState extends State<MessageTile> {
               Navigator.of(ctx).pop();
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text(
               "Submit",
               style: theme.text12bold,

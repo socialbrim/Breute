@@ -36,6 +36,7 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
     return _isreturn;
   }
 
+  // ignore: unused_field
   bool _isLoadin = false;
 
   @override

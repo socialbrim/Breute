@@ -35,7 +35,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
         title: Text("Choose Image"),
         content: Text("Please choose an Image"),
         actions: <Widget>[
-          RaisedButton.icon(
+          ElevatedButton.icon(
             icon: Icon(Icons.camera),
             label: Text("camera"),
             onPressed: () async {
@@ -52,7 +52,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
               Navigator.of(ctx).pop(true);
             },
           ),
-          RaisedButton.icon(
+          ElevatedButton.icon(
             icon: Icon(Icons.image),
             label: Text("gallery"),
             onPressed: () async {
@@ -162,6 +162,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                     ),
                   ),
                   Center(
+                    // ignore: deprecated_member_use
                     child: RaisedButton(
                       color: theme.colorPrimary,
                       onPressed: () {
@@ -232,6 +233,7 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   if (checkedValue)
                     Center(
+                      // ignore: deprecated_member_use
                       child: RaisedButton(
                         color: theme.colorPrimary,
                         onPressed: () {

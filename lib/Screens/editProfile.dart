@@ -51,7 +51,7 @@ class _EditProfileState extends State<EditProfile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  RaisedButton.icon(
+                  ElevatedButton.icon(
                     icon: Icon(Icons.camera),
                     label: Text("camera"),
                     onPressed: () async {
@@ -68,7 +68,7 @@ class _EditProfileState extends State<EditProfile> {
                       Navigator.of(ctx).pop(true);
                     },
                   ),
-                  RaisedButton.icon(
+                  ElevatedButton.icon(
                     icon: Icon(Icons.image),
                     label: Text("gallery"),
                     onPressed: () async {

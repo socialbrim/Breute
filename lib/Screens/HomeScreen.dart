@@ -7,7 +7,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/CustomerSupport.dart';
@@ -320,6 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .update({"dateTime": DateTime.now().toIso8601String()});
   }
 
+  // ignore: unused_field
   bool _isSecondTapped = false;
 
   @override

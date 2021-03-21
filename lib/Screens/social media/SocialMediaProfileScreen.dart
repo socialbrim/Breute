@@ -309,6 +309,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                   ),
                                 )
                               : _isMyFriend
+                                  // ignore: deprecated_member_use
                                   ? RaisedButton(
                                       color: theme.colorCompanion,
                                       onPressed: () {
@@ -336,6 +337,7 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                                         style: theme.text14boldWhite,
                                       ),
                                     )
+                                  // ignore: deprecated_member_use
                                   : RaisedButton(
                                       color: theme.colorPrimary,
                                       onPressed: () {

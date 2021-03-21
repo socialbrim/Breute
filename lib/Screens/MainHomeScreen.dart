@@ -5,7 +5,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:fit_kit/fit_kit.dart';
 import 'package:parentpreneur/Providers/HomeScreenCtrl.dart';
 import 'package:parentpreneur/Providers/User.dart';
-import 'package:parentpreneur/models/UserModel.dart';
 import '../Screens/UpgradePlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -206,7 +205,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     var status = await Permission.activityRecognition.status;
     print(status);
     if (status.isUndetermined) {
-      final data = await Permission.activityRecognition.request();
       print(status);
     }
     if (status.isGranted) {}
@@ -221,7 +219,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Map<DataType, List<FitData>> results = Map();
   bool permissions;
 
+  // ignore: unused_field
   RangeValues _dateRange = RangeValues(1, 8);
+  // ignore: deprecated_member_use
   List<DateTime> _dates = List<DateTime>();
 
   Future<void> read() async {
