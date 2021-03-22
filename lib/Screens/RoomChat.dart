@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:medcorder_audio/medcorder_audio.dart';
 import 'package:parentpreneur/Providers/User.dart';
@@ -141,6 +142,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                       imageURL: list[index].imageURL,
                       name: list[index].nameOfCustomer,
                       id: list[index].messageID,
+                      dateTime: list[index].dateTime,
                       uid: list[index].uid,
                       likes: list[index].likes == null
                           ? 0
@@ -435,8 +437,10 @@ class MessageTile extends StatefulWidget {
   double likes;
   String chatRoomID;
   String uid;
+  DateTime dateTime;
   MessageTile({
     this.uid,
+    this.dateTime,
     this.isSendByMe,
     this.message,
     this.imageURL,
@@ -523,180 +527,204 @@ class _MessageTileState extends State<MessageTile> {
                     child: Padding(
                       padding: EdgeInsets.only(
                           right: 15, left: 15, bottom: 10, top: 12),
-                      child: widget.isSendByMe
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Column(
+                        children: [
+                          widget.isSendByMe
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Row(
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              widget.name == null
+                                                  ? "Anonymous"
+                                                  : '${widget.name}',
+                                              style: GoogleFonts.roboto(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            widget.message.contains(".mp3")
+                                                ? GestureDetector(
+                                                    child: isPlaying
+                                                        ? Icon(Icons.pause)
+                                                        : Icon(
+                                                            Icons.play_arrow),
+                                                    onTap: () {
+                                                      if (isPlaying) {
+                                                        setState(() {
+                                                          isPlaying = false;
+                                                          pauseAudio();
+                                                        });
+                                                      } else {
+                                                        setState(() {
+                                                          isPlaying = true;
+                                                        });
+                                                        play(widget.message);
+                                                      }
+                                                    })
+                                                : Container(
+                                                    width: width * 0.5,
+                                                    child: Text(
+                                                      widget.message,
+                                                      textAlign:
+                                                          widget.isSendByMe
+                                                              ? TextAlign.left
+                                                              : TextAlign.left,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                            widget.message.contains(".mp3")
+                                                ? slider()
+                                                : Container(),
+                                            // InkWell(
+                                            //   onTap: () {
+                                            //     //...
+                                            //     Navigator.of(context).push(
+                                            //       MaterialPageRoute(
+                                            //         builder: (context) =>
+                                            //             SocialMediaProfileScreen(
+                                            //           isme: widget.uid ==
+                                            //               FirebaseAuth.instance
+                                            //                   .currentUser.uid,
+                                            //           uid: widget.uid,
+                                            //         ),
+                                            //       ),
+                                            //     );
+                                            //   },
+                                            //   child: CircleAvatar(
+                                            //     radius: 20,
+                                            //     backgroundImage: widget.imageURL ==
+                                            //             null
+                                            //         ? AssetImage(
+                                            //             "assets/unnamed.png")
+                                            //         : NetworkImage(widget.imageURL),
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        print(widget.id);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SocialMediaProfileScreen(
+                                              isme: widget.uid ==
+                                                  FirebaseAuth
+                                                      .instance.currentUser.uid,
+                                              uid: widget.uid,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 18,
+                                        backgroundImage: widget.imageURL == null
+                                            ? AssetImage("assets/unnamed.png")
+                                            : NetworkImage(widget.imageURL),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.03,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           widget.name == null
                                               ? "Anonymous"
-                                              : '${widget.name}',
+                                              : "${widget.name}",
                                           style: GoogleFonts.roboto(
                                               fontWeight: FontWeight.bold),
                                         ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        widget.message.contains(".mp3")
-                                            ? GestureDetector(
-                                                child: isPlaying
-                                                    ? Icon(Icons.pause)
-                                                    : Icon(Icons.play_arrow),
-                                                onTap: () {
-                                                  if (isPlaying) {
-                                                    setState(() {
-                                                      isPlaying = false;
-                                                      pauseAudio();
-                                                    });
-                                                  } else {
-                                                    setState(() {
-                                                      isPlaying = true;
-                                                    });
-                                                    play(widget.message);
-                                                  }
-                                                })
-                                            : Container(
-                                                width: width * 0.5,
-                                                child: Text(
-                                                  widget.message,
-                                                  textAlign: widget.isSendByMe
-                                                      ? TextAlign.left
-                                                      : TextAlign.left,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                        widget.message.contains(".mp3")
-                                            ? slider()
-                                            : Container(),
-                                        // InkWell(
-                                        //   onTap: () {
-                                        //     //...
-                                        //     Navigator.of(context).push(
-                                        //       MaterialPageRoute(
-                                        //         builder: (context) =>
-                                        //             SocialMediaProfileScreen(
-                                        //           isme: widget.uid ==
-                                        //               FirebaseAuth.instance
-                                        //                   .currentUser.uid,
-                                        //           uid: widget.uid,
-                                        //         ),
-                                        //       ),
-                                        //     );
-                                        //   },
-                                        //   child: CircleAvatar(
-                                        //     radius: 20,
-                                        //     backgroundImage: widget.imageURL ==
-                                        //             null
-                                        //         ? AssetImage(
-                                        //             "assets/unnamed.png")
-                                        //         : NetworkImage(widget.imageURL),
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    print(widget.id);
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SocialMediaProfileScreen(
-                                          isme: widget.uid ==
-                                              FirebaseAuth
-                                                  .instance.currentUser.uid,
-                                          uid: widget.uid,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 18,
-                                    backgroundImage: widget.imageURL == null
-                                        ? AssetImage("assets/unnamed.png")
-                                        : NetworkImage(widget.imageURL),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: width * 0.03,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      widget.name == null
-                                          ? "Anonymous"
-                                          : "${widget.name}",
-                                      style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.bold),
-                                    ),
 
-                                    ///.... message
-                                    Row(
-                                      children: [
-                                        widget.message.contains(".mp3")
-                                            ? GestureDetector(
-                                                child: isPlaying
-                                                    ? Icon(Icons.pause)
-                                                    : Icon(Icons.play_arrow),
-                                                onTap: () {
-                                                  if (isPlaying) {
-                                                    setState(() {
-                                                      isPlaying = false;
-                                                      pauseAudio();
-                                                    });
-                                                  } else {
-                                                    setState(() {
-                                                      isPlaying = true;
-                                                    });
-                                                    play(widget.message);
-                                                  }
-                                                })
-                                            : Container(
-                                                width: width * 0.5,
-                                                child: Text(
-                                                  widget.message,
-                                                  textAlign: widget.isSendByMe
-                                                      ? TextAlign.left
-                                                      : TextAlign.left,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    color: Colors.white,
+                                        ///.... message
+                                        Row(
+                                          children: [
+                                            widget.message.contains(".mp3")
+                                                ? GestureDetector(
+                                                    child: isPlaying
+                                                        ? Icon(Icons.pause)
+                                                        : Icon(
+                                                            Icons.play_arrow),
+                                                    onTap: () {
+                                                      if (isPlaying) {
+                                                        setState(() {
+                                                          isPlaying = false;
+                                                          pauseAudio();
+                                                        });
+                                                      } else {
+                                                        setState(() {
+                                                          isPlaying = true;
+                                                        });
+                                                        play(widget.message);
+                                                      }
+                                                    })
+                                                : Container(
+                                                    width: width * 0.5,
+                                                    child: Text(
+                                                      widget.message,
+                                                      textAlign:
+                                                          widget.isSendByMe
+                                                              ? TextAlign.left
+                                                              : TextAlign.left,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                        widget.message.contains(".mp3")
-                                            ? Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.42,
-                                                child: slider(),
-                                              )
-                                            : Container(),
+                                            widget.message.contains(".mp3")
+                                                ? Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.42,
+                                                    child: slider(),
+                                                  )
+                                                : Container(),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
+                          Row(
+                            mainAxisAlignment: widget.isSendByMe
+                                ? MainAxisAlignment.start
+                                : MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                formatTimeStamp(widget.dateTime),
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Align(
@@ -755,6 +783,10 @@ class _MessageTileState extends State<MessageTile> {
     );
   }
 
+  String formatTimeStamp(DateTime dateTime) {
+    return "${DateFormat.EEEE().format(dateTime).toString().substring(0, 3)} ${dateTime.day} at ${dateTime.hour}: ${dateTime.minute}";
+  }
+
   bool isPlaying = false;
 
   Widget slider() {
@@ -762,7 +794,8 @@ class _MessageTileState extends State<MessageTile> {
       width: 210,
       child: Slider(
         activeColor: Colors.white,
-        inactiveColor: theme.colorCompanion,
+        inactiveColor:
+            widget.isSendByMe ? theme.colorCompanion : theme.colorPrimary,
         value: _position.inSeconds.toDouble(),
         min: 0.0,
         max: _duration.inSeconds.toDouble(),

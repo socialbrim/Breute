@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +10,7 @@ import 'package:parentpreneur/Providers/feedProvider.dart';
 import 'package:parentpreneur/Screens/social%20media/SocialMediaCommentScreen.dart';
 import 'package:parentpreneur/models/PostModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share/share.dart';
 import '../../Providers/socialmedialBarindex.dart';
 import 'package:parentpreneur/main.dart';
 import 'package:provider/provider.dart';
@@ -188,7 +192,7 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                           style: theme.text14,
                         ),
                         SizedBox(
-                          width: width * 0.23,
+                          width: width * 0.1,
                         ),
                         Icon(
                           Icons.comment,
@@ -216,6 +220,38 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
                                 : '${widget.postModel.comments.length} Comments',
                             style: theme.text14,
                           ),
+                        ),
+                        SizedBox(
+                          width: width * 0.05,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await _downloadAndSavePhoto(
+                                widget.postModel.postURL);
+                            Share.shareFiles(['$imageData'],
+                                subject: "*Bruete*",
+                                text:
+                                    "Hey! I am going to share my post from Breute ${widget.postModel.caption}");
+                            //...
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.share,
+                                size: 25,
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                              Text(
+                                'Share',
+                                style: theme.text14,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: width * 0.01,
                         ),
                       ],
                     ),
@@ -285,4 +321,21 @@ class _SocialMediaPostScreenState extends State<SocialMediaPostScreen> {
 
     return !isLiked;
   }
+
+  Future<void> _downloadAndSavePhoto(String url) async {
+    var response = await get(url);
+    var documentDirectory = await getApplicationDocumentsDirectory();
+    var firstPath = documentDirectory.path + "/images";
+    await Directory(firstPath).create(recursive: true);
+    var filePathAndName = documentDirectory.path + '/images/pic.jpg';
+    File file2 = new File(filePathAndName);
+    file2.writeAsBytesSync(response.bodyBytes);
+    setState(() {
+      imageData = filePathAndName;
+
+      print(imageData);
+    });
+  }
+
+  String imageData;
 }

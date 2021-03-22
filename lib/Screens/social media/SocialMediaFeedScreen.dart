@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +9,13 @@ import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
+import 'package:share/share.dart';
 import './SocialMediaMsgScreen.dart';
 import 'SocialMediaCommentScreen.dart';
 import '../social media/SearchScreen.dart';
+import 'package:http/http.dart';
+
+import 'package:path_provider/path_provider.dart';
 
 import 'package:parentpreneur/models/PostModel.dart';
 import 'package:provider/provider.dart';
@@ -99,6 +105,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
     super.didChangeDependencies();
   }
 
+  bool isSharing = false;
   @override
   void initState() {
     fetchFeeds();
@@ -412,14 +419,14 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                                 style: theme.text14,
                                               ),
                                               SizedBox(
-                                                width: width * 0.23,
+                                                width: width * 0.05,
                                               ),
                                               Icon(
                                                 Icons.comment,
                                                 size: 25,
                                               ),
                                               SizedBox(
-                                                width: width * 0.02,
+                                                width: width * 0.01,
                                               ),
                                               InkWell(
                                                 onTap: () {
@@ -437,6 +444,39 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                                   '${_list[index].comments == null ? 0 : _list[index].comments.length} Comments',
                                                   style: theme.text14,
                                                 ),
+                                              ),
+                                              SizedBox(
+                                                width: width * 0.05,
+                                              ),
+                                              InkWell(
+                                                onTap: () async {
+                                                  await _downloadAndSavePhoto(
+                                                      _list[index].postURL);
+                                                  Share.shareFiles(
+                                                      ['$imageData'],
+                                                      subject: "*Bruete*",
+                                                      text:
+                                                          "Hey! I am going to share my post from Breute ${_list[index].caption}");
+                                                  //...
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.share,
+                                                      size: 25,
+                                                    ),
+                                                    SizedBox(
+                                                      width: width * 0.01,
+                                                    ),
+                                                    Text(
+                                                      'Share',
+                                                      style: theme.text14,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: width * 0.01,
                                               ),
                                             ],
                                           ),
@@ -599,4 +639,21 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
 
     return !isLiked;
   }
+
+  Future<void> _downloadAndSavePhoto(String url) async {
+    var response = await get(url);
+    var documentDirectory = await getApplicationDocumentsDirectory();
+    var firstPath = documentDirectory.path + "/images";
+    await Directory(firstPath).create(recursive: true);
+    var filePathAndName = documentDirectory.path + '/images/pic.jpg';
+    File file2 = new File(filePathAndName);
+    file2.writeAsBytesSync(response.bodyBytes);
+    setState(() {
+      imageData = filePathAndName;
+
+      print(imageData);
+    });
+  }
+
+  String imageData;
 }
