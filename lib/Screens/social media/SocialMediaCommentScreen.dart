@@ -97,7 +97,10 @@ class _SocialMediaCommentScreenState extends State<SocialMediaCommentScreen> {
                     FocusScope.of(context).requestFocus(focusNode);
                   });
                 },
-                child: Text("reply"),
+                child: Text(
+                  "reply",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               Container(
                 height: value['reply'] == null
