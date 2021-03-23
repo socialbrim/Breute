@@ -59,7 +59,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                     child: Container(
                       height: height * 0.2,
                       child: Image.asset(
-                        'assets/3.png',
+                        'assets/1.png',
                       ),
                     ),
                   ),

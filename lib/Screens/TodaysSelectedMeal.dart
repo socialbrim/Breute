@@ -93,7 +93,7 @@ class _TodaysSelectedMealState extends State<TodaysSelectedMeal> {
             child: Scaffold(
               backgroundColor: theme.colorBackground,
               appBar: AppBar(
-                title: Text('MY Meals'),
+                title: Text('My Meals'),
               ),
               body: _filterdlist.isEmpty
                   ? Center(

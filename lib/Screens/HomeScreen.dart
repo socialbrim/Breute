@@ -330,15 +330,14 @@ class _HomeScreenState extends State<HomeScreen> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text("Are you sure!"),
-            content: Text(
-                "Warning! Choosing to close the app will stop the tracking activity.Rather minimize?"),
+            title: Text("Are you sure?"),
+            content: Text("Choosing to close now will stop progress tracking."),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text("Yes",
+                child: Text("Minimize",
                     style: TextStyle(
                       color: Colors.black,
                     )),
@@ -347,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   exit(0);
                 },
-                child: Text("Close Breure Anyway",
+                child: Text("Close Anyway",
                     style: TextStyle(
                       color: Colors.black,
                     )),

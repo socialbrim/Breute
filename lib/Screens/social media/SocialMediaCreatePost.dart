@@ -153,13 +153,19 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
         body: fileImage == null
             ? Column(
                 children: [
+                  SizedBox(
+                    height: 100,
+                  ),
                   Center(
                     child: Container(
-                      height: 300,
+                      height: 250,
                       child: Image.asset(
-                        'assets/1.png',
+                        'assets/3.png',
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 50,
                   ),
                   Center(
                     // ignore: deprecated_member_use

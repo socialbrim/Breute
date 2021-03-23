@@ -198,21 +198,28 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
-                          child: TextField(
-                            style: theme.text16Primary,
-                            controller: messageController,
-                            onChanged: (val) {
-                              setState(() {});
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(10),
-                              hintText: 'Start Typing....',
-                              hintStyle: theme.text16Primary,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                              textSelectionHandleColor: Colors.green,
+                              textSelectionColor: Colors.black,
+                            ),
+                            child: TextField(
+                              style: theme.text16Primary,
+                              controller: messageController,
+                              onChanged: (val) {
+                                setState(() {});
+                              },
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(10),
+                                hintText: 'Start Typing....',
+                                hintStyle: theme.text16Primary,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                              filled: true,
-                              fillColor: Colors.white,
                             ),
                           ),
                         ),

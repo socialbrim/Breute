@@ -410,7 +410,7 @@ class _PlansState extends State<Plans> {
                 builder: (context) => AlertDialog(
                   title: Text("Upgrade Free."),
                   content: Text(
-                      "${DateTime.now().day > 25 ? DateTime.now().day : 25 - DateTime.now().day} days left on current plan. Upgrade for free or donate to our Breute."),
+                      "${DateTime.now().day > 25 ? DateTime.now().day : 25 - DateTime.now().day} days left on current plan. Upgrade for free or donate to expand Breute's AI capabilities."),
                   actions: [
                     TextButton(
                         onPressed: () {
