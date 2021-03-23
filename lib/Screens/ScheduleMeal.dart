@@ -247,7 +247,7 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Snacks',
+                                    'Snack',
                                     style: GoogleFonts.ptMono(
                                       color: theme.colorBackground,
                                       fontSize: 24,
@@ -346,7 +346,7 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Evening Snacks',
+                                    'Evening Snack',
                                     style: GoogleFonts.ptMono(
                                       color: theme.colorBackground,
                                       fontSize: 24,

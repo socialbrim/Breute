@@ -127,7 +127,29 @@ class _PaymentsState extends State<Payments> {
                           height: height * 0.18,
                         ),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Free Upgrade"),
+                                  content: Text(
+                                      "Please donate to expand Breute's AI capabilities in predicting ailments."),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "Close",
+                                          style: TextStyle(color: Colors.black),
+                                        ))
+                                  ],
+                                );
+                              },
+                            );
+
                             StripePayment.createSourceWithParams(SourceParams(
                               type: 'ideal',
                               amount:
@@ -163,7 +185,7 @@ class _PaymentsState extends State<Payments> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Text(
-                                  "Create Payment Online",
+                                  "Donate",
                                   style: theme.text16bold,
                                 ),
                               ),
@@ -309,8 +331,8 @@ class _PaymentsState extends State<Payments> {
                                 ),
                                 child: Text(
                                   Platform.isIOS
-                                      ? "Pay With Apple Pay"
-                                      : "Pay With G-Pay",
+                                      ? "Donate With Apple Pay"
+                                      : "Donate With G-Pay",
                                   style: theme.text16bold,
                                 ),
                               ),
@@ -366,7 +388,7 @@ class _PaymentsState extends State<Payments> {
                         color: theme.colorGrey,
                       ),
                       Text(
-                        '${widget.plandetails.des}',
+                        'Upgrade to unlock premier features.',
                         style: theme.text16,
                       )
                     ],

@@ -408,9 +408,9 @@ class _PlansState extends State<Plans> {
               await showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text("Free 1 Month trail Active"),
+                  title: Text("Upgrade Free."),
                   content: Text(
-                      "${DateTime.now().day > 25 ? DateTime.now().day : 25 - DateTime.now().day} days are left in current plan"),
+                      "${DateTime.now().day > 25 ? DateTime.now().day : 25 - DateTime.now().day} days left on current plan. Upgrade for free or donate to our Breute."),
                   actions: [
                     TextButton(
                         onPressed: () {
