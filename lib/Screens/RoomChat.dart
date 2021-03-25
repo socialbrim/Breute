@@ -253,6 +253,9 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
                         width: MediaQuery.of(context).size.width * .05,
                       ),
                       GestureDetector(
+                        onTap: () async {
+                          await checkpermission();
+                        },
                         onLongPressStart: (val) async {
                           setState(() {
                             isAudioSystemON = true;
@@ -410,6 +413,7 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
         _isSendingMessage = false;
       });
     } catch (e) {
+      print(e);
       setState(() {
         _isSendingMessage = false;
       });
@@ -418,10 +422,13 @@ class _ChatRoomGrpState extends State<ChatRoomGrp> {
   }
 
   Future<void> checkpermission() async {
+    print("permission is checking on");
     var status = await Permission.microphone.status;
     print(status);
     if (status.isUndetermined) {
       print(status);
+
+      final data = await Permission.microphone.request();
     }
     if (status.isGranted) {}
     if (status.isDenied) {

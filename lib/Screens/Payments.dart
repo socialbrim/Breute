@@ -91,13 +91,6 @@ class _PaymentsState extends State<Payments> {
             backgroundColor: theme.colorPrimary,
             elevation: 0,
             toolbarHeight: 100,
-            // leading: IconButton(
-            //   iconSize: 33,
-            //   onPressed: () {},
-            //   icon: Icon(MdiIcons.chevronLeft,),
-
-            //   // color: theme.colorDefaultText,
-            // ),
             title: Text('Payment Methods'),
             centerTitle: true,
           ),
@@ -108,8 +101,8 @@ class _PaymentsState extends State<Payments> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: height * 0.23,
-                    // child: Text(''),
+                    height: height * 0.13,
+                    child: Image.asset("assets/2.png"),
                   ),
                   Container(
                     height: height * 0.61,
@@ -236,7 +229,8 @@ class _PaymentsState extends State<Payments> {
                               builder: (context) {
                                 return AlertDialog(
                                   title: Text("Congratulation 👏"),
-                                  content: Text("You upgraded your plan"),
+                                  content: Text(
+                                      "You've successfully upgraded your plan."),
                                   actions: [
                                     TextButton(
                                         onPressed: () {

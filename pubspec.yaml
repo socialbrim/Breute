@@ -69,7 +69,7 @@ dependencies:
   medcorder_audio: ^0.0.6
   audioplayers: ^0.17.4
   email_launcher: ^1.0.0
-
+  minimize_app: ^0.1.1
   
 
 

@@ -205,6 +205,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     var status = await Permission.activityRecognition.status;
     print(status);
     if (status.isUndetermined) {
+      final data = await Permission.activityRecognition.request();
       print(status);
     }
     if (status.isGranted) {}

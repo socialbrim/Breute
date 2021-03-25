@@ -430,6 +430,7 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
     var status = await Permission.microphone.status;
     print(status);
     if (status.isUndetermined) {
+      final data = await Permission.microphone.request();
       print(status);
     }
     if (status.isGranted) {}

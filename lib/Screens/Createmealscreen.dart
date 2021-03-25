@@ -59,7 +59,7 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
                     height: height * 0.03,
                   ),
                   CreateMealCard(
-                    category: "Create BreakFast",
+                    category: "Create Breakfast",
                     icon: Icon(MdiIcons.fruitGrapes, color: Colors.white),
                     breakfastcardKey: breakfastcardKey,
                     height: height,

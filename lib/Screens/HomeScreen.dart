@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:minimize_app/minimize_app.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Screens/CustomerSupport.dart';
 import 'package:parentpreneur/auth/LoginScreen.dart';
@@ -335,6 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               TextButton(
                 onPressed: () {
+                  MinimizeApp.minimizeApp();
                   Navigator.of(context).pop();
                 },
                 child: Text("Minimize",
