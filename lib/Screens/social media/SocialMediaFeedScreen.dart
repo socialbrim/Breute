@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -14,6 +15,8 @@ import './SocialMediaMsgScreen.dart';
 import 'SocialMediaCommentScreen.dart';
 import '../social media/SearchScreen.dart';
 import 'package:http/http.dart';
+import 'package:image/image.dart' as ui;
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:path_provider/path_provider.dart';
 
@@ -456,7 +459,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                                                       ['$imageData'],
                                                       subject: "*Bruete*",
                                                       text:
-                                                          "Hey! I am going to share my post from Breute ${_list[index].caption}");
+                                                          "🤩 Shared with Breute, a health-conscious social media app. Download on Playstore or Appstore. #breute ${_list[index].caption}");
                                                   //...
                                                 },
                                                 child: Row(
@@ -640,6 +643,7 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
     return !isLiked;
   }
 
+  File downloadedImage;
   Future<void> _downloadAndSavePhoto(String url) async {
     var response = await get(url);
     var documentDirectory = await getApplicationDocumentsDirectory();
@@ -647,11 +651,45 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
     await Directory(firstPath).create(recursive: true);
     var filePathAndName = documentDirectory.path + '/images/pic.jpg';
     File file2 = new File(filePathAndName);
-    file2.writeAsBytesSync(response.bodyBytes);
-    setState(() {
-      imageData = filePathAndName;
+    //...
 
-      print(imageData);
+    file2.writeAsBytesSync(response.bodyBytes);
+    await nowDownloadThatImage(file2);
+    setState(() {});
+  }
+
+  Future<void> nowDownloadThatImage(File originolFile) async {
+    //...
+    final byteData = await rootBundle.load('assets/4.png');
+    final mainPath = (await getTemporaryDirectory()).path;
+    final watermarkFile = File('$mainPath/1.png');
+    await watermarkFile.writeAsBytes(byteData.buffer
+        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+
+    ui.Image originalImage = ui.decodeImage(originolFile.readAsBytesSync());
+    ui.Image watermarkImage = ui.decodeImage(watermarkFile.readAsBytesSync());
+    ui.Image image = ui.Image(160, 50);
+    ui.drawImage(image, watermarkImage);
+    ui.copyInto(originalImage, image,
+        dstX: originalImage.width - 160 - 25,
+        dstY: originalImage.height - 50 - 25);
+    ui.drawString(originalImage, ui.arial_24, 300, 300, 'Think Different');
+    List<int> wmImage = ui.encodePng(originalImage);
+
+    var documentDirectory = await getApplicationDocumentsDirectory();
+    var firstPath = documentDirectory.path + "/imagess";
+    await Directory(firstPath).create(recursive: true);
+    var filePathAndName = documentDirectory.path + '/imagess/pics.jpg';
+    File file2 = new File(filePathAndName);
+    //...
+
+    file2.writeAsBytesSync(wmImage);
+    downloadedImage = file2;
+    setState(() {
+      print("---------------------------------------");
+      imageData = downloadedImage.path;
+
+      print("---------------------------------------");
     });
   }
 

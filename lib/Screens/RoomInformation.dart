@@ -106,8 +106,9 @@ class _RoomInformationState extends State<RoomInformation> {
                 await showDialog(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    title: Text("Are You Sure?"),
-                    content: Text("You Want to Delete Group"),
+                    title: Text("Warning ⚠️   "),
+                    content:
+                        Text("You are about to delete the room. Are you sure?"),
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -328,9 +329,9 @@ class _RoomInformationState extends State<RoomInformation> {
                           ? await showDialog(
                               context: context,
                               builder: (ctx) => AlertDialog(
-                                title: Text("Are You Sure?"),
+                                title: Text("Are you sure?"),
                                 content: Text(
-                                    "You Are the last person in group leaving group may delete this room"),
+                                    "You are the last person in the room. Leaving the room will delete the room."),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
@@ -369,7 +370,7 @@ class _RoomInformationState extends State<RoomInformation> {
                           : await showDialog(
                               context: context,
                               builder: (ctx) => AlertDialog(
-                                title: Text("Are You Sure?"),
+                                title: Text("Are you sure?"),
                                 content: Text("You Want to leave"),
                                 actions: [
                                   TextButton(

@@ -165,7 +165,7 @@ class _TodaysMealState extends State<TodaysMeal> {
                     ),
                     itemBuilder: (_) => [
                       PopupMenuItem(
-                        child: Text('BreakFast'),
+                        child: Text('Breakfast'),
                         value: FilterOption.BreakFast,
                       ),
                       PopupMenuItem(
