@@ -1,15 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:lottie/lottie.dart';
 import 'package:parentpreneur/Screens/HomeScreen.dart';
-
 import '../main.dart';
 import 'otp.dart';
 
@@ -129,6 +125,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           showToast("Error validating OTP, try again", Colors.red);
         }
       }).catchError((error) {
+        print(error);
         showToast("Try again in sometime", Colors.red);
       });
     };

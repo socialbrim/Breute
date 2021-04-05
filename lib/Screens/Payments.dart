@@ -20,8 +20,7 @@ class _PaymentsState extends State<Payments> {
   // ignore: unused_field
   PaymentMethod _paymentMethod;
   // ignore: unused_field
-  final String _currentSecret =
-      "sk_test_51IAWW6HpwMJhGfYrD1LC6dZb2cZ7RbMPFHHlqql2XbfDaP1lI8OTEZq0x1QrsctJUI2xtVjode9POKOe8trBNDqM00wzU3Iovi";
+  final String _currentSecret = "sk_live_o1Fmp7QfdomL2zSh6SEVebB7";
   // ignore: unused_field
   Source _source;
 
@@ -40,8 +39,7 @@ class _PaymentsState extends State<Payments> {
     super.initState();
 
     StripePayment.setOptions(StripeOptions(
-        publishableKey:
-            "pk_test_51IAWW6HpwMJhGfYrTky5UzFJhSHb4u6EwE0KQZP8tKhhxLUA4Ztq9xlOjVMqSMvJkTzldmtlZKeIVOnYXMkt3UhZ00x7xr9nOX",
+        publishableKey: "pk_live_Ecp3aJmLKG9mGtG11xUZSkeN",
         merchantId: "Test",
         androidPayMode: 'test'));
   }
