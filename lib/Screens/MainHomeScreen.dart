@@ -287,7 +287,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     var width = MediaQuery.of(context).size.width;
     totalsteps = 10000;
     totalcalories = 10000;
-    var totalWater = 5;
+    var totalWater = 10;
     return _isLoading
         ? Scaffold(
             body: Center(
