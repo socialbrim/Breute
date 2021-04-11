@@ -248,6 +248,9 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                         width: MediaQuery.of(context).size.width * .05,
                       ),
                       GestureDetector(
+                        onTap: () async {
+                          await checkpermission();
+                        },
                         onLongPressStart: (val) async {
                           setState(() {
                             isAudioSystemON = true;
