@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:parentpreneur/Screens/ComingSoonScreen.dart';
 import '../Screens/privacyPolicyScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -222,6 +223,72 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         Container(
                           child: Text(
                             'Schedule Meal',
+                            style: theme.text16bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ComingSoon(
+                          title: "Telehealth",
+                        ),
+                      ));
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.04,
+                        ),
+                        Icon(
+                          MdiIcons.phone,
+                          color: theme.colorPrimary,
+                          size: 30,
+                        ),
+                        SizedBox(
+                          width: width * 0.07,
+                        ),
+                        Container(
+                          child: Text(
+                            'Telehealth',
+                            style: theme.text16bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ComingSoon(
+                          title: "Pharmacy",
+                        ),
+                      ));
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.04,
+                        ),
+                        Icon(
+                          MdiIcons.pill,
+                          color: theme.colorPrimary,
+                          size: 30,
+                        ),
+                        SizedBox(
+                          width: width * 0.07,
+                        ),
+                        Container(
+                          child: Text(
+                            'Pharmacy',
                             style: theme.text16bold,
                           ),
                         ),

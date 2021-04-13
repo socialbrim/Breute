@@ -128,7 +128,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               achievedsteps == 0) {
             achievedcalories = double.parse(element.calories);
             achievedsteps = int.parse(element.step);
-            achievedWater = double.parse(element.achievedWater);
+            achievedWater = element.achievedWater == null
+                ? 0
+                : double.parse(element.achievedWater);
             print(
                 "working--------------------------------------------------------");
           }
@@ -342,6 +344,40 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                 subject: 'subject',
                                 body:
                                     '$achievedsteps steps is done by ${user.name} with user id ${user.id} and want to take a reward');
+                            await EmailLauncher.launch(email);
+                          }),
+                      IconButton(
+                          icon: Icon(MdiIcons.water),
+                          onPressed: () async {
+                            print(achievedsteps);
+                            if (achievedWater <= 8) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(
+                                      "Award unlocked at 8 glass of water."),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "OK",
+                                          style: TextStyle(color: Colors.black),
+                                        ))
+                                  ],
+                                ),
+                              );
+                              return;
+                            }
+                            final user = Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .userInformation;
+                            Email email = Email(
+                                to: ['test@gmail.com'],
+                                subject: 'subject',
+                                body:
+                                    '$achievedWater glass of water is taken by ${user.name} with user id ${user.id} and want to take a reward');
                             await EmailLauncher.launch(email);
                           })
                     ],

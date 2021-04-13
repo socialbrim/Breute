@@ -1,7 +1,9 @@
+import 'package:email_launcher/email_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
 import 'package:parentpreneur/Screens/editProfile.dart';
 import 'package:parentpreneur/models/PostModel.dart';
@@ -370,35 +372,39 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                           SizedBox(
                             height: height * .02,
                           ),
-                          Container(
-                            // padding: EdgeInsets.all(20),
-                            width: width,
-                            child: InkWell(
-                              onTap: () {
-                                Share.share(
-                                    'check out my profile on Breute App Join now with the app link : xyz');
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    MdiIcons.share,
-                                    color: Colors.grey,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: width,
+                                child: InkWell(
+                                  onTap: () {
+                                    Share.share(
+                                        'check out my profile on Breute App Join now with the app link : xyz');
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        MdiIcons.share,
+                                        color: Colors.grey,
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.05,
+                                      ),
+                                      Text(
+                                        "Share",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: width * 0.05,
-                                  ),
-                                  Text(
-                                    "Share",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                           SizedBox(
                             height: height * .02,

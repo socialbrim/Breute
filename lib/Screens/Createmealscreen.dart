@@ -23,11 +23,9 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
   GlobalKey<FlipCardState> dinnercardKey = GlobalKey<FlipCardState>();
   final _dinnerformKey = GlobalKey<FormState>();
   bool dinnerback = false;
-
   GlobalKey<FlipCardState> snackscardKey = GlobalKey<FlipCardState>();
   final _snacksformKey = GlobalKey<FormState>();
   bool snacksback = false;
-
   bool _isAccessable = false;
 
   @override
