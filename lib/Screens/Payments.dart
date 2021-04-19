@@ -88,7 +88,7 @@ class _PaymentsState extends State<Payments> {
           appBar: AppBar(
             backgroundColor: theme.colorPrimary,
             elevation: 0,
-            toolbarHeight: 100,
+            toolbarHeight: 80,
             title: Text('Payment Methods'),
             centerTitle: true,
           ),
@@ -100,7 +100,11 @@ class _PaymentsState extends State<Payments> {
                 children: [
                   Container(
                     height: height * 0.13,
-                    child: Image.asset("assets/2.png"),
+                    width: width * 0.6,
+                    child: Image.asset(
+                      "assets/2.png",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Container(
                     height: height * 0.61,

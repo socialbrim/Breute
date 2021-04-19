@@ -35,70 +35,55 @@ class _CustomerSupportState extends State<CustomerSupport> {
             'Social',
           ),
         ),
-        body: Stack(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Positioned(
+                bottom: 0,
+                child: Container(
                   child: Image.asset(
                     'assets/Path.png',
                   ),
                 ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: height * .01,
-                  ),
-                  Center(
-                    child: Container(
-                      height: height * 0.2,
-                      child: Image.asset(
-                        'assets/1.png',
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SizedBox(
+                    //   height: height * .01,
+                    // ),
+                    Center(
+                      child: Container(
+                        height: height * 0.22,
+                        width: 250,
+                        child: Image.asset(
+                          'assets/1.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: height * .03,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print(user);
-                      print(user.bio);
-                      if (user.bio == null ||
-                          user.name == null ||
-                          user.phone == null ||
-                          user.email == null) {
-                        Fluttertoast.showToast(
-                            msg: "Please complete Your profile to continue");
-                        return;
-                      }
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => SocialMediaHomeScreen(),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      // color: HexColor('ffd7db'),
-                      elevation: 20,
-                      margin: EdgeInsets.symmetric(horizontal: 50),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              HexColor('52a199'),
-                              HexColor('0f7e86'),
-                            ],
+                    // SizedBox(
+                    //   height: height * .03,
+                    // ),
+                    GestureDetector(
+                      onTap: () {
+                        print(user);
+                        print(user.bio);
+                        if (user.bio == null ||
+                            user.name == null ||
+                            user.phone == null ||
+                            user.email == null) {
+                          Fluttertoast.showToast(
+                              msg: "Please complete Your profile to continue");
+                          return;
+                        }
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SocialMediaHomeScreen(),
                           ),
+
                         ),
                         child: Center(
                           child: Padding(
@@ -117,146 +102,150 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                     child: Text(
                                       'Social',
                                       style: theme.text16boldWhite,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * .025,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (user.bio == null ||
-                          user.name == null ||
-                          user.phone == null ||
-                          user.email == null) {
-                        Fluttertoast.showToast(
-                            msg: "Please complete Your profile to continue");
-                        return;
-                      }
 
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => RoomsScreen(),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      color: HexColor('c1e5e2'),
-                      elevation: 20,
-                      margin: EdgeInsets.symmetric(horizontal: 50),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              HexColor('52a199'),
-                              HexColor('0f7e86'),
-                            ],
-                          ),
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(18.0),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  MdiIcons.accountMultiplePlus,
-                                  color: theme.colorBackground,
-                                  size: 45,
-                                ),
-                                Center(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 0, vertical: 10),
-                                    child: Text(
-                                      'Rooms',
-                                      style: theme.text16boldWhite,
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: height * .025,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (user.bio == null ||
-                          user.name == null ||
-                          user.phone == null ||
-                          user.email == null) {
-                        Fluttertoast.showToast(
-                            msg: "Please complete Your profile to continue");
-                        return;
-                      }
+                    SizedBox(
+                      height: height * .025,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (user.bio == null ||
+                            user.name == null ||
+                            user.phone == null ||
+                            user.email == null) {
+                          Fluttertoast.showToast(
+                              msg: "Please complete Your profile to continue");
+                          return;
+                        }
 
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => BetaTest(),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      color: HexColor('c1e5e2'),
-                      elevation: 20,
-                      margin: EdgeInsets.symmetric(horizontal: 50),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              HexColor('52a199'),
-                              HexColor('0f7e86'),
-                            ],
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => RoomsScreen(),
                           ),
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(18.0),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  MdiIcons.beta,
-                                  color: theme.colorBackground,
-                                  size: 45,
-                                ),
-                                Center(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 0, vertical: 10),
-                                    child: Text(
-                                      'AI Beta',
-                                      style: theme.text16boldWhite,
+                        );
+                      },
+                      child: Card(
+                        color: HexColor('c1e5e2'),
+                        elevation: 20,
+                        margin: EdgeInsets.symmetric(horizontal: 50),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                HexColor('52a199'),
+                                HexColor('0f7e86'),
+                              ],
+                            ),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(18.0),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    MdiIcons.accountMultiplePlus,
+                                    color: theme.colorBackground,
+                                    size: 45,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 0, vertical: 10),
+                                      child: Text(
+                                        'Rooms',
+                                        style: theme.text16boldWhite,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: height * .025,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (user.bio == null ||
+                            user.name == null ||
+                            user.phone == null ||
+                            user.email == null) {
+                          Fluttertoast.showToast(
+                              msg: "Please complete Your profile to continue");
+                          return;
+                        }
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BetaTest(),
+                          ),
+                        );
+                      },
+                      child: Card(
+                        color: HexColor('c1e5e2'),
+                        elevation: 20,
+                        margin: EdgeInsets.symmetric(horizontal: 50),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                HexColor('52a199'),
+                                HexColor('0f7e86'),
+                              ],
+                            ),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(18.0),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    MdiIcons.beta,
+                                    color: theme.colorBackground,
+                                    size: 45,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 0, vertical: 10),
+                                      child: Text(
+                                        'AI Beta',
+                                        style: theme.text16boldWhite,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.1,
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
