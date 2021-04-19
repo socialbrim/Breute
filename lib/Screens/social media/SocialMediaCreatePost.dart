@@ -1,7 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
 import 'dart:io';
+import 'dart:math' as Math;
+import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as Im;
 import 'package:parentpreneur/main.dart';
+import 'package:parentpreneur/models/UserModel.dart';
+import 'package:provider/provider.dart';
 import '../privacyPolicyScreen.dart';
 import './SocialMediaCreateCaption.dart';
 import 'package:images_picker/images_picker.dart';
@@ -21,6 +32,7 @@ class SocialMediaCreatePost extends StatefulWidget {
 class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
   String image;
   File fileImage;
+  bool isNotStory = true;
 
   Future<void> picker() async {
     // ignore: unused_local_variable
@@ -82,7 +94,14 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
     });
   }
 
+  bool _isLoading = false;
   bool checkedValue = false;
+  UserInformation data;
+  @override
+  void didChangeDependencies() {
+    data = Provider.of<UserProvider>(context).userInformation;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,10 +191,25 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                     child: RaisedButton(
                       color: theme.colorPrimary,
                       onPressed: () {
+                        isNotStory = true;
                         picker();
                       },
                       child: Text(
                         "Upload an Image",
+                        style: theme.text14boldWhite,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    // ignore: deprecated_member_use
+                    child: RaisedButton(
+                      color: theme.colorPrimary,
+                      onPressed: () {
+                        isNotStory = false;
+                        picker();
+                      },
+                      child: Text(
+                        "Upload an Story",
                         style: theme.text14boldWhite,
                       ),
                     ),
@@ -242,8 +276,8 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                       // ignore: deprecated_member_use
                       child: RaisedButton(
                         color: theme.colorPrimary,
-                        onPressed: () {
-                          if (image != null)
+                        onPressed: () async {
+                          if (image != null && isNotStory)
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => SocialMediaCreateCaption(
@@ -251,6 +285,43 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
                                 ),
                               ),
                             );
+                          else if (image != null && !isNotStory) {
+                            File file = File(image);
+                            final compFile = await compressImage(file);
+                            final key = FirebaseDatabase.instance
+                                .reference()
+                                .child("Stories")
+                                .child(FirebaseAuth.instance.currentUser.uid)
+                                .push()
+                                .key;
+                            final ref = FirebaseStorage.instance
+                                .ref()
+                                .child("Stories")
+                                .child(
+                                    "${FirebaseAuth.instance.currentUser.uid}")
+                                .child("$key" + ".jpg");
+                            await ref.putFile(compFile);
+                            final vals = await ref.getDownloadURL();
+                            FirebaseDatabase.instance
+                                .reference()
+                                .child("Stories")
+                                .child(FirebaseAuth.instance.currentUser.uid)
+                                .child(key)
+                                .update({
+                              "image": vals,
+                              "name": data.name,
+                              "Dp": data.imageUrl,
+                              "dateTime": DateTime.now().toIso8601String(),
+                            });
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            Fluttertoast.showToast(
+                                msg: "Story uploaded successfully");
+
+                            Provider.of<BarIndexChange>(context, listen: false)
+                                .setBarindex(0);
+                          }
                         },
                         child: Text(
                           "Next",
@@ -262,5 +333,22 @@ class _SocialMediaCreatePostState extends State<SocialMediaCreatePost> {
               ),
       ),
     );
+  }
+
+  Future<File> compressImage(File images) async {
+    File compressedimage;
+
+    File imageFile = images;
+    final tempDir = await getTemporaryDirectory();
+    final path = tempDir.path;
+    int rand = new Math.Random().nextInt(10000);
+
+    Im.Image image = Im.decodeImage(imageFile.readAsBytesSync());
+
+    var compressedImage = new File('$path/img_$rand.jpg')
+      ..writeAsBytesSync(Im.encodeJpg(image, quality: 20));
+    compressedimage = compressedImage;
+
+    return compressedimage;
   }
 }

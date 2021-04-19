@@ -48,6 +48,7 @@ dependencies:
   pedometer:
   intl:
   flutter_linkify: ^4.0.2
+  location:
   url_launcher:
   flutter_local_notifications: ^3.0.2
   firebase_core:
@@ -70,8 +71,8 @@ dependencies:
   audioplayers: ^0.17.4
   email_launcher: ^1.0.0
   minimize_app: ^0.1.1
-  
-
+  cached_network_image:
+  phone_number: ^0.9.0+1
 
 dev_dependencies:
   flutter_test:

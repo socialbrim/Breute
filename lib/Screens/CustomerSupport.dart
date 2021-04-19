@@ -83,42 +83,26 @@ class _CustomerSupportState extends State<CustomerSupport> {
                           MaterialPageRoute(
                             builder: (context) => SocialMediaHomeScreen(),
                           ),
-                        );
-                      },
-                      child: Card(
-                        // color: HexColor('ffd7db'),
-                        elevation: 20,
-                        margin: EdgeInsets.symmetric(horizontal: 50),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                HexColor('52a199'),
-                                HexColor('0f7e86'),
-                              ],
-                            ),
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(18.0),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    MdiIcons.accountMultiple,
-                                    color: theme.colorBackground,
-                                    size: 45,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 0, vertical: 10),
-                                      child: Text(
-                                        'Connect With Friends',
-                                        style: theme.text16boldWhite,
-                                      ),
+
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(18.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  MdiIcons.accountMultiple,
+                                  color: theme.colorBackground,
+                                  size: 45,
+                                ),
+                                Center(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 10),
+                                    child: Text(
+                                      'Social',
+                                      style: theme.text16boldWhite,
+
                                     ),
                                   ),
                                 ],

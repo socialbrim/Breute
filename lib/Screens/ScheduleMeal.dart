@@ -204,20 +204,67 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      schedulingBreakfast();
-                                    },
-                                    child: InkWell(
-                                      child: Text(
-                                        _scheduleTimeofBreakfast == null
-                                            ? 'Set Time'
-                                            : pmOrAm(_scheduleTimeofBreakfast),
-                                        // textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: theme.text14boldWhite,
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          schedulingBreakfast();
+                                        },
+                                        child: InkWell(
+                                          child: Text(
+                                            _scheduleTimeofBreakfast == null
+                                                ? 'Set Time'
+                                                : pmOrAm(
+                                                    _scheduleTimeofBreakfast),
+                                            // textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: theme.text14boldWhite,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      if (_scheduleTimeofBreakfast != null)
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            _scheduleTimeofBreakfast = null;
+                                            setState(() {});
+                                            FirebaseDatabase.instance
+                                                .reference()
+                                                .child("CustomSchedule")
+                                                .child(FirebaseAuth
+                                                    .instance.currentUser.uid)
+                                                .update(
+                                              {
+                                                "Morning":
+                                                    _scheduleTimeofBreakfast ==
+                                                            null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofBreakfast.hour}:${_scheduleTimeofBreakfast.minute}"
+                                                          },
+                                                "AfterNoon":
+                                                    _scheduleTimeofLunch == null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofLunch.hour}:${_scheduleTimeofLunch.minute}"
+                                                          },
+                                                "Eve": _scheduleTimeofDinner ==
+                                                        null
+                                                    ? null
+                                                    : {
+                                                        "Time":
+                                                            "${_scheduleTimeofDinner.hour}:${_scheduleTimeofDinner.minute}"
+                                                      },
+                                              },
+                                            );
+                                          },
+                                        ),
+                                    ],
                                   )
                                 ],
                               ),
@@ -253,18 +300,65 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  InkWell(
-                                      onTap: () {
-                                        schedulingSnacks1();
-                                      },
-                                      child: Text(
-                                        _scheduleTimeofSnacks1 == null
-                                            ? 'Set Time'
-                                            : pmOrAm(_scheduleTimeofSnacks1),
-                                        // textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: theme.text14boldWhite,
-                                      ))
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          schedulingSnacks1();
+                                        },
+                                        child: Text(
+                                          _scheduleTimeofSnacks1 == null
+                                              ? 'Set Time'
+                                              : pmOrAm(_scheduleTimeofSnacks1),
+                                          // textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.text14boldWhite,
+                                        ),
+                                      ),
+                                      if (_scheduleTimeofSnacks1 != null)
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            _scheduleTimeofSnacks1 = null;
+                                            setState(() {});
+                                            FirebaseDatabase.instance
+                                                .reference()
+                                                .child("CustomSchedule")
+                                                .child(FirebaseAuth
+                                                    .instance.currentUser.uid)
+                                                .update(
+                                              {
+                                                "Morning":
+                                                    _scheduleTimeofBreakfast ==
+                                                            null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofBreakfast.hour}:${_scheduleTimeofBreakfast.minute}"
+                                                          },
+                                                "AfterNoon":
+                                                    _scheduleTimeofLunch == null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofLunch.hour}:${_scheduleTimeofLunch.minute}"
+                                                          },
+                                                "Eve": _scheduleTimeofDinner ==
+                                                        null
+                                                    ? null
+                                                    : {
+                                                        "Time":
+                                                            "${_scheduleTimeofDinner.hour}:${_scheduleTimeofDinner.minute}"
+                                                      },
+                                              },
+                                            );
+                                          },
+                                        ),
+                                    ],
+                                  )
                                 ],
                               ),
                             ],
@@ -305,18 +399,64 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      schedulingLunch();
-                                    },
-                                    child: Text(
-                                      _scheduleTimeofLunch == null
-                                          ? 'Set Time'
-                                          : pmOrAm(_scheduleTimeofLunch),
-                                      // textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.text14boldWhite,
-                                    ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          schedulingLunch();
+                                        },
+                                        child: Text(
+                                          _scheduleTimeofLunch == null
+                                              ? 'Set Time'
+                                              : pmOrAm(_scheduleTimeofLunch),
+                                          // textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.text14boldWhite,
+                                        ),
+                                      ),
+                                      if (_scheduleTimeofLunch != null)
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            _scheduleTimeofLunch = null;
+                                            setState(() {});
+                                            FirebaseDatabase.instance
+                                                .reference()
+                                                .child("CustomSchedule")
+                                                .child(FirebaseAuth
+                                                    .instance.currentUser.uid)
+                                                .update(
+                                              {
+                                                "Morning":
+                                                    _scheduleTimeofBreakfast ==
+                                                            null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofBreakfast.hour}:${_scheduleTimeofBreakfast.minute}"
+                                                          },
+                                                "AfterNoon":
+                                                    _scheduleTimeofLunch == null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofLunch.hour}:${_scheduleTimeofLunch.minute}"
+                                                          },
+                                                "Eve": _scheduleTimeofDinner ==
+                                                        null
+                                                    ? null
+                                                    : {
+                                                        "Time":
+                                                            "${_scheduleTimeofDinner.hour}:${_scheduleTimeofDinner.minute}"
+                                                      },
+                                              },
+                                            );
+                                          },
+                                        ),
+                                    ],
                                   )
                                 ],
                               ),
@@ -352,18 +492,64 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      schedulingSnacks2();
-                                    },
-                                    child: Text(
-                                      _scheduleTimeofSnacks2 == null
-                                          ? 'Set Time'
-                                          : pmOrAm(_scheduleTimeofSnacks2),
-                                      // textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.text14boldWhite,
-                                    ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          schedulingSnacks2();
+                                        },
+                                        child: Text(
+                                          _scheduleTimeofSnacks2 == null
+                                              ? 'Set Time'
+                                              : pmOrAm(_scheduleTimeofSnacks2),
+                                          // textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.text14boldWhite,
+                                        ),
+                                      ),
+                                      if (_scheduleTimeofSnacks2 != null)
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            _scheduleTimeofSnacks2 = null;
+                                            setState(() {});
+                                            FirebaseDatabase.instance
+                                                .reference()
+                                                .child("CustomSchedule")
+                                                .child(FirebaseAuth
+                                                    .instance.currentUser.uid)
+                                                .update(
+                                              {
+                                                "Morning":
+                                                    _scheduleTimeofBreakfast ==
+                                                            null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofBreakfast.hour}:${_scheduleTimeofBreakfast.minute}"
+                                                          },
+                                                "AfterNoon":
+                                                    _scheduleTimeofLunch == null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofLunch.hour}:${_scheduleTimeofLunch.minute}"
+                                                          },
+                                                "Eve": _scheduleTimeofDinner ==
+                                                        null
+                                                    ? null
+                                                    : {
+                                                        "Time":
+                                                            "${_scheduleTimeofDinner.hour}:${_scheduleTimeofDinner.minute}"
+                                                      },
+                                              },
+                                            );
+                                          },
+                                        ),
+                                    ],
                                   )
                                 ],
                               ),
@@ -403,18 +589,64 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                                       fontSize: 24,
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      schedulingDinner();
-                                    },
-                                    child: Text(
-                                      _scheduleTimeofDinner == null
-                                          ? 'Set Time'
-                                          : pmOrAm(_scheduleTimeofDinner),
-                                      // textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.text14boldWhite,
-                                    ),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          schedulingDinner();
+                                        },
+                                        child: Text(
+                                          _scheduleTimeofDinner == null
+                                              ? 'Set Time'
+                                              : pmOrAm(_scheduleTimeofDinner),
+                                          // textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.text14boldWhite,
+                                        ),
+                                      ),
+                                      if (_scheduleTimeofDinner != null)
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            _scheduleTimeofDinner = null;
+                                            setState(() {});
+                                            FirebaseDatabase.instance
+                                                .reference()
+                                                .child("CustomSchedule")
+                                                .child(FirebaseAuth
+                                                    .instance.currentUser.uid)
+                                                .update(
+                                              {
+                                                "Morning":
+                                                    _scheduleTimeofBreakfast ==
+                                                            null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofBreakfast.hour}:${_scheduleTimeofBreakfast.minute}"
+                                                          },
+                                                "AfterNoon":
+                                                    _scheduleTimeofLunch == null
+                                                        ? null
+                                                        : {
+                                                            "Time":
+                                                                "${_scheduleTimeofLunch.hour}:${_scheduleTimeofLunch.minute}"
+                                                          },
+                                                "Eve": _scheduleTimeofDinner ==
+                                                        null
+                                                    ? null
+                                                    : {
+                                                        "Time":
+                                                            "${_scheduleTimeofDinner.hour}:${_scheduleTimeofDinner.minute}"
+                                                      },
+                                              },
+                                            );
+                                          },
+                                        ),
+                                    ],
                                   )
                                 ],
                               ),
@@ -426,36 +658,6 @@ class _ScheduleMealState extends State<ScheduleMeal> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.end,
-                    //     children: [
-                    //       GestureDetector(
-                    //         onTap: () {
-                    //           schedulingDinner();
-                    //         },
-                    //         child: ClipRRect(
-                    //           borderRadius: BorderRadius.circular(20),
-                    //           child: Container(
-                    //             alignment: Alignment.center,
-                    //             height: height * 0.05,
-                    //             width: width * 0.45,
-                    //             color: theme.colorPrimary,
-                    //             child: Text(
-                    //               _scheduleTimeofDinner == null
-                    //                   ? 'Set Time'
-                    //                   : pmOrAm(_scheduleTimeofDinner),
-                    //               // textAlign: TextAlign.center,
-                    //               overflow: TextOverflow.ellipsis,
-                    //               style: theme.text14boldWhite,
-                    //             ),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     SizedBox(
                       height: height * 0.07,
                     ),

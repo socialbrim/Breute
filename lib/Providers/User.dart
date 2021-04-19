@@ -3,6 +3,8 @@ import 'package:parentpreneur/models/UserModel.dart';
 
 class UserProvider with ChangeNotifier {
   UserInformation userInformation;
+  double achievedsteps;
+  double achievedWater;
 
   void setUser(UserInformation userInformation) {
     this.userInformation = userInformation;

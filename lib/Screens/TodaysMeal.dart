@@ -96,7 +96,7 @@ class _TodaysMealState extends State<TodaysMeal> {
                         builder: (context) => TodaysSelectedMeal(),
                       ));
                     },
-                    icon: Icon(Icons.people),
+                    icon: Icon(Icons.favorite),
                   ),
                   IconButton(
                     onPressed: () async {

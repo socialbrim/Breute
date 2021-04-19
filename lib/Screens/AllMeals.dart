@@ -496,61 +496,78 @@ class _AllMealsState extends State<AllMeals> {
                                       SizedBox(
                                         height: height * 0.025,
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          // ignore: deprecated_member_use
-                                          RaisedButton(
-                                            color: theme.colorBackground,
-                                            onPressed: () async {
-                                              final selectedDate =
-                                                  await showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime.now(),
-                                                lastDate: DateTime.now()
-                                                    .add(Duration(days: 5)),
-                                                builder: (context, child) {
-                                                  return Theme(
-                                                    data: ThemeData.dark(),
-                                                    child: child,
-                                                  );
-                                                },
+
+//...
+                                      InkWell(
+                                        onTap: () async {
+                                          final selectedDate =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime.now()
+                                                .add(Duration(days: 5)),
+                                            builder: (context, child) {
+                                              return Theme(
+                                                data: ThemeData.dark(),
+                                                child: child,
                                               );
-                                              //...
-                                              FirebaseDatabase.instance
-                                                  .reference()
-                                                  .child("MyScheduledMeal")
-                                                  .child(FirebaseAuth
-                                                      .instance.currentUser.uid)
-                                                  .child(formatDate(
-                                                      selectedDate == null
-                                                          ? DateTime.now()
-                                                          : selectedDate))
-                                                  .update({
-                                                "${_filterdlist[index].type}":
-                                                    "${_filterdlist[index].mealDate}"
-                                              });
                                             },
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  MdiIcons.calendar,
-                                                  color: theme.colorPrimary,
-                                                ),
-                                                SizedBox(
-                                                  width: width * 0.02,
-                                                ),
-                                                Text(
-                                                  "Add to schedule",
-                                                  style: theme.text14boldPimary,
-                                                ),
-                                              ],
+                                          );
+                                          //...
+                                          FirebaseDatabase.instance
+                                              .reference()
+                                              .child("MyScheduledMeal")
+                                              .child(FirebaseAuth
+                                                  .instance.currentUser.uid)
+                                              .child(formatDate(
+                                                  selectedDate == null
+                                                      ? DateTime.now()
+                                                      : selectedDate))
+                                              .update({
+                                            "${_filterdlist[index].type}":
+                                                "${_filterdlist[index].mealDate}"
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: Card(
+                                            color: theme.colorBackground,
+                                            child: Container(
+                                              padding: EdgeInsets.all(20),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Icon(
+                                                        MdiIcons.calendar,
+                                                        color:
+                                                            theme.colorPrimary,
+                                                      ),
+                                                      Text(
+                                                        "Add to schedule",
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                          color: theme
+                                                              .colorPrimary,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ],
+                                        ),
                                       ),
+
                                       SizedBox(
                                         height: height * 0.025,
                                       ),
