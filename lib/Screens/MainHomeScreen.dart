@@ -3,8 +3,10 @@ import 'package:email_launcher/email_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fit_kit/fit_kit.dart';
+import 'package:location/location.dart';
 import 'package:parentpreneur/Providers/HomeScreenCtrl.dart';
 import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/models/UserModel.dart';
 import '../Screens/UpgradePlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,6 +39,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   List<StepsModel> _list = [];
 
   bool _isAccessable = false;
+  UserInformation userinfo;
 
   @override
   void didChangeDependencies() {
@@ -46,8 +49,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       }
       print(_isAccessable);
     });
-
-    final boolean = Provider.of<HomeProvider>(context).isLoaded;
+    userinfo = Provider.of<UserProvider>(context).userInformation;
 
     super.didChangeDependencies();
   }
@@ -79,6 +81,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
     checkpermission();
+    fetchLocation();
     final now = DateTime.now();
     _dates.add(null);
     for (int i = 7; i >= 0; i--) {
@@ -283,8 +286,30 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     setState(() {});
   }
 
+  void fetchLocation() async {
+    final permission = await Permission.location.status;
+    if (permission.isUndetermined || permission.isDenied) {
+      Permission.location.request();
+    }
+    final perr = await Permission.location.status;
+    if (perr.isGranted) {
+      final service = await Location.instance.requestService();
+      if (service) {
+        final getLocation = await Location.instance.getLocation();
+        print("--------------------------------------------");
+        print(getLocation.latitude);
+        print(getLocation.longitude);
+        print("--------------------------------------------");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserProvider>(context, listen: false).achievedWater =
+        achievedWater;
+    Provider.of<UserProvider>(context, listen: false).achievedsteps =
+        achievedsteps.toDouble();
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     totalsteps = 10000;
@@ -306,9 +331,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   appBar: AppBar(
                     elevation: 6,
                     title: CircleAvatar(
-                      child: currentuser.photoURL == null
-                          ? Image.asset("assets/unnamed.png")
-                          : Image.network(currentuser.photoURL),
+                      backgroundImage: userinfo.imageUrl == null
+                          ? NetworkImage("assets/unnamed.png")
+                          : NetworkImage(userinfo.imageUrl),
                     ),
                     centerTitle: false,
                     actions: [

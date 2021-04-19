@@ -8,18 +8,17 @@ import 'package:slimy_card/slimy_card.dart';
 import '../models/workoutModel.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
-import '../Screens/UpgradePlanScreen.dart';
+import 'UpgradePlanScreen.dart';
 import '../Providers/MyPlanProvider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../Providers/favProvider.dart';
-import './FavWorkoutScreen.dart';
 
-class ProTipForWorkOutScreen extends StatefulWidget {
+class FavWorkoutScreen extends StatefulWidget {
   @override
-  _ProTipForWorkOutScreenState createState() => _ProTipForWorkOutScreenState();
+  _FavWorkoutScreenState createState() => _FavWorkoutScreenState();
 }
 
-class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
+class _FavWorkoutScreenState extends State<FavWorkoutScreen> {
   List<WorkoutModel> _list = [];
 
   List<WorkoutModel> _filterdlist = [];
@@ -58,42 +57,10 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
   }
 
   void fetchProTips() async {
-    final data = await FirebaseDatabase.instance
-        .reference()
-        .child("WorkoutTips")
-        .once()
-        .timeout(
-          Duration(
-            seconds: 8,
-          ),
-        );
-    if (data.value != null) {
-      final mapped = data.value as Map;
-      mapped.forEach((key, value) {
-        final map = value as Map;
-        map.forEach((key, value) {
-          _list.add(
-            WorkoutModel(
-              date: value['date'] == null
-                  ? DateTime.now()
-                  : DateTime.parse(value['date']),
-              des: value['Description'],
-              id: key,
-              imageURL: value['ImageURL'],
-              name: value['Name'],
-              vidLink: value['VideoLink'],
-              controller: YoutubePlayerController(
-                initialVideoId:
-                    YoutubePlayer.convertUrlToId("${value['VideoLink']}"),
-                flags: YoutubePlayerFlags(
-                  isLive: true,
-                  mute: false,
-                  autoPlay: false,
-                ),
-              ),
-            ),
-          );
-        });
+    final data = Provider.of<FavProvider>(context, listen: false).map;
+    if (data != null) {
+      data.forEach((key, value) {
+        _list.add(value);
       });
     }
     setState(() {
@@ -242,15 +209,11 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
         : Scaffold(
             backgroundColor: theme.colorBackground,
             appBar: AppBar(
-              title: Text('The Gym'),
+              title: Text('My favorite'),
               actions: [
                 IconButton(
                   icon: Icon(Icons.favorite),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => FavWorkoutScreen(),
-                    ));
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),

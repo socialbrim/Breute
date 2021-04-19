@@ -12,6 +12,7 @@ import './Providers/MyPlanProvider.dart';
 import 'Providers/User.dart';
 import 'Screens/SplashScreen.dart';
 import 'Providers/socialmedialBarindex.dart';
+import './Providers/favProvider.dart';
 
 AppThemeData theme = AppThemeData();
 Future<void> main() async {
@@ -27,6 +28,9 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FavProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => AppThemeData(),

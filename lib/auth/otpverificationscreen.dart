@@ -129,6 +129,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         showToast("Try again in sometime", Colors.red);
       });
     };
+
     final PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
       showToast(authException.message, Colors.red);

@@ -9,6 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/Screens/Transitions/fade.dart';
+import 'package:parentpreneur/Screens/social%20media/StoryScreen.dart';
+import 'package:parentpreneur/models/StoryModel.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:share/share.dart';
 import './SocialMediaMsgScreen.dart';
@@ -32,6 +35,7 @@ class SocialMediaFeedScreen extends StatefulWidget {
 
 class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
   List<PostModel> _list = [];
+  List<StoryModel> _listStory = [];
   bool _isLoading = true;
 
   Future<void> fetchFeeds() async {
@@ -87,17 +91,46 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
             _isLoading = false;
           });
         }
+        //.....
+
+        // stories
       });
       Future.delayed(Duration(seconds: 4)).then((value) {
         setState(() {
           _isLoading = false;
         });
       });
+      fetchStories(mapped);
     } else {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  void fetchStories(Map myfrnds) {
+    _listStory = [];
+    myfrnds.forEach((uid, _) async {
+      //..
+
+      final eachMemberPost = await FirebaseDatabase.instance
+          .reference()
+          .child("Stories")
+          .child(FirebaseAuth.instance.currentUser.uid)
+          .once();
+      print(eachMemberPost.value);
+      if (eachMemberPost.value != null) {
+        final map = eachMemberPost.value as Map;
+        map.forEach((key, value) {
+          _listStory.add(StoryModel(
+            dp: value['Dp'],
+            imageurl: value['image'],
+            name: value['name'],
+            time: DateTime.parse(value['dateTime']),
+          ));
+        });
+      }
+    });
   }
 
   UserInformation data;
@@ -179,8 +212,56 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                 body: SingleChildScrollView(
                   child: Column(
                     children: [
+                      if (_listStory.isNotEmpty)
+                        Padding(
+                          padding:
+                              EdgeInsets.only(left: 20, right: 20, top: 10),
+                          child: SizedBox(
+                            height: 70,
+                            child: Center(
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _listStory.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        FadeRoute(
+                                          page: StoryScreen(
+                                            stories: _listStory,
+                                            currentIndex: index,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 10),
+                                      child: Container(
+                                        height: 70,
+                                        width: 70,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(
+                                              "${_listStory[index].dp}",
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      Divider(
+                        color: Colors.black54,
+                      ),
                       SizedBox(
-                        height: height * .03,
+                        height: height * .01,
                       ),
                       Row(
                         children: [

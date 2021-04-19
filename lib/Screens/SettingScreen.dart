@@ -53,99 +53,104 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: theme.colorBackground,
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              SizedBox(
-                height: height * 0.02,
-              ),
-              SwitchListTile(
-                title: Text(
-                  theme.darkMode ? 'Light Theme' : "Dark Theme",
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: theme.colorBackground,
+        appBar: AppBar(
+          title: Text('Settings'),
+        ),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: height * 0.02,
                 ),
-                onChanged: (value) async {
-                  setState(() {
-                    _isLoading = true;
-                  });
-                  Provider.of<AppThemeData>(context, listen: false)
-                      .changeDarkMode();
-                  theme.changeDarkMode();
-                  await Future.delayed(Duration(seconds: 2));
-                  setState(() {
-                    _isLoading = false;
-                  });
-                },
-                value: theme.darkMode,
-              ),
-              SwitchListTile(
-                title: Text("Notifications"),
-                onChanged: (value) async {
-                  //....
-                  setState(() {
-                    _isLoading = true;
-                  });
-                  if (value) {
-                    await genNewToken();
-                    FirebaseDatabase.instance
-                        .reference()
-                        .child("User Information")
-                        .child(FirebaseAuth.instance.currentUser.uid)
-                        .update({
-                      "Notification": true,
-                      "fcmtoken": tokenID,
+                SwitchListTile(
+                  title: Text(
+                    theme.darkMode ? 'Light Theme' : "Dark Theme",
+                  ),
+                  onChanged: (value) async {
+                    setState(() {
+                      _isLoading = true;
                     });
-                  } else {
-                    FirebaseDatabase.instance
-                        .reference()
-                        .child("User Information")
-                        .child(FirebaseAuth.instance.currentUser.uid)
-                        .child("fcmtoken")
-                        .remove();
-                    FirebaseDatabase.instance
-                        .reference()
-                        .child("User Information")
-                        .child(FirebaseAuth.instance.currentUser.uid)
-                        .update({
-                      "Notification": false,
+                    Provider.of<AppThemeData>(context, listen: false)
+                        .changeDarkMode();
+                    theme.changeDarkMode();
+                    await Future.delayed(Duration(seconds: 2));
+                    setState(() {
+                      _isLoading = false;
                     });
-                  }
-                  setState(() {
-                    _isLoading = false;
-                  });
-                },
-                value: _isNotificationON,
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => Plans(),
-                  ));
-                },
-                title: Text("My Subscriptions"),
+                  },
+                  value: theme.darkMode,
+                  activeColor: Colors.grey,
+                ),
+                SwitchListTile(
+                  activeColor: Colors.grey,
+                  title: Text("Notifications"),
+                  onChanged: (value) async {
+                    //....
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    if (value) {
+                      await genNewToken();
+                      FirebaseDatabase.instance
+                          .reference()
+                          .child("User Information")
+                          .child(FirebaseAuth.instance.currentUser.uid)
+                          .update({
+                        "Notification": true,
+                        "fcmtoken": tokenID,
+                      });
+                    } else {
+                      FirebaseDatabase.instance
+                          .reference()
+                          .child("User Information")
+                          .child(FirebaseAuth.instance.currentUser.uid)
+                          .child("fcmtoken")
+                          .remove();
+                      FirebaseDatabase.instance
+                          .reference()
+                          .child("User Information")
+                          .child(FirebaseAuth.instance.currentUser.uid)
+                          .update({
+                        "Notification": false,
+                      });
+                    }
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  },
+                  value: _isNotificationON,
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Plans(),
+                    ));
+                  },
+                  title: Text("My Subscriptions"),
+                )
+              ],
+            ),
+            if (_isLoading)
+              Center(
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  padding: EdgeInsets.all(25),
+                  color: theme.darkMode
+                      ? Colors.white.withOpacity(0.85)
+                      : Colors.black.withOpacity(0.85),
+                  child: CircularProgressIndicator(
+                    backgroundColor:
+                        theme.darkMode ? Colors.white : Colors.black,
+                  ),
+                ),
               )
-            ],
-          ),
-          if (_isLoading)
-            Center(
-              child: Container(
-                height: 100,
-                width: 100,
-                padding: EdgeInsets.all(25),
-                color: theme.darkMode
-                    ? Colors.white.withOpacity(0.85)
-                    : Colors.black.withOpacity(0.85),
-                child: CircularProgressIndicator(
-                  backgroundColor: theme.darkMode ? Colors.white : Colors.black,
-                ),
-              ),
-            )
-        ],
+          ],
+        ),
       ),
     );
   }

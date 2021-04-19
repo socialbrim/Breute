@@ -115,7 +115,7 @@ class _CustomerSupportState extends State<CustomerSupport> {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 0, vertical: 10),
                                     child: Text(
-                                      'Connect With Friends',
+                                      'Social',
                                       style: theme.text16boldWhite,
                                     ),
                                   ),

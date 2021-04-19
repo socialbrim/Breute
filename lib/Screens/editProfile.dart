@@ -1,17 +1,14 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:images_picker/images_picker.dart';
-
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/models/UserModel.dart';
-
 import 'package:provider/provider.dart';
 import '../main.dart';
 
@@ -24,9 +21,11 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   // ignore: unused_field
   bool _isLoading = false;
+  bool _isEmailVerified = false;
+  bool _isPhoneVerified = false;
   File image;
   String imageNetwork;
-
+  String _verificationId;
   Future<void> picker() async {
     // ignore: unused_local_variable
     File document;
@@ -107,6 +106,25 @@ class _EditProfileState extends State<EditProfile> {
     if (!_formKey.currentState.validate()) {
       return;
     }
+    if (phone.text != dta.phone) {
+      try {
+        AuthCredential _authCredential = PhoneAuthProvider.credential(
+            verificationId: _verificationId, smsCode: otp.text.trim());
+        _isPhoneVerified = true;
+      } catch (e) {
+        print(e);
+      }
+    }
+    if (phone.text != dta.phone && !_isPhoneVerified) {
+      Fluttertoast.showToast(msg: "Please verify the phone");
+      return;
+    }
+
+    if (email.text != dta.phone && !_isEmailVerified) {
+      Fluttertoast.showToast(msg: "Please verify the email");
+      return;
+    }
+
     setState(() {
       _isUploadig = true;
     });
@@ -207,12 +225,84 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController phone = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController bio = TextEditingController();
+  TextEditingController otp = TextEditingController();
   // bool _isLogedInWithGoogle = false;
   UserInformation data;
+
+  Future<void> verifyPhone() async {
+    try {
+      bool _isLoading = false;
+      final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+      final PhoneCodeSent codeSent =
+          (String verificationId, [int forceResendingToken]) async {
+        _verificationId = verificationId;
+        setState(() {
+          _verificationId = verificationId;
+        });
+      };
+      final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+          (String verificationId) {
+        print("is there any error");
+        _verificationId = verificationId;
+        setState(() {
+          _verificationId = verificationId;
+        });
+      };
+
+      //Change country code
+      print(phone.text);
+      final no = phone.text.replaceAll(RegExp('-'), "");
+      final finalNo = no.replaceAll(RegExp(' '), "");
+      await _firebaseAuth.verifyPhoneNumber(
+          phoneNumber: finalNo,
+          verificationCompleted: (e) {
+            print("done");
+            print(e.smsCode);
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            print(e.message);
+            print("check============================");
+          },
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+      await Future.delayed(Duration(seconds: 2))
+          .then((value) => print(_verificationId));
+    } catch (e) {
+      print(e);
+      print("---------------------------------------------");
+    }
+  }
+
+  verifyEmail() {
+    try {
+      ActionCodeSettings setting = new ActionCodeSettings(
+        url: "https://parentpreneur.page.link",
+        android: {
+          'packageName': "com.example.parentpreneur",
+          'installApp': true,
+          'minimumVersion': '12'
+        },
+        iOS: {
+          'bundleId': "com.example.parentpreneur",
+        },
+        handleCodeInApp: true,
+      );
+      FirebaseAuth.instance.sendSignInLinkToEmail(
+          email: "${email.text}", actionCodeSettings: setting);
+      print(_isEmailVerified);
+
+      setState(() {
+        _isEmailVerified = true;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  UserInformation dta;
   @override
   void initState() {
-    final dta =
-        Provider.of<UserProvider>(context, listen: false).userInformation;
+    dta = Provider.of<UserProvider>(context, listen: false).userInformation;
     data = dta;
     email.text = dta.email;
     name.text = dta.name;
@@ -322,48 +412,64 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(
                 height: height * 0.025,
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                    // vertical: 5,
-                  ),
-                  // height: height * 0.06,
-                  width: width * 0.78,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: theme.colorCompanion,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextFormField(
-                    // initialValue: name,
-                    controller: email,
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        // vertical: 5,
+                      ),
+                      // height: height * 0.06,
+                      width: width * 0.78,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.colorCompanion,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        // initialValue: name,
+                        controller: email,
 
-                    keyboardType: TextInputType.name,
-                    style: theme.text16,
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Enter in Field";
-                      } else
-                        return null;
-                    },
-                    decoration: InputDecoration(
-                      hintText: "email",
-                      hintStyle: TextStyle(
-                        color: theme.colorPrimary,
-                      ),
-                      border: InputBorder.none,
-                      icon: Icon(
-                        MdiIcons.at,
-                        color: theme.colorCompanion,
+                        keyboardType: TextInputType.name,
+                        style: theme.text16,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Enter in Field";
+                          } else
+                            return null;
+                        },
+                        onChanged: (v) {
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          hintText: "email",
+                          hintStyle: TextStyle(
+                            color: theme.colorPrimary,
+                          ),
+                          border: InputBorder.none,
+                          icon: Icon(
+                            MdiIcons.at,
+                            color: theme.colorCompanion,
+                          ),
+                        ),
                       ),
                     ),
+                  ),
+                ],
+              ),
+              if (email.text != dta.email && !_isEmailVerified)
+                InkWell(
+                  onTap: () {
+                    verifyEmail();
+                  },
+                  child: Container(
+                    child: Text("verify"),
                   ),
                 ),
-              ),
               SizedBox(
                 height: height * 0.025,
               ),
@@ -384,6 +490,9 @@ class _EditProfileState extends State<EditProfile> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextFormField(
+                    onChanged: (v) {
+                      setState(() {});
+                    },
                     // enabled: false,
                     controller: phone,
                     keyboardType: TextInputType.name,
@@ -406,6 +515,61 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
               ),
+              if (phone.text != dta.phone)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 5),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          // vertical: 5,
+                        ),
+                        // height: height * 0.06,
+                        width: width * 0.38,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: theme.colorCompanion,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextFormField(
+                          // initialValue: name,
+                          controller: otp,
+
+                          keyboardType: TextInputType.name,
+                          style: theme.text16,
+                          validator: (val) {
+                            if (val.isEmpty) {
+                              return "Enter in Field";
+                            } else
+                              return null;
+                          },
+                          onChanged: (v) {
+                            setState(() {});
+                          },
+                          decoration: InputDecoration(
+                            hintText: "OTP",
+                            hintStyle: TextStyle(
+                              color: theme.colorPrimary,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        verifyPhone();
+                      },
+                      child: Container(
+                        child: Text("Send OTP"),
+                      ),
+                    ),
+                  ],
+                ),
               SizedBox(
                 height: height * 0.025,
               ),
@@ -455,7 +619,9 @@ class _EditProfileState extends State<EditProfile> {
                 height: height * 0.045,
               ),
               InkWell(
-                onTap: () {
+                onTap: () async {
+// ---------------------------------------------------------------------------------------------------------------------------
+
                   saveButton();
                 },
                 child: ClipRRect(
