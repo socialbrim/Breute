@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:parentpreneur/Providers/User.dart';
-
 import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';

@@ -352,11 +352,11 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                                                   }
                                                 },
                                                 child: Icon(
-                                                  Icons.star,
+                                                  Icons.favorite,
                                                   color: map.containsKey(
                                                           _filterdlist[index]
                                                               .id)
-                                                      ? Colors.yellow
+                                                      ? Colors.red
                                                       : Colors.white,
                                                 ),
                                               ),
