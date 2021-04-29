@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:parentpreneur/Screens/ComingSoonScreen.dart';
+import 'package:parentpreneur/Screens/social%20media/SocialMediaHomeScreen.dart';
 import '../Screens/privacyPolicyScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -194,6 +195,39 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               Container(
                                 child: Text(
                                   'Pharmacy',
+                                  style: theme.text16bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => SocialMediaHomeScreen(),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: width * 0.04,
+                              ),
+                              Icon(
+                                Icons.people,
+                                color: theme.colorPrimary,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: width * 0.07,
+                              ),
+                              Container(
+                                child: Text(
+                                  "Socails",
                                   style: theme.text16bold,
                                 ),
                               ),

@@ -1,4 +1,3 @@
-import 'package:better_player/better_player.dart';
 import 'package:email_launcher/email_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -50,30 +49,15 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       print(_isAccessable);
     });
     userinfo = Provider.of<UserProvider>(context).userInformation;
+    final boolean = Provider.of<HomeProvider>(context).isLoaded;
 
-    super.didChangeDependencies();
-  }
-
-  void fetchLink() {
-    FirebaseDatabase.instance
-        .reference()
-        .child("TrenndingVideoLink")
-        .once()
-        .then((value) {
-      BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
-        BetterPlayerDataSourceType.network,
-        value.value['Link'],
-      );
-      _betterPlayerController = BetterPlayerController(
-        BetterPlayerConfiguration(
-          autoPlay: true,
-        ),
-        betterPlayerDataSource: betterPlayerDataSource,
-      );
-      setState(() {
-        _isLoading = false;
+    if (context != null && !boolean) {
+      Future.delayed(Duration(seconds: 2)).then((value) {
+        Provider.of<HomeProvider>(context, listen: false).setBool(true);
+        read();
       });
-    });
+    }
+    super.didChangeDependencies();
   }
 
   bool _isLoading = true;
@@ -96,7 +80,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     hasPermissions();
 
     super.initState();
-    fetchLink();
+    read();
     initPlatformState();
     fetchLastSevenDays();
   }
@@ -116,7 +100,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             StepsModel(
               calories: value['Calories'].toString(),
               date: DateTime.parse(
-                value['DateTime'],
+                value['DateTime'] == null
+                    ? DateTime.now().toIso8601String()
+                    : value['DateTime'],
               ),
               dateID: key,
               step: value['Steps'].toString(),
@@ -125,26 +111,31 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           );
         });
       }
-      setState(() {
-        _list.forEach((element) {
-          if (element.dateID == formatDate(DateTime.now()) &&
-              achievedsteps == 0) {
-            achievedcalories = double.parse(element.calories);
-            achievedsteps = int.parse(element.step);
-            achievedWater = element.achievedWater == null
-                ? 0
-                : double.parse(element.achievedWater);
-            print(
-                "working--------------------------------------------------------");
-          }
+      if (this.mounted) {
+        setState(() {
+          _list.forEach((element) {
+            if (element.dateID == formatDate(DateTime.now()) &&
+                achievedsteps == 0) {
+              achievedcalories = double.parse(element.calories);
+              achievedsteps = int.parse(element.step);
+              achievedWater = element.achievedWater == null
+                  ? 0
+                  : double.parse(element.achievedWater);
+              print(
+                  "working--------------------------------------------------------");
+              _isLoading = false;
+            }
+          });
         });
-      });
+      }
     });
   }
 
   void fetchCalories() {
     double _step = achievedsteps * 0.045;
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
     setStepsToServer();
   }
 
@@ -154,13 +145,15 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   void initPlatformState() {
     _streamSubscriptions
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
-      setState(() {
-        if (event.x > 18 || event.y > 18 || event.z > 18) {
-          achievedsteps++;
-          _stepDate = DateTime.now();
-          fetchCalories();
-        }
-      });
+      if (this.mounted) {
+        setState(() {
+          if (event.x > 18 || event.y > 18 || event.z > 18) {
+            achievedsteps++;
+            _stepDate = DateTime.now();
+            fetchCalories();
+          }
+        });
+      }
     }));
   }
 
@@ -187,17 +180,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String formatted = formatter.format(date);
     return formatted;
-  }
-
-  BetterPlayerController _betterPlayerController;
-
-  @override
-  void dispose() {
-    for (StreamSubscription<dynamic> subscription in _streamSubscriptions) {
-      subscription.cancel();
-    }
-    _betterPlayerController.dispose();
-    super.dispose();
   }
 
   void checkpermission() async {
@@ -247,31 +229,31 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
         result = 'readAll: success';
         // print(results);
+        print(results);
+        print("---------------------");
         results.forEach((key, value) {
           if (key == DataType.ENERGY) {
-            //..
-            print(value);
-            print("---------------------");
             final vals = value.first.value;
-            print(vals);
-            print("---------------------");
-            final dataconvert = double.parse("${vals.toString()}");
-            setState(() {
-              achievedWater =
-                  double.parse((dataconvert / 1000).toStringAsFixed(2));
 
-              Provider.of<HomeProvider>(context, listen: false).savedData =
-                  achievedWater;
-              print("---------------------");
-            });
+            final dataconvert = double.parse("${vals.toString()}");
+            if (this.mounted) {
+              setState(() {
+                achievedWater =
+                    double.parse((dataconvert / 1000).toStringAsFixed(2));
+
+                Provider.of<HomeProvider>(context, listen: false).savedData =
+                    achievedWater;
+              });
+            }
           }
         });
       }
     } catch (e) {
       result = 'readAll: $e';
     }
-
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   Future<void> hasPermissions() async {
@@ -282,8 +264,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     }
 
     if (!mounted) return;
-
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   void fetchLocation() async {
@@ -411,37 +394,11 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   body: SingleChildScrollView(
                     child: Column(
                       children: [
-                        AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: BetterPlayer(
-                            controller: _betterPlayerController,
-                          ),
-                        ),
                         SizedBox(
-                          height: height * .01,
+                          height: height * 0.05,
                         ),
                         Container(
-                          width: width,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                          ),
-                          child: Text(
-                            'Completing an extra 10,000 steps each day typically burns about 2000 to 3500 extra calories each week. One pound of body fat equals 3500 calories, so depending on your weight and workout intensity, you could lose about one pound per week simply by completing an extra 10,000 steps each day.',
-                            textAlign: TextAlign.left,
-                            style: theme.text14,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Divider(
-                            thickness: 1,
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.0,
-                        ),
-                        Container(
-                          height: height * 0.5,
+                          height: height * 0.6,
                           child: Column(
                             children: [
                               Row(
@@ -478,11 +435,13 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                                       formatDate(_stepDate),
                                                     )
                                                     .update({
-                                                  "Water": changedValue
+                                                  "Water": (changedValue +
+                                                          achievedWater)
                                                       .toStringAsFixed(2),
                                                 });
                                                 setState(() {
-                                                  achievedWater = changedValue;
+                                                  achievedWater = changedValue +
+                                                      achievedWater;
                                                 });
                                                 Navigator.of(context).pop();
                                               },
@@ -823,6 +782,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                   ],
                                 ),
                               ),
+                              ListTile(
+                                leading: Icon(Icons.height),
+                                title: Text("height"),
+                              )
                             ],
                           ),
                         ),

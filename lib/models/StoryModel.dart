@@ -3,5 +3,6 @@ class StoryModel {
   String name;
   String dp;
   DateTime time;
-  StoryModel({this.imageurl, this.name, this.time, this.dp});
+  String id;
+  StoryModel({this.imageurl, this.name, this.time, this.id, this.dp});
 }

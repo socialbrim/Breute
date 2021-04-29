@@ -118,19 +118,32 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
           .child("Stories")
           .child(FirebaseAuth.instance.currentUser.uid)
           .once();
-      print(eachMemberPost.value);
+
       if (eachMemberPost.value != null) {
         final map = eachMemberPost.value as Map;
         map.forEach((key, value) {
-          _listStory.add(StoryModel(
-            dp: value['Dp'],
-            imageurl: value['image'],
-            name: value['name'],
-            time: DateTime.parse(value['dateTime']),
-          ));
+          if (!check(key)) {
+            _listStory.add(StoryModel(
+              dp: value['Dp'],
+              imageurl: value['image'],
+              name: value['name'],
+              time: DateTime.parse(value['dateTime']),
+              id: key,
+            ));
+          }
         });
       }
     });
+  }
+
+  bool check(String checkID) {
+    bool result = false;
+    _listStory.forEach((element) {
+      if (element.id == checkID) {
+        result = true;
+      }
+    });
+    return result;
   }
 
   UserInformation data;
@@ -260,51 +273,51 @@ class _SocialMediaFeedScreenState extends State<SocialMediaFeedScreen> {
                       Divider(
                         color: Colors.black54,
                       ),
-                      SizedBox(
-                        height: height * .01,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: width * .1,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text(
-                                  'Hello,',
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.blueGrey, fontSize: 14),
-                                ),
-                              ),
-                              Container(
-                                width: width * .5,
-                                child: Text(
-                                  data.name == null
-                                      ? 'My Name !'
-                                      : "${data.name.split(" ")[0].toUpperCase()} !",
-                                  style: theme.text20bold,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: width * .1,
-                          ),
-                          Card(
-                            shape: CircleBorder(),
-                            elevation: 10,
-                            child: CircleAvatar(
-                              backgroundImage: data.imageUrl == null
-                                  ? AssetImage('assets/unnamed.png')
-                                  : NetworkImage(data.imageUrl),
-                              radius: 38,
-                            ),
-                          )
-                        ],
-                      ),
+                      // SizedBox(
+                      //   height: height * .01,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     SizedBox(
+                      //       width: width * .1,
+                      //     ),
+                      //     Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Container(
+                      //           child: Text(
+                      //             'Hello,',
+                      //             style: GoogleFonts.poppins(
+                      //                 color: Colors.blueGrey, fontSize: 14),
+                      //           ),
+                      //         ),
+                      //         Container(
+                      //           width: width * .5,
+                      //           child: Text(
+                      //             data.name == null
+                      //                 ? 'My Name !'
+                      //                 : "${data.name.split(" ")[0].toUpperCase()} !",
+                      //             style: theme.text20bold,
+                      //             overflow: TextOverflow.ellipsis,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     SizedBox(
+                      //       width: width * .1,
+                      //     ),
+                      //     Card(
+                      //       shape: CircleBorder(),
+                      //       elevation: 10,
+                      //       child: CircleAvatar(
+                      //         backgroundImage: data.imageUrl == null
+                      //             ? AssetImage('assets/unnamed.png')
+                      //             : NetworkImage(data.imageUrl),
+                      //         radius: 38,
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
                       SizedBox(
                         height: height * .02,
                       ),
