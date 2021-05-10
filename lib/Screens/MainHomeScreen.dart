@@ -398,7 +398,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           height: height * 0.05,
                         ),
                         Container(
-                          height: height * 0.6,
+                          height: height * 0.48,
                           child: Column(
                             children: [
                               Row(
@@ -782,16 +782,12 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                   ],
                                 ),
                               ),
-                              ListTile(
-                                leading: Icon(Icons.height),
-                                title: Text("height"),
-                              )
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
+                        // SizedBox(
+                        //   height: height * 0.03,
+                        // ),
                         Container(
                           height: height * 0.08,
                           width: width,
