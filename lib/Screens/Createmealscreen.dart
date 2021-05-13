@@ -53,9 +53,6 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
                   CreateMealCard(
                     category: "Create Breakfast",
                     icon: Icon(MdiIcons.fruitGrapes, color: Colors.white),
@@ -64,45 +61,6 @@ class _CreateMealScreenState extends State<CreateMealScreen> {
                     width: width,
                     breakfastback: breakfastback,
                     breakfastformKey: _breakfastformKey,
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  CreateMealCard(
-                    icon: Icon(MdiIcons.foodForkDrink, color: Colors.white),
-                    category: "Create Lunch",
-                    breakfastcardKey: lunchcardKey,
-                    height: height,
-                    width: width,
-                    breakfastback: lunchback,
-                    breakfastformKey: _lunchfastformKey,
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  CreateMealCard(
-                    icon: Icon(MdiIcons.foodDrumstick, color: Colors.white),
-                    category: "Create Dinner",
-                    breakfastcardKey: dinnercardKey,
-                    height: height,
-                    width: width,
-                    breakfastback: dinnerback,
-                    breakfastformKey: _dinnerformKey,
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  CreateMealCard(
-                    icon: Icon(MdiIcons.foodForkDrink, color: Colors.white),
-                    category: "Create Snacks",
-                    breakfastcardKey: snackscardKey,
-                    height: height,
-                    width: width,
-                    breakfastback: snacksback,
-                    breakfastformKey: _snacksformKey,
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
                   ),
                 ],
               ),

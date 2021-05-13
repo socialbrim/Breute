@@ -64,55 +64,7 @@ class _MealScreenState extends State<MealScreen> {
                           child: Container(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'Today\'s Menu',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              Container(
-                height: height * 0.15,
-                width: double.infinity,
-                child: InkWell(
-                  splashColor: theme.colorCompanion,
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => AllMeals(),
-                      ),
-                    );
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: width,
-                        child: Image.asset(
-                          'assets/todaymeals.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned(
-                        left: 5,
-                        bottom: 5,
-                        child: Card(
-                          shadowColor: theme.colorPrimary,
-                          color: theme.colorPrimary,
-                          elevation: 10,
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Recipes',
+                              'Today Menu',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -161,6 +113,54 @@ class _MealScreenState extends State<MealScreen> {
                             padding: EdgeInsets.all(8),
                             child: Text(
                               'Fitness',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Container(
+                height: height * 0.15,
+                width: double.infinity,
+                child: InkWell(
+                  splashColor: theme.colorCompanion,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AllMeals(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: width,
+                        child: Image.asset(
+                          'assets/todaymeals.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        left: 5,
+                        bottom: 5,
+                        child: Card(
+                          shadowColor: theme.colorPrimary,
+                          color: theme.colorPrimary,
+                          elevation: 10,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'Recipes',
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,

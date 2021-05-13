@@ -308,6 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
             isVerified:
                 mapped['verified'] == null ? false : mapped['verified']);
         Provider.of<UserProvider>(context, listen: false).setUser(userData);
+        print("user info fetched-----------------------------");
         setState(() {
           _isLoading = false;
         });

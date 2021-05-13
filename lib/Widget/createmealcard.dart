@@ -1,13 +1,18 @@
 // ignore: must_be_immutable
+import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Providers/MyPlanProvider.dart';
 import 'package:parentpreneur/Widget/nutritionalFacts.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:provider/provider.dart';
 import '../main.dart';
+import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:images_picker/images_picker.dart';
 
@@ -39,17 +44,79 @@ class CreateMealCard extends StatefulWidget {
 
 class _CreateMealCardState extends State<CreateMealCard> {
   String name;
+  TextEditingController namectrl = new TextEditingController();
   String vidLink;
   String description;
   String calories;
   String recipe;
   File _image;
-  bool _showForm = false;
+  Map apiDetections = {};
+  bool _showForm = true;
+  bool _isAnalysing = false;
+  String category = "Create Breakfast";
 
-  Future<void> save(Map nutrients) async {
-    if (_image == null) {
-      return;
+  Future<void> foodAPI(String imageURl) async {
+    final resp = await http.post("https://food-vision.herokuapp.com/",
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"image": "$imageURl"}));
+    print(resp.statusCode);
+    print(resp.body);
+    setState(() {
+      _isAnalysing = false;
+    });
+    final data = json.decode(resp.body) as Map;
+    if (data != null && data['food'] != "") {
+      apiDetections = data;
+      Provider.of<MyPlanProvider>(context, listen: false)
+          .setData(apiDetections);
+      namectrl.text = data['food'];
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Dish Detected!"),
+          content: Container(
+            height: 200,
+            width: double.maxFinite,
+            child: ListView(
+              children: [
+                ListTile(
+                  title: Text("Dish"),
+                  trailing: Text("${data['food']}"),
+                ),
+                ListTile(
+                  title: Text("Calories"),
+                  trailing: Text("${data['calories']}"),
+                ),
+                ListTile(
+                  title: Text("carbohydrates"),
+                  trailing: Text("${data['carbohydrates']}"),
+                ),
+                ListTile(
+                  title: Text("proteins"),
+                  trailing: Text("${data['proteins']}"),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text(
+                  "OK",
+                  style: theme.text12bold,
+                ))
+          ],
+        ),
+      );
     }
+  }
+
+  Future<String> setToservers() async {
+    setState(() {
+      _isAnalysing = true;
+    });
     final ref = FirebaseStorage.instance
         .ref()
         .child("RequestMeal")
@@ -58,17 +125,20 @@ class _CreateMealCardState extends State<CreateMealCard> {
     await ref.putFile(_image);
 
     final vals = await ref.getDownloadURL();
+    return vals;
+  }
 
+  Future<void> save(Map nutrients) async {
     ///..
     final key = FirebaseDatabase.instance
         .reference()
-        .child("${widget.category}")
+        .child("${category}")
         .child(FirebaseAuth.instance.currentUser.uid)
         .push()
         .key;
     FirebaseDatabase.instance
         .reference()
-        .child("${widget.category}")
+        .child("${category}")
         .child(FirebaseAuth.instance.currentUser.uid)
         .child(key)
         .update({
@@ -79,7 +149,7 @@ class _CreateMealCardState extends State<CreateMealCard> {
       "Calories": calories,
       "Recipe": recipe,
       "MealDate": DateTime.now().toIso8601String(),
-      "ImageURL": vals.toString()
+      // "ImageURL": vals.toString()
     });
     print("done!");
   }
@@ -141,58 +211,69 @@ class _CreateMealCardState extends State<CreateMealCard> {
       }
       _image = File(vals.first.thumbPath);
     });
+    if (_image == null) {
+      return;
+    }
+    final resp = await setToservers();
+    await foodAPI(resp);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InkWell(
-          onTap: () {
-            setState(() {
-              _showForm = !_showForm;
-            });
-          },
-          child: Container(
-            color: theme.colorPrimary,
-            height: widget.height * 0.2,
-            width: widget.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  '${widget.category}',
-                  style: GoogleFonts.inter(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                ),
-                widget.icon,
-                Icon(
-                  _showForm ? MdiIcons.arrowUp : MdiIcons.arrowDown,
-                  color: Colors.white,
-                )
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          height: widget.height * 0.02,
-        ),
         if (_showForm)
           Container(
             decoration: BoxDecoration(
               color: theme.colorPrimary,
               borderRadius: BorderRadius.circular(20),
             ),
-            width: widget.width * 0.9,
+            width: widget.width,
             child: Form(
               key: widget._breakfastformKey,
               child: Column(
                 children: [
                   SizedBox(
                     height: widget.height * 0.03,
+                  ),
+                  Container(
+                    width: 200,
+                    child: DropdownButtonFormField(
+                      dropdownColor: theme.colorBackground,
+                      iconEnabledColor: Colors.white,
+                      style: GoogleFonts.roboto(
+                        color: Colors.white,
+                      ),
+                      value: category,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                      hint: Text('Select Category',
+                          style: theme.text14boldWhiteShadow),
+                      items: [
+                        "Create Breakfast",
+                        "Create Lunch",
+                        "Create Dinner",
+                        "Create Snacks"
+                      ].map((e) {
+                        return DropdownMenuItem(
+                            value: e,
+                            child: Text(
+                              e,
+                              style: theme.text14,
+                            ));
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          category = value;
+                        });
+                      },
+                    ),
                   ),
                   Padding(
                     padding:
@@ -222,6 +303,7 @@ class _CreateMealCardState extends State<CreateMealCard> {
                         onChanged: (val) {
                           name = val;
                         },
+                        controller: namectrl,
                         decoration: InputDecoration(
                           hintText: "Enter Meal Name",
                           hintStyle: TextStyle(
@@ -410,14 +492,19 @@ class _CreateMealCardState extends State<CreateMealCard> {
                       elevation: 10,
                       child: Container(
                         padding: EdgeInsets.all(8),
-                        child: Text(
-                          'Add Image',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: theme.colorPrimary,
-                          ),
-                        ),
+                        child: _isAnalysing
+                            ? SpinKitChasingDots(
+                                color: Colors.black,
+                                size: 20,
+                              )
+                            : Text(
+                                'Add Image',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: theme.colorPrimary,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -445,6 +532,7 @@ class _CreateMealCardState extends State<CreateMealCard> {
                     breakfastformKey: widget._breakfastformKey,
                     submit: save,
                     key: widget.key,
+                    apiDetections: apiDetections,
                   ),
                   SizedBox(
                     height: widget.height * 0.02,

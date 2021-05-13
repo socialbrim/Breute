@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parentpreneur/Providers/MyPlanProvider.dart';
+import 'package:provider/provider.dart';
 import '../main.dart';
 import "package:flutter_spinkit/flutter_spinkit.dart";
 
 // ignore: must_be_immutable
 class NutritionalFacts extends StatefulWidget {
   Function(Map) submit;
-
+  final Map apiDetections;
   NutritionalFacts({
     Key key,
     this.submit,
+    this.apiDetections,
     @required GlobalKey<FormState> breakfastformKey,
   })  : _breakfastformKey = breakfastformKey,
         super(key: key);
@@ -23,6 +26,58 @@ class NutritionalFacts extends StatefulWidget {
 class _NutritionalFactsState extends State<NutritionalFacts> {
   Map<String, String> _finishedMap = {};
   bool _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    print("calledd===============================");
+    final data = Provider.of<MyPlanProvider>(
+      context,
+    ).data;
+    if (data != null && data.isNotEmpty) {
+      //...
+      if (_finishedMap.containsKey("Quantity")) {
+        _finishedMap.update("Quantity", (value) => "100");
+        quantity.text = "100";
+      } else {
+        _finishedMap.putIfAbsent("Quantity", () => "100");
+        quantity.text = "100";
+      }
+
+      if (_finishedMap.containsKey("Calories")) {
+        _finishedMap.update("Calories", (value) => data['calories']);
+        calories.text = data['calories'];
+      } else {
+        _finishedMap.putIfAbsent("Calories", () => data['calories']);
+        calories.text = data['calories'];
+      }
+
+      if (_finishedMap.containsKey("Carbohydrate")) {
+        _finishedMap.update("Carbohydrate", (value) => data['carbohydrates']);
+        carbo.text = data['carbohydrates'];
+      } else {
+        _finishedMap.putIfAbsent("Carbohydrate", () => data['carbohydrates']);
+        carbo.text = data['carbohydrates'];
+      }
+
+      if (_finishedMap.containsKey("Protien")) {
+        _finishedMap.update("Protien", (value) => data['proteins']);
+        protines.text = data['proteins'];
+      } else {
+        _finishedMap.putIfAbsent("Protien", () => data['proteins']);
+        protines.text = data['proteins'];
+      }
+
+      print(_finishedMap);
+    }
+    print(_finishedMap);
+    super.didChangeDependencies();
+  }
+
+  TextEditingController quantity = new TextEditingController();
+  TextEditingController calories = new TextEditingController();
+  TextEditingController carbo = new TextEditingController();
+  TextEditingController protines = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -59,6 +114,7 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     }
                     _finishedMap.putIfAbsent("Quantity", () => val.toString());
                   },
+                  controller: quantity,
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -154,6 +210,7 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     }
                     _finishedMap.putIfAbsent("Calories", () => val.toString());
                   },
+                  controller: calories,
                   keyboardType: TextInputType.number,
                   style: theme.text16,
                   decoration: InputDecoration(
@@ -493,6 +550,7 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                       },
                       keyboardType: TextInputType.number,
                       style: theme.text16,
+                      controller: carbo,
                       decoration: InputDecoration(
                         hintText: " 0g",
                         hintStyle: TextStyle(
@@ -716,6 +774,7 @@ class _NutritionalFactsState extends State<NutritionalFacts> {
                     width: width * 0.1,
                     height: height * 0.05,
                     child: TextFormField(
+                      controller: protines,
                       onChanged: (val) {
                         if (_finishedMap.containsKey("Protien")) {
                           _finishedMap.remove("Protien");

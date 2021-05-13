@@ -73,6 +73,7 @@ dependencies:
   minimize_app: ^0.1.1
   cached_network_image:
   phone_number: ^0.9.0+1
+  firebase_dynamic_links:
 
 dev_dependencies:
   flutter_test:

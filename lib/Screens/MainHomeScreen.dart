@@ -122,12 +122,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   ? 0
                   : double.parse(element.achievedWater);
               print(
-                  "working--------------------------------------------------------");
-              _isLoading = false;
+                  "working-------------------------------------------------------- and done");
             }
           });
         });
       }
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 
@@ -398,7 +400,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           height: height * 0.05,
                         ),
                         Container(
-                          height: height * 0.48,
+                          height: height * 0.8,
                           child: Column(
                             children: [
                               Row(
@@ -780,6 +782,75 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                       ]),
                                     )
                                   ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Container(
+                                width: width * 0.9,
+                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                decoration: BoxDecoration(
+                                  color: theme.colorBackground,
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(MdiIcons.heart),
+                                  title: Text(
+                                    "Heart Rate",
+                                    style: theme.text12bold,
+                                  ),
+                                  trailing: Text("78"),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Container(
+                                width: width * 0.9,
+                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                decoration: BoxDecoration(
+                                  color: theme.colorBackground,
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(MdiIcons.bed),
+                                  title: Text(
+                                    "Sleep",
+                                    style: theme.text12bold,
+                                  ),
+                                  trailing: Text("8 Hrs."),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Container(
+                                width: width * 0.9,
+                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                decoration: BoxDecoration(
+                                  color: theme.colorBackground,
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(Icons.height),
+                                  title: Text(
+                                    "Height",
+                                    style: theme.text12bold,
+                                  ),
+                                  trailing: Text("5'6''"),
                                 ),
                               ),
                             ],
