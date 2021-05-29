@@ -80,6 +80,13 @@ exports.sendNotificationforLike = functions.database.ref('Social Media Data/{cus
 
 exports.sendschedule = functions.pubsub.schedule('5 11 * * *').timeZone('America/New_York').onRun((context) => {
     admin.database().ref().child("Roomsinformation").remove();
+
     return null;
-  });
+});
+
+
+
+
+
+
 

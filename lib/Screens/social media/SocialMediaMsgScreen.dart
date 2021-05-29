@@ -143,6 +143,9 @@ class _SocialMediaMsgScreenState extends State<SocialMediaMsgScreen> {
         ));
   }
 
+  UserInformation selectedone;
+  bool isselected = false;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -154,25 +157,41 @@ class _SocialMediaMsgScreenState extends State<SocialMediaMsgScreen> {
         key: _scaffoldKey,
         appBar: AppBar(
           elevation: 0,
-          // title: Text(
-          //   'Messages',
-          // ),
-          // actions: [
-          //   IconButton(
-          //     icon: Icon(
-          //       Icons.add,
-          //       size: 30,
-          //       color: theme.colorPrimary,
-          //     ),
-          //     onPressed: () {
-          //       //...
-          //       bottomSheet();
-          //     },
-          //   ),
-          //   SizedBox(
-          //     width: width * .03,
-          //   ),
-          // ],
+          title: isselected ? Text("${selectedone.name}") : null,
+          actions: isselected
+              ? [
+                  IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        // ..
+                        print(selectedone.id);
+                        print(FirebaseAuth.instance.currentUser.uid);
+                        FirebaseDatabase.instance
+                            .reference()
+                            .child("PersonalChatsPersons")
+                            .child(FirebaseAuth.instance.currentUser.uid)
+                            .child(selectedone.id)
+                            .remove();
+                        setState(() {
+                          isselected = false;
+                          selectedone = null;
+                        });
+                      }),
+                ]
+              : [],
+          leading: IconButton(
+            onPressed: () {
+              if (isselected) {
+                setState(() {
+                  isselected = false;
+                  selectedone = null;
+                });
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+            icon: Icon(Icons.arrow_back),
+          ),
         ),
         body: _chatList.isEmpty
             ? Center(
@@ -218,34 +237,6 @@ class _SocialMediaMsgScreenState extends State<SocialMediaMsgScreen> {
                     SizedBox(
                       height: height * .03,
                     ),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     color: theme.colorGrey,
-                    //     borderRadius: BorderRadius.circular(
-                    //       10,
-                    //     ),
-                    //   ),
-                    //   padding: EdgeInsets.symmetric(
-                    //     horizontal: 15,
-                    //     vertical: 2,
-                    //   ),
-                    //   width: width * .9,
-                    //   height: height * .05,
-                    //   child: Row(
-                    //     children: [
-                    //       Icon(
-                    //         MdiIcons.magnify,
-                    //       ),
-                    //       SizedBox(
-                    //         width: width * .06,
-                    //       ),
-                    //       Text(
-                    //         'Search',
-                    //         style: theme.text14,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     SizedBox(
                       height: height * .01,
                     ),
@@ -267,6 +258,13 @@ class _SocialMediaMsgScreenState extends State<SocialMediaMsgScreen> {
                                   ),
                                 ),
                               );
+                            },
+                            onLongPress: () {
+                              //....
+                              setState(() {
+                                selectedone = _chatList[index];
+                                isselected = true;
+                              });
                             },
                             child: Card(
                               margin: EdgeInsets.symmetric(

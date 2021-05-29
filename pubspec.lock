@@ -314,6 +314,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0+4"
+  flutter_introduction_tooltip:
+    dependency: "direct main"
+    description:
+      name: flutter_introduction_tooltip
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   flutter_linkify:
     dependency: "direct main"
     description:
@@ -569,6 +576,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  page_view_indicators:
+    dependency: "direct main"
+    description:
+      name: page_view_indicators
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   path:
     dependency: transitive
     description:

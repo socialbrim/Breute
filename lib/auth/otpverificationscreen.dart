@@ -54,6 +54,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           "PlanName": "Peer Contributor",
           "fcmtoken": widget.fcmtoken,
         });
+
+        FirebaseDatabase.instance
+            .reference()
+            .child("MyFriends")
+            .child(FirebaseAuth.instance.currentUser.uid)
+            .update({
+          value.user.uid: "true",
+        });
         setState(() {
           _isLoading = false;
         });
@@ -109,6 +117,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             "isPhone": true,
             "PlanName": "Peer Contributor",
             "fcmtoken": widget.fcmtoken,
+          });
+
+          FirebaseDatabase.instance
+              .reference()
+              .child("MyFriends")
+              .child(FirebaseAuth.instance.currentUser.uid)
+              .update({
+            value.user.uid: "true",
           });
           setState(() {
             _isLoading = false;

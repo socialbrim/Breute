@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:parentpreneur/Providers/AllRewardProducts.dart';
 import 'package:parentpreneur/Providers/HomeScreenCtrl.dart';
+import 'package:parentpreneur/Providers/cartProvider.dart';
 import './Providers/feedProvider.dart';
 
 import 'package:provider/provider.dart';
@@ -11,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import './Providers/MyPlanProvider.dart';
 import 'Providers/User.dart';
 import 'Screens/SplashScreen.dart';
+import 'Screens/Test.dart';
 import 'Providers/socialmedialBarindex.dart';
 import './Providers/favProvider.dart';
 
@@ -46,6 +49,12 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => HomeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MarketProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
         ),
       ],
       child: MyApp(),

@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:parentpreneur/Screens/ComingSoonScreen.dart';
+import 'package:parentpreneur/Screens/Pharmacy/CartScreen.dart';
+import 'package:parentpreneur/Screens/Pharmacy/ProductsListScreen.dart';
 import 'package:parentpreneur/Screens/social%20media/SocialMediaHomeScreen.dart';
 import '../Screens/privacyPolicyScreen.dart';
 import 'package:flutter/material.dart';
@@ -174,8 +176,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ComingSoon(
-                                title: "Pharmacy",
+                              builder: (context) => ProductsListScreen(
+                                isSort: false,
                               ),
                             ));
                           },
@@ -195,6 +197,39 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               Container(
                                 child: Text(
                                   'Pharmacy',
+                                  style: theme.text16bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CartScreen(
+                                isAddTocart: true,
+                              ),
+                            ));
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: width * 0.04,
+                              ),
+                              Icon(
+                                MdiIcons.cart,
+                                color: theme.colorPrimary,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: width * 0.07,
+                              ),
+                              Container(
+                                child: Text(
+                                  'My Cart',
                                   style: theme.text16bold,
                                 ),
                               ),
