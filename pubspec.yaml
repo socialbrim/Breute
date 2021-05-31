@@ -76,6 +76,7 @@ dependencies:
   firebase_dynamic_links:
   page_view_indicators:
   flutter_introduction_tooltip: ^0.0.4
+  camera:
 
 dev_dependencies:
   flutter_test:

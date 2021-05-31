@@ -13,7 +13,6 @@ import 'package:firebase_core/firebase_core.dart';
 import './Providers/MyPlanProvider.dart';
 import 'Providers/User.dart';
 import 'Screens/SplashScreen.dart';
-import 'Screens/Test.dart';
 import 'Providers/socialmedialBarindex.dart';
 import './Providers/favProvider.dart';
 

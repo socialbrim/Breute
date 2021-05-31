@@ -3,11 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
-
 import 'package:parentpreneur/Providers/cartProvider.dart';
 import 'package:parentpreneur/Screens/Pharmacy/CartScreen.dart';
 import 'package:parentpreneur/models/ProductDetails.dart';
@@ -270,7 +268,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   child: Text(
-                    "Points: " + "${widget.product.pointReq}",
+                    "USD: " + "${widget.product.pointReq}",
                     style: GoogleFonts.poppins(
                       color: HexColor(
                         "008D8D",
@@ -281,6 +279,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               ),
               Divider(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "${widget.product.description}",
+                  style: TextStyle(fontSize: 17),
+                ),
+              ),
             ],
           ),
         ),
