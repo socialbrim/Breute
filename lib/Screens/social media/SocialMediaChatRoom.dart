@@ -10,12 +10,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medcorder_audio/medcorder_audio.dart';
 import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/Providers/socialmedialBarindex.dart';
 import 'package:parentpreneur/Screens/social media/SocialMediaProfileScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
 import 'package:parentpreneur/models/chatModel.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:profanity_filter/profanity_filter.dart';
-
 import 'package:provider/provider.dart';
 import 'package:parentpreneur/main.dart';
 
@@ -34,6 +34,9 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
   ChatModel data;
   TextEditingController messageController = TextEditingController();
   String uid;
+  String selecteMessageID;
+  String selecteMessage;
+  bool isselected = false;
 
   void stream() {
     // ignore: unused_local_variable
@@ -152,27 +155,84 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
   }
 
   @override
+  void didChangeDependencies() {
+    selecteMessageID = Provider.of<BarIndexChange>(context).selectedid;
+    selecteMessage = Provider.of<BarIndexChange>(context).selectedmessage;
+    isselected = Provider.of<BarIndexChange>(context).isselected;
+    setState(() {
+      print(selecteMessage);
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           // bottomNavigationBar:
           backgroundColor: theme.colorBackground,
-          appBar: AppBar(
-            // title: Text('Chat'),
-            // backgroundColor: theme.colorCompanion,
-            title: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SocialMediaProfileScreen(
-                        uid: widget.data.id,
-                        isme: false,
-                      ),
-                    ),
-                  );
-                },
-                child: Text('${widget.data.name}')),
-          ),
+          appBar: isselected
+              ? AppBar(
+                  elevation: 0,
+                  title: isselected
+                      ? Text(
+                          "$selecteMessage",
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : null,
+                  actions: isselected
+                      ? [
+                          IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                // ..
+
+                                // print(FirebaseAuth.instance.currentUser.uid);
+                                // FirebaseDatabase.instance
+                                //     .reference()
+                                //     .child("PersonalChatsPersons")
+                                //     .child(
+                                //         FirebaseAuth.instance.currentUser.uid)
+                                //     .child(selectedone.id)
+                                //     .remove();
+                                // setState(() {
+                                //   isselected = false;
+                                //   selectedone = null;
+                                // });
+                              }),
+                        ]
+                      : [],
+                  leading: IconButton(
+                    onPressed: () {
+                      if (isselected) {
+                        setState(() {
+                          isselected = false;
+                          selecteMessage = null;
+                          selecteMessageID = null;
+                        });
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    icon: Icon(Icons.arrow_back),
+                  ),
+                )
+              : AppBar(
+                  // title: Text('Chat'),
+                  // backgroundColor: theme.colorCompanion,
+                  title: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SocialMediaProfileScreen(
+                              uid: widget.data.id,
+                              isme: false,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text('${widget.data.name}')),
+                ),
           body: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -545,6 +605,10 @@ class _MessageTileState extends State<MessageTile> {
       alignment:
           widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: InkWell(
+        onLongPress: () {
+          Provider.of<BarIndexChange>(context, listen: false)
+              .setSelectgesture(widget.id, widget.message, true);
+        },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Stack(

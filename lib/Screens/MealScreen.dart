@@ -95,7 +95,7 @@ class _MealScreenState extends State<MealScreen> {
                 ),
               ),
               SizedBox(
-                height: height * 0.05,
+                height: height * 0.02,
               ),
               Container(
                 height: height * 0.15,
@@ -143,7 +143,7 @@ class _MealScreenState extends State<MealScreen> {
                 ),
               ),
               SizedBox(
-                height: height * 0.05,
+                height: height * 0.02,
               ),
               Container(
                 height: height * 0.15,
@@ -191,7 +191,7 @@ class _MealScreenState extends State<MealScreen> {
                 ),
               ),
               SizedBox(
-                height: height * 0.05,
+                height: height * 0.02,
               ),
               Container(
                 height: height * 0.15,
@@ -240,54 +240,54 @@ class _MealScreenState extends State<MealScreen> {
               SizedBox(
                 height: height * 0.02,
               ),
-              // Container(
-              //   height: height * 0.15,
-              //   width: double.infinity,
-              //   child: InkWell(
-              //     splashColor: theme.colorCompanion,
-              //     onTap: () {
-              //       Navigator.of(context).push(
-              //         MaterialPageRoute(
-              //           builder: (context) => CreateMealScreen(),
-              //         ),
-              //       );
-              //     },
-              //     child: Stack(
-              //       children: [
-              //         Container(
-              //           width: width,
-              //           child: Image.asset(
-              //             'assets/recipemeal.png',
-              //             fit: BoxFit.cover,
-              //           ),
-              //         ),
-              //         Positioned(
-              //           left: 5,
-              //           bottom: 5,
-              //           child: Card(
-              //             shadowColor: theme.colorPrimary,
-              //             color: theme.colorPrimary,
-              //             elevation: 10,
-              //             child: Container(
-              //               padding: EdgeInsets.all(8),
-              //               child: Text(
-              //                 'Add Recipe',
-              //                 style: GoogleFonts.poppins(
-              //                   fontSize: 14,
-              //                   fontWeight: FontWeight.w700,
-              //                   color: Colors.white,
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: height * 0.02,
-              // ),
+              Container(
+                height: height * 0.15,
+                width: double.infinity,
+                child: InkWell(
+                  splashColor: theme.colorCompanion,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CreateMealScreen(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: width,
+                        child: Image.asset(
+                          'assets/recipemeal.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        left: 5,
+                        bottom: 5,
+                        child: Card(
+                          shadowColor: theme.colorPrimary,
+                          color: theme.colorPrimary,
+                          elevation: 10,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              'Add Recipe',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
             ],
           ),
         ),

@@ -344,7 +344,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
                         child: Text(
-                          "Points: " + "${key.pointReq}",
+                          "USD: " + "${key.pointReq}",
                           style: GoogleFonts.poppins(
                             color: HexColor(
                               "008D8D",

@@ -755,8 +755,8 @@ class _SocialMediaProfileScreenState extends State<SocialMediaProfileScreen> {
                     ),
                   if (widget.isme)
                     Positioned(
-                      top: 170,
-                      right: 20,
+                      top: 30,
+                      left: 20,
                       child: FloatingActionButton(
                         onPressed: () async {
                           await picker();

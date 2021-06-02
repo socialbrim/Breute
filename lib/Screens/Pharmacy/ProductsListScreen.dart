@@ -288,7 +288,7 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
                               child: Text(
-                                "${_filtertList[index].pointReq.toInt()} Points",
+                                "\$ ${_filtertList[index].pointReq.toInt()}",
                                 style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
                                     fontSize: 12,
