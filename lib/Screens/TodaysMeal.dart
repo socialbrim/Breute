@@ -48,18 +48,19 @@ class _TodaysMealState extends State<TodaysMeal> {
       mapped.forEach((key, value) {
         _list.add(
           MealModel(
-              calories: value['Calories'].toString(),
-              imageURL: value['ImageURL'],
-              mealDate: value['MealDate'],
-              mealDateInDateFormat: value['MealDateFormat'] == null
-                  ? DateTime.now()
-                  : DateTime.parse(value['MealDateFormat']), //MealDateFormat
-              mealDes: value['Description'],
-              mealName: value['Meal Name'],
-              recipe: value['Recipe'],
-              type: key,
-              vidURL: value['Video Link'],
-              nutrients: value['Nutrients']),
+            calories: value['Calories'].toString(),
+            imageURL: value['ImageURL'],
+            mealDate: value['MealDate'],
+            mealDateInDateFormat: value['MealDateFormat'] == null
+                ? DateTime.now()
+                : DateTime.parse(value['MealDateFormat']), //MealDateFormat
+            mealDes: value['Description'],
+            mealName: value['Meal Name'],
+            recipe: value['Recipe'],
+            type: key,
+            vidURL: value['Video Link'],
+            nutrients: value['Nutrients'],
+          ),
         );
       });
     }

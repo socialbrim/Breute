@@ -262,7 +262,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               ),
                               Container(
                                 child: Text(
-                                  "Socails",
+                                  "Socials",
                                   style: theme.text16bold,
                                 ),
                               ),

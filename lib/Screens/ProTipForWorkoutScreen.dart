@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import '../Screens/UpgradePlanScreen.dart';
 import '../Providers/MyPlanProvider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../Providers/favProvider.dart';
+import 'package:http/http.dart';
 import './FavWorkoutScreen.dart';
 
 class ProTipForWorkOutScreen extends StatefulWidget {
@@ -79,7 +81,8 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
                   : DateTime.parse(value['date']),
               des: value['Description'],
               id: key,
-              imageURL: value['ImageURL'],
+              imageURL:
+                  "https://img.youtube.com/vi/${YoutubePlayer.convertUrlToId("${value['VideoLink']}")}/0.jpg",
               name: value['Name'],
               vidLink: value['VideoLink'],
               controller: YoutubePlayerController(
@@ -103,10 +106,31 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
     });
   }
 
+// https://excercise-recommend.herokuapp.com/
   @override
   void initState() {
     fetchProTips();
+    foodAPI();
     super.initState();
+  }
+
+  Future<void> foodAPI() async {
+    final resp = await post("https://excercise-recommend.herokuapp.com/",
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "height": 1.8,
+          "weight": 80,
+          "activity_level": "sedentary",
+          "calories": 1000
+        }));
+    print(
+        "-------------------------------------------------------------------");
+
+    print(resp.statusCode);
+    print(resp.body);
+    print(
+        "-------------------------------------------------------------------");
+    final data = json.decode(resp.body) as Map;
   }
 
   List<WorkoutModel> _filteredList = [];
@@ -234,7 +258,6 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
   @override
   Widget build(BuildContext context) {
     final map = Provider.of<FavProvider>(context).map;
-
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return !_isAccessable
