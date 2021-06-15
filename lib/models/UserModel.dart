@@ -10,6 +10,10 @@ class UserInformation {
   bool isPhone;
   PlanName planDetails;
   bool isVerified;
+  String height;
+  String weight;
+  String calories;
+
   UserInformation({
     this.email,
     this.isVerified,
@@ -20,5 +24,8 @@ class UserInformation {
     this.isPhone,
     this.planDetails,
     this.bio,
+    this.height,
+    this.weight,
+    this.calories,
   });
 }

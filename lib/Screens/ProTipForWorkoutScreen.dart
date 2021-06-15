@@ -3,8 +3,11 @@ import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:parentpreneur/Providers/User.dart';
+import 'package:parentpreneur/models/UserModel.dart';
 import 'package:slimy_card/slimy_card.dart';
 import '../models/workoutModel.dart';
 import '../main.dart';
@@ -31,6 +34,13 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
   @override
   void didChangeDependencies() {
     favFx();
+    user = Provider.of<UserProvider>(context).userInformation;
+    if (user.height == "0" || user.height == null || user.weight == null) {
+      Fluttertoast.showToast(
+        msg: "Add Height and weight to get recomended exercise",
+      );
+    }
+    foodAPI();
     Provider.of<MyPlanProvider>(context).plan.details.forEach((key, value) {
       if (key == "Pro Tips" && value) {
         _isAccessable = true;
@@ -106,11 +116,12 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
     });
   }
 
-// https://excercise-recommend.herokuapp.com/
+  UserInformation user;
+
   @override
   void initState() {
     fetchProTips();
-    foodAPI();
+
     super.initState();
   }
 
@@ -118,19 +129,41 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
     final resp = await post("https://excercise-recommend.herokuapp.com/",
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "height": 1.8,
-          "weight": 80,
+          "height": 1.8, //double.parse(user.height),
+          "weight": 80, //double.parse(user.weight),
           "activity_level": "sedentary",
-          "calories": 1000
+          "calories":
+              2000 //Provider.of<UserProvider>(context).achievedCalories,
         }));
-    print(
-        "-------------------------------------------------------------------");
-
-    print(resp.statusCode);
+    if (resp.body == "Invalid Data") {
+      return;
+    } else if (resp.body.contains("Fitness Level")) {
+      return;
+    }
     print(resp.body);
-    print(
-        "-------------------------------------------------------------------");
-    final data = json.decode(resp.body) as Map;
+    final data = json.decode(resp.body)['excercise_suggestions'] as Map;
+    data.forEach((key, value) {
+      _list.add(WorkoutModel(
+        controller: YoutubePlayerController(
+          initialVideoId: YoutubePlayer.convertUrlToId("${value['url']}"),
+          flags: YoutubePlayerFlags(
+            isLive: true,
+            mute: false,
+            autoPlay: false,
+          ),
+        ),
+        date: DateTime.now(),
+        des: value['description'],
+        id: "$key",
+        vidLink: value['url'],
+        name: key,
+        imageURL:
+            "https://img.youtube.com/vi/${YoutubePlayer.convertUrlToId("${value['url']}")}/0.jpg",
+      ));
+    });
+    setState(() {
+      _filterdlist = _list;
+    });
   }
 
   List<WorkoutModel> _filteredList = [];

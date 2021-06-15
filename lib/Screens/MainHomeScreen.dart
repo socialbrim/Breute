@@ -121,6 +121,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               achievedWater = element.achievedWater == null
                   ? 0
                   : double.parse(element.achievedWater);
+
+              Provider.of<UserProvider>(context, listen: false)
+                  .achievedCalories = achievedcalories;
               print(
                   "working-------------------------------------------------------- and done");
             }
@@ -845,12 +848,65 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: ListTile(
+                                  onTap: () {
+                                    double changedValue;
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text(
+                                            "Add Height.(Enter the values in Meter)"),
+                                        content: TextFormField(
+                                          initialValue:
+                                              achievedcalories.toString(),
+                                          onChanged: (va) {
+                                            changedValue = double.parse(va);
+                                          },
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                              hintText: "Enter the Amount"),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              print(changedValue);
+                                              FirebaseDatabase.instance
+                                                  .reference()
+                                                  .child("User Information")
+                                                  .child(FirebaseAuth
+                                                      .instance.currentUser.uid)
+                                                  .update({
+                                                "height": changedValue
+                                                    .toStringAsFixed(2),
+                                              });
+                                              setState(() {});
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Add",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
                                   leading: Icon(Icons.height),
                                   title: Text(
                                     "Height",
                                     style: theme.text12bold,
                                   ),
-                                  trailing: Text("5'6''"),
+                                  trailing: Text("${userinfo.height}"),
                                 ),
                               ),
                             ],

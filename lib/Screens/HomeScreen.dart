@@ -304,6 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
             isPhone: mapped['isPhone'],
             planDetails: planInfo,
             bio: mapped['bio'],
+            height: mapped['height'] == null ? "0" : mapped['height'],
             isVerified:
                 mapped['verified'] == null ? false : mapped['verified']);
         Provider.of<UserProvider>(context, listen: false).setUser(userData);

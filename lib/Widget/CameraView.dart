@@ -2,10 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:parentpreneur/Providers/User.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -201,6 +205,14 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
           actions: [
             TextButton(
                 onPressed: () {
+                  final dataod =
+                      Provider.of<UserProvider>(context, listen: false)
+                          .achievedCalories;
+                  setStepsToServer(
+                      dataod + double.parse(data['calories'].toString()));
+                  Provider.of<UserProvider>(context, listen: false)
+                          .achievedCalories =
+                      dataod + double.parse(data['calories'].toString());
                   Navigator.of(context).pop(true);
                 },
                 child: Text(
@@ -236,6 +248,27 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   void initState() {
     setToservers().then((value) => foodAPI(value));
     super.initState();
+  }
+
+  void setStepsToServer(double achievedcalories) {
+    final user = FirebaseAuth.instance.currentUser;
+    FirebaseDatabase.instance
+        .reference()
+        .child("Users Step")
+        .child(user.uid)
+        .child(
+          formatDate(DateTime.now()),
+        )
+        .update({
+      "DateTime": DateTime.now().toIso8601String(),
+      "Calories": achievedcalories.toStringAsFixed(2),
+    });
+  }
+
+  String formatDate(DateTime date) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(date);
+    return formatted;
   }
 
   Future<String> setToservers() async {
@@ -286,7 +319,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                   padding: EdgeInsets.all(30),
                   color: Colors.white,
                   child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.black,
                   ),
                 ),
               ),
