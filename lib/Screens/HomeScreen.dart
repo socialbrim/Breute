@@ -302,13 +302,13 @@ class _HomeScreenState extends State<HomeScreen> {
             name: mapped['userName'],
             phone: mapped['phone'],
             isPhone: mapped['isPhone'],
+            weight: mapped['weight'] == null ? "0" : mapped['weight'],
             planDetails: planInfo,
             bio: mapped['bio'],
             height: mapped['height'] == null ? "0" : mapped['height'],
             isVerified:
                 mapped['verified'] == null ? false : mapped['verified']);
         Provider.of<UserProvider>(context, listen: false).setUser(userData);
-        print("user info fetched-----------------------------");
         setState(() {
           _isLoading = false;
         });

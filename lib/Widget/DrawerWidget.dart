@@ -208,39 +208,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CartScreen(
-                                isAddTocart: true,
-                              ),
-                            ));
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: width * 0.04,
-                              ),
-                              Icon(
-                                MdiIcons.cart,
-                                color: theme.colorPrimary,
-                                size: 30,
-                              ),
-                              SizedBox(
-                                width: width * 0.07,
-                              ),
-                              Container(
-                                child: Text(
-                                  'My Cart',
-                                  style: theme.text16bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        GestureDetector(
-                          onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => SocialMediaHomeScreen(),

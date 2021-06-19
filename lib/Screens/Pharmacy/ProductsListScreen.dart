@@ -1,4 +1,5 @@
 import 'package:parentpreneur/Providers/AllRewardProducts.dart';
+import 'package:parentpreneur/Screens/Pharmacy/CartScreen.dart';
 import 'package:parentpreneur/models/ProductDetails.dart';
 
 import 'productDetailsScreen.dart';
@@ -124,6 +125,15 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+                icon: Icon(MdiIcons.cart),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CartScreen(
+                        isAddTocart: true,
+                      ),
+                    )))
+          ],
           leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();

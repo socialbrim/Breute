@@ -154,15 +154,30 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
         : Container();
   }
 
+  bool issendbyMe = false;
   @override
   void didChangeDependencies() {
     selecteMessageID = Provider.of<BarIndexChange>(context).selectedid;
     selecteMessage = Provider.of<BarIndexChange>(context).selectedmessage;
     isselected = Provider.of<BarIndexChange>(context).isselected;
+    issendbyMe = Provider.of<BarIndexChange>(context).issendbyMe;
     setState(() {
       print(selecteMessage);
     });
     super.didChangeDependencies();
+  }
+
+  String returnstr;
+
+  showbottom() {
+    showBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        width: double.infinity,
+        height: 200,
+        child: Text("Enter"),
+      ),
+    );
   }
 
   @override
@@ -180,25 +195,74 @@ class _SocialMediaChatState extends State<SocialMediaChat> {
                           overflow: TextOverflow.ellipsis,
                         )
                       : null,
-                  actions: isselected
+                  actions: isselected && issendbyMe
                       ? [
                           IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {
                                 // ..
 
-                                // print(FirebaseAuth.instance.currentUser.uid);
-                                // FirebaseDatabase.instance
-                                //     .reference()
-                                //     .child("PersonalChatsPersons")
-                                //     .child(
-                                //         FirebaseAuth.instance.currentUser.uid)
-                                //     .child(selectedone.id)
-                                //     .remove();
-                                // setState(() {
-                                //   isselected = false;
-                                //   selectedone = null;
-                                // });
+                                print(FirebaseAuth.instance.currentUser.uid);
+                                FirebaseDatabase.instance
+                                    .reference()
+                                    .child("ChatRoomPersonal")
+                                    .child(
+                                        FirebaseAuth.instance.currentUser.uid)
+                                    .child(widget.uid)
+                                    .child(selecteMessageID)
+                                    .remove();
+                                FirebaseDatabase.instance
+                                    .reference()
+                                    .child("ChatRoomPersonal")
+                                    .child(widget.uid)
+                                    .child(
+                                        FirebaseAuth.instance.currentUser.uid)
+                                    .child(selecteMessageID)
+                                    .remove();
+                                Provider.of<BarIndexChange>(context,
+                                        listen: false)
+                                    .setSelectgesture(null, null, false, false);
+                              }),
+                          IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                // ..
+                                showbottom();
+                                final filter = ProfanityFilter();
+                                print(FirebaseAuth.instance.currentUser.uid);
+                                FirebaseDatabase.instance
+                                    .reference()
+                                    .child("ChatRoomPersonal")
+                                    .child(
+                                        FirebaseAuth.instance.currentUser.uid)
+                                    .child(widget.uid)
+                                    .child(selecteMessageID)
+                                    .update({
+                                  'message': filter
+                                      .censor('${messageController.text}'),
+                                });
+                                FirebaseDatabase.instance
+                                    .reference()
+                                    .child("ChatRoomPersonal")
+                                    .child(widget.uid)
+                                    .child(
+                                        FirebaseAuth.instance.currentUser.uid)
+                                    .child(selecteMessageID)
+                                    .update({
+                                  'message': filter
+                                      .censor('${messageController.text}'),
+                                });
+                                setState(() {
+                                  Provider.of<BarIndexChange>(context,
+                                          listen: false)
+                                      .selectedid = null;
+                                  Provider.of<BarIndexChange>(context,
+                                          listen: false)
+                                      .selectedmessage = null;
+                                  Provider.of<BarIndexChange>(context,
+                                          listen: false)
+                                      .isselected = false;
+                                });
                               }),
                         ]
                       : [],
@@ -606,8 +670,8 @@ class _MessageTileState extends State<MessageTile> {
           widget.isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: InkWell(
         onLongPress: () {
-          Provider.of<BarIndexChange>(context, listen: false)
-              .setSelectgesture(widget.id, widget.message, true);
+          Provider.of<BarIndexChange>(context, listen: false).setSelectgesture(
+              widget.id, widget.message, true, widget.isSendByMe);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),

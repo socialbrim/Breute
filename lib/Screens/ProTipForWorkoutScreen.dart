@@ -129,18 +129,26 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
     final resp = await post("https://excercise-recommend.herokuapp.com/",
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "height": 1.8, //double.parse(user.height),
-          "weight": 80, //double.parse(user.weight),
+          "feet": 5, //double.parse(user.height.split(".")[0]).toInt(),
+          "inches": 10, //double.parse(user.height.split(".")[1]).toInt(),
+          "weight": double.parse(user.weight).toInt(),
           "activity_level": "sedentary",
-          "calories":
-              2000 //Provider.of<UserProvider>(context).achievedCalories,
+          "calories": 1500
+          // user.calories == null
+          //     ? 20000.toInt()
+          //     : double.parse(user.calories).toInt(),
         }));
     if (resp.body == "Invalid Data") {
+      print(resp.body);
+      print("----------------------------------------------------");
       return;
     } else if (resp.body.contains("Fitness Level")) {
+      print(resp.body);
+      print("----------------------------------------------------");
       return;
     }
     print(resp.body);
+    print("----------------------------------------------------");
     final data = json.decode(resp.body)['excercise_suggestions'] as Map;
     data.forEach((key, value) {
       _list.add(WorkoutModel(

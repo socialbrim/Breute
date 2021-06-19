@@ -46,9 +46,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       if (key == "DashBoard" && value) {
         _isAccessable = true;
       }
-      print(_isAccessable);
     });
+
     userinfo = Provider.of<UserProvider>(context).userInformation;
+
     final boolean = Provider.of<HomeProvider>(context).isLoaded;
 
     if (context != null && !boolean) {
@@ -61,11 +62,36 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   }
 
   bool _isLoading = true;
+  void checkdata(UserInformation userinfo) {
+    FirebaseDatabase.instance
+        .reference()
+        .child("User Information")
+        .child(FirebaseAuth.instance.currentUser.uid)
+        .onValue
+        .listen((event) {
+      final mapped = event.snapshot.value;
+      UserInformation userData = new UserInformation(
+          email: mapped['emial'],
+          id: mapped['uid'],
+          imageUrl: mapped['imageURL'],
+          name: mapped['userName'],
+          phone: mapped['phone'],
+          isPhone: mapped['isPhone'],
+          weight: mapped['weight'] == null ? "0" : mapped['weight'],
+          planDetails: userinfo.planDetails,
+          bio: mapped['bio'],
+          height: mapped['height'] == null ? "0" : mapped['height'],
+          isVerified: mapped['verified'] == null ? false : mapped['verified']);
+      Provider.of<UserProvider>(context, listen: false).setUser(userData);
+    });
+  }
 
   @override
   void initState() {
     checkpermission();
     fetchLocation();
+    checkdata(
+        Provider.of<UserProvider>(context, listen: false).userInformation);
     final now = DateTime.now();
     _dates.add(null);
     for (int i = 7; i >= 0; i--) {
@@ -403,7 +429,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           height: height * 0.05,
                         ),
                         Container(
-                          height: height * 0.8,
+                          height: height * 0.9,
                           child: Column(
                             children: [
                               Row(
@@ -802,52 +828,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: ListTile(
-                                  leading: Icon(MdiIcons.heart),
-                                  title: Text(
-                                    "Heart Rate",
-                                    style: theme.text12bold,
-                                  ),
-                                  trailing: Text("78"),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Container(
-                                width: width * 0.9,
-                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                decoration: BoxDecoration(
-                                  color: theme.colorBackground,
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 2,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: ListTile(
-                                  leading: Icon(MdiIcons.bed),
-                                  title: Text(
-                                    "Sleep",
-                                    style: theme.text12bold,
-                                  ),
-                                  trailing: Text("8 Hrs."),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Container(
-                                width: width * 0.9,
-                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                                decoration: BoxDecoration(
-                                  color: theme.colorBackground,
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 2,
-                                  ),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: ListTile(
                                   onTap: () {
                                     double changedValue;
                                     showDialog(
@@ -907,6 +887,128 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                     style: theme.text12bold,
                                   ),
                                   trailing: Text("${userinfo.height}"),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Container(
+                                width: width * 0.9,
+                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                decoration: BoxDecoration(
+                                  color: theme.colorBackground,
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
+                                  onTap: () {
+                                    double changedValue;
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text(
+                                            "Add weight.(Enter the values in lbs)"),
+                                        content: TextFormField(
+                                          initialValue:
+                                              achievedcalories.toString(),
+                                          onChanged: (va) {
+                                            changedValue = double.parse(va);
+                                          },
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                              hintText: "Enter the Amount"),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              print(changedValue);
+                                              FirebaseDatabase.instance
+                                                  .reference()
+                                                  .child("User Information")
+                                                  .child(FirebaseAuth
+                                                      .instance.currentUser.uid)
+                                                  .update({
+                                                "weight": changedValue
+                                                    .toStringAsFixed(2),
+                                              });
+                                              setState(() {});
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Add",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  leading: Icon(Icons.line_weight),
+                                  title: Text(
+                                    "Weight",
+                                    style: theme.text12bold,
+                                  ),
+                                  trailing: Text("${userinfo.weight}"),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Container(
+                                width: width * 0.9,
+                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                decoration: BoxDecoration(
+                                  color: theme.colorBackground,
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(MdiIcons.heart),
+                                  title: Text(
+                                    "Heart Rate",
+                                    style: theme.text12bold,
+                                  ),
+                                  trailing: Text("78"),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Container(
+                                width: width * 0.9,
+                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                decoration: BoxDecoration(
+                                  color: theme.colorBackground,
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ListTile(
+                                  leading: Icon(MdiIcons.bed),
+                                  title: Text(
+                                    "Sleep",
+                                    style: theme.text12bold,
+                                  ),
+                                  trailing: Text("8 Hrs."),
                                 ),
                               ),
                             ],
