@@ -6,6 +6,7 @@ import 'package:parentpreneur/Providers/User.dart';
 import 'package:parentpreneur/Widget/DrawerWidget.dart';
 import 'package:parentpreneur/auth/LoginScreen.dart';
 import 'package:parentpreneur/models/UserModel.dart';
+import 'package:share/share.dart';
 import './PremiunPlan.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
@@ -223,6 +224,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Icon(
                         MdiIcons.crown,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.03,
+            ),
+            InkWell(
+              onTap: () {
+                //..
+                Share.share(
+                    "Invitation for Bruete: Use my refferal code ${FirebaseAuth.instance.currentUser.uid}");
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: height * 0.05,
+                  width: width * 0.7,
+                  color: theme.colorCompanion,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Invite Friends',
+                        // textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.text16boldWhite,
+                      ),
+                      Icon(
+                        MdiIcons.shareAll,
                         color: Colors.white,
                       ),
                     ],

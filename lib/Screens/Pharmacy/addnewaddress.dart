@@ -70,7 +70,7 @@ class _AddNewAddressState extends State<AddNewAddress> {
                   if (_key.currentState.validate()) {
                     FirebaseDatabase.instance
                         .reference()
-                        .child("CustomerInformation")
+                        .child("User Information")
                         .child(widget.userinfo.id)
                         .child("Addresses")
                         .child(nickName == 1 ? "Home" : "Office")

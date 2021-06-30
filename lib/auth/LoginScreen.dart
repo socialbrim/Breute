@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../Screens/HomeScreen.dart';
 import '../main.dart';
 import 'otpverificationscreen.dart';
@@ -215,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen>
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Text(
-                                'Enter Your Mobile Number To Login',
+                                'Login',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.ptSans(
                                   color: Colors.white,
@@ -281,7 +282,10 @@ class _LoginScreenState extends State<LoginScreen>
                             GestureDetector(
                               onTap: () async {
                                 //..
-                                if (!_formKey.currentState.validate()) {
+                                final data = await checkrefferal();
+
+                                if (!_formKey.currentState.validate() &&
+                                    !data) {
                                   return;
                                 }
                                 Navigator.of(context).push(
@@ -426,5 +430,115 @@ class _LoginScreenState extends State<LoginScreen>
         ),
       ),
     );
+  }
+
+  TextEditingController _ctrl = new TextEditingController();
+  Future<bool> checkrefferal() async {
+    bool reutnringbool = false;
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return WillPopScope(
+          onWillPop: () {
+            Fluttertoast.showToast(msg: "must important to enter in field");
+            return Future.delayed(Duration(seconds: 0)).then((value) => false);
+          },
+          child: AlertDialog(
+            content: Container(
+              height: 250,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          icon: Icon(MdiIcons.closeCircle),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          })
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("Enter the Reffer code!"),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      // vertical: 5,
+                    ),
+                    // height: height * 0.06,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: theme.colorCompanion,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: _ctrl,
+                      style: GoogleFonts.inter(
+                        color: theme.colorPrimary,
+                      ),
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return "Enter in Field";
+                        } else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(MdiIcons.share),
+                        hintText: 'Refferal Code',
+                        hintStyle: theme.text16Primary,
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      final data = await FirebaseDatabase.instance
+                          .reference()
+                          .child("User Information")
+                          .orderByValue()
+                          .startAt(_ctrl.text)
+                          .once();
+                      if (data.value != null) {
+                        Fluttertoast.showToast(msg: "Code Accepted");
+                        reutnringbool = true;
+                      } else {
+                        Fluttertoast.showToast(msg: "Code Not found");
+                      }
+                      print(data.value);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: theme.colorCompanion,
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Submit',
+                        style: theme.text20boldWhite,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+    return reutnringbool;
   }
 }

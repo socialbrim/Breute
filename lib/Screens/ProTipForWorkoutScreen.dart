@@ -40,7 +40,7 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
         msg: "Add Height and weight to get recomended exercise",
       );
     }
-    foodAPI();
+    exerciseRecomendation();
     Provider.of<MyPlanProvider>(context).plan.details.forEach((key, value) {
       if (key == "Pro Tips" && value) {
         _isAccessable = true;
@@ -125,7 +125,7 @@ class _ProTipForWorkOutScreenState extends State<ProTipForWorkOutScreen> {
     super.initState();
   }
 
-  Future<void> foodAPI() async {
+  Future<void> exerciseRecomendation() async {
     final resp = await post("https://excercise-recommend.herokuapp.com/",
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({

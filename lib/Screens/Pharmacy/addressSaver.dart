@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,12 +26,12 @@ class AddressSaver extends StatefulWidget {
 
 class _AddressSaverState extends State<AddressSaver> {
   List<AddressModel> address = [];
-  FirebaseUser user;
+  User user;
   void fetchAddress() async {
     user = FirebaseAuth.instance.currentUser;
     FirebaseDatabase.instance
         .reference()
-        .child("CustomerInformation")
+        .child("User Information")
         .child(user.uid)
         .child("Addresses")
         .onValue
@@ -133,6 +134,8 @@ class _AddressSaverState extends State<AddressSaver> {
                             ),
                           ));
                         } else {
+                          Fluttertoast.showToast(msg: "Order placed");
+
                           // Navigator.of(context).push(
                           //   MaterialPageRoute(
                           //     builder: (context) => FinalCheckOut(
