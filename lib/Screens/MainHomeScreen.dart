@@ -106,7 +106,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     hasPermissions();
 
     super.initState();
-    read();
+
     initPlatformState();
     fetchLastSevenDays();
   }

@@ -462,7 +462,7 @@ class _LoginScreenState extends State<LoginScreen>
                   SizedBox(
                     height: 5,
                   ),
-                  Text("Enter the Reffer code!"),
+                  Text("Please Enter your referral code"),
                   SizedBox(
                     height: 20,
                   ),
@@ -512,9 +512,11 @@ class _LoginScreenState extends State<LoginScreen>
                           .once();
                       if (data.value != null) {
                         Fluttertoast.showToast(msg: "Code Accepted");
+                        Navigator.of(context).pop();
                         reutnringbool = true;
                       } else {
                         Fluttertoast.showToast(msg: "Code Not found");
+                        Navigator.of(context).pop();
                       }
                       print(data.value);
                     },
@@ -539,6 +541,7 @@ class _LoginScreenState extends State<LoginScreen>
         );
       },
     );
+
     return reutnringbool;
   }
 }
